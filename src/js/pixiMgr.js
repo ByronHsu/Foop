@@ -26,12 +26,12 @@ class PixiMgr {
     // tile.x = ww / 2, tile.y = wh / 2;
     this.container.addChild(tile);
 
-    let panda = new PIXI.Sprite.fromImage('../assets/panda.png');
-    panda.anchor.set(0.5, 0.5);
-    (panda.width = 100), (panda.height = 100);
-    (panda.x = 0), (panda.y = 0);
-    this.player = panda;
-    this.container.addChild(panda);
+    let wan = new PIXI.Sprite.fromImage('../assets/wan.png');
+    wan.anchor.set(0.5, 0.5);
+    (wan.width = 100), (wan.height = 100);
+    (wan.x = 0), (wan.y = 0);
+    this.player = wan;
+    this.container.addChild(wan);
 
     let exit = new PIXI.Sprite.fromImage('../assets/exit.png');
     exit.anchor.set(0.5, 0.5);
