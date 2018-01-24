@@ -4,8 +4,7 @@
   "description": "A crazy game",
   "main": "index.js",
   "scripts": {
-    "start": "node server/server.js",
-    "watch": "webpack --config webpack.config.dev.js --watch",
+    "dev": "node server/server.js",
     "prod": "webpack --config webpack.config.prod.js",
     "lint": "eslint .",
     "lint:fix": "npm run lint -- --fix",
