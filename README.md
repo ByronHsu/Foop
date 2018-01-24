@@ -9,6 +9,6 @@ npm run dev
 ### 2.2 Build production bundle and run the server
 
 ```
-npm run prod
+npm run build
 npm start
 ```

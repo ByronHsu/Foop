@@ -4,8 +4,9 @@
   "description": "A crazy game",
   "main": "index.js",
   "scripts": {
-    "dev": "node server/server.js",
-    "prod": "webpack --config webpack.config.prod.js",
+    "start": "node server/server.js",
+    "dev": "NODE_ENV=dev node server/server.js",
+    "build": "webpack --config webpack.config.prod.js",
     "lint": "eslint .",
     "lint:fix": "npm run lint -- --fix",
     "precommit": "lint-staged"
@@ -34,6 +35,7 @@
     "style-loader": "^0.13.1",
     "uglifyjs-webpack-plugin": "^1.1.6",
     "webpack": "^3.10.0",
+    "webpack-cleanup-plugin": "^0.5.1",
     "webpack-dev-middleware": "^2.0.4",
     "webpack-hot-middleware": "^2.21.0"
   },

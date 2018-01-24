@@ -2,7 +2,7 @@ const path = require('path');
 const webpack = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
-const UglifyWebPackPlugin = require('uglifyjs-webpack-plugin');
+const WebpackCleanUpPlugin = require('webpack-cleanup-plugin');
 
 module.exports = {
   entry: {
@@ -23,11 +23,21 @@ module.exports = {
     ],
   },
   plugins: [
+    new WebpackCleanUpPlugin(),
     new HtmlWebpackPlugin({
+      title: 'Foop!',
       template: './src/template.html',
       filename: 'index.html',
     }),
+    new webpack.optimize.OccurrenceOrderPlugin(),
+    new webpack.optimize.UglifyJsPlugin({
+      compress: {
+        warnings: false,
+        screw_ie8: true,
+        drop_console: true,
+        drop_debugger: true
+      }
+    }),
     new CopyWebpackPlugin([{ from: 'src/assets', to: 'assets' }]),
-    new UglifyWebPackPlugin(),
   ],
 };
