@@ -19,7 +19,7 @@ module.exports = {
       {
         test: /\.scss$/,
         loaders: ['style-loader', 'css-loader', 'sass-loader'],
-      }
+      },
     ],
   },
   plugins: [
@@ -28,6 +28,6 @@ module.exports = {
       filename: 'index.html',
     }),
     new CopyWebpackPlugin([{ from: 'src/assets', to: 'assets' }]),
-    new UglifyWebPackPlugin()
+    new UglifyWebPackPlugin(),
   ],
 };
