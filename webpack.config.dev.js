@@ -5,7 +5,10 @@ const CopyWebpackPlugin = require('copy-webpack-plugin');
 
 module.exports = {
   entry: {
-    bundle: ['./src/index.js'],
+    bundle: [
+      'webpack-hot-middleware/client?path=http://localhost:3000/__webpack_hmr&reload=true',
+      './src/index.js',
+    ],
   },
   output: {
     filename: 'bundle.js',
@@ -26,6 +29,7 @@ module.exports = {
       template: './src/template.html',
       filename: 'index.html',
     }),
+    new webpack.HotModuleReplacementPlugin(),
     new CopyWebpackPlugin([{ from: 'src/assets', to: 'assets' }]),
   ],
 };
