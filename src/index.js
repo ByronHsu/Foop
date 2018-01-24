@@ -1,12 +1,11 @@
-import PixiMgr from './js/PixiMgr';
 import DataMgr from './js/DataMgr';
-// import eventemitter3 from 'eventemitter3';
+import PixiMgr from './js/PixiMgr';
+// Import eventemitter3 from 'eventemitter3';
 
-var pixiMgr = new PixiMgr();
-var dataMgr = new DataMgr();
+const dataMgr = new DataMgr();
+const pixiMgr = new PixiMgr();
 dataMgr.bindKey();
-
-function animate(timeStamp) {
+function animate() {
   pixiMgr.updatePlayer(dataMgr.player);
   dataMgr.collideExit();
   requestAnimationFrame(animate);
