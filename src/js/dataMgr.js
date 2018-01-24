@@ -11,6 +11,8 @@ class DataMgr {
       y: 0,
       width: 100,
       height: 100,
+      hp: 100,
+      speed: SPEED,
     };
     this.exit = {
       x: 250,
@@ -28,23 +30,27 @@ class DataMgr {
   bindKey() {
     key('w', () => {
       let tmp = Object.assign({}, this.player);
-      tmp.y -= SPEED;
-      if (!isExceed(new Box(tmp), new Box(this.border))) this.player.y -= SPEED;
+      tmp.y -= this.player.speed;
+      if (!isExceed(new Box(tmp), new Box(this.border)))
+        this.player.y -= this.player.speed;
     });
     key('s', () => {
       let tmp = Object.assign({}, this.player);
-      tmp.y += SPEED;
-      if (!isExceed(new Box(tmp), new Box(this.border))) this.player.y += SPEED;
+      tmp.y += this.player.speed;
+      if (!isExceed(new Box(tmp), new Box(this.border)))
+        this.player.y += this.player.speed;
     });
     key('a', () => {
       let tmp = Object.assign({}, this.player);
-      tmp.x -= SPEED;
-      if (!isExceed(new Box(tmp), new Box(this.border))) this.player.x -= SPEED;
+      tmp.x -= this.player.speed;
+      if (!isExceed(new Box(tmp), new Box(this.border)))
+        this.player.x -= this.player.speed;
     });
     key('d', () => {
       let tmp = Object.assign({}, this.player);
-      tmp.x += SPEED;
-      if (!isExceed(new Box(tmp), new Box(this.border))) this.player.x += SPEED;
+      tmp.x += this.player.speed;
+      if (!isExceed(new Box(tmp), new Box(this.border)))
+        this.player.x += this.player.speed;
     });
   }
   collideExit() {
