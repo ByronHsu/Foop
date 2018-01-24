@@ -3,8 +3,7 @@
 ### 2.1 To develop the project
 
 ```
-npm run watch
-npm run start
+npm run dev
 ```
 
 ### 2.2 Build production bundle and run the server
