@@ -1,1 +1,4 @@
 public
+webpack.*
+node_modules/
+*.config.js

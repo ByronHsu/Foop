@@ -8,7 +8,9 @@ module.exports = {
     browser: true,
     node: true,
   },
-  plugins: ['prettier'],
+  plugins: [
+    'prettier'
+  ],
   rules: {
     'prettier/prettier': [
       'error',
@@ -17,5 +19,18 @@ module.exports = {
         singleQuote: true,
       },
     ],
+    "global-require": 0,
+    "import/no-extraneous-dependencies": 0,
+    "no-console": 0,
+    "no-alert": 0,
+    "no-underscore-dangle": 0,
+    "no-tabs": 0,
+    "no-mixed-spaces-and-tabs": 0,
+    "indent": 0,
+    "no-else-return": 0,
+    "no-use-before-define": [2, "nofunc"],
+    "valid-jsdoc": 0,
+    "require-jsdoc": 0,
+    "import/no-unresolved": 0,
   },
 };
