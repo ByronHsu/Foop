@@ -43,4 +43,31 @@ class Shoe extends Box {
   }
 }
 
-export { Box, Coin, Shoe };
+class Trap extends Box {
+  constructor(args) {
+    super(args);
+  }
+  collide(player) {
+    player.speed -= 10;
+  }
+}
+
+class Pill extends Box {
+  constructor(args) {
+    super(args);
+  }
+  collide(player) {
+    player.hp += 10;
+  }
+}
+
+class Bug extends Box {
+  constructor(args) {
+    super(args);
+  }
+  collide(player) {
+    player.hp -= 10;
+  }
+}
+
+export { Box, Coin, Shoe, Pill, Bug, Trap };
