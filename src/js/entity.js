@@ -5,7 +5,7 @@ class Box {
     this.width = args.width;
     this.height = args.height;
   }
-  get edge(){
+  get edge() {
     return {
       xL: this.x - this.width / 2,
       xR: this.x + this.width / 2,
@@ -13,7 +13,7 @@ class Box {
       yB: this.y + this.height / 2,
     };
   }
-  get vtx(){
+  get vtx() {
     let e = this.edge;
     return [
       { x: e.xL, y: e.yT }, //左上
@@ -33,4 +33,4 @@ class Coin extends Box {
   }
 }
 
-export { Box };
+export { Box, Coin };
