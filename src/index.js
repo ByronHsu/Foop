@@ -4,10 +4,11 @@ import PixiMgr from './js/PixiMgr';
 
 const dataMgr = new DataMgr();
 const pixiMgr = new PixiMgr();
-dataMgr.bindKey();
+
 function animate() {
   pixiMgr.updatePlayer(dataMgr.player);
   dataMgr.collideExit();
+  dataMgr.playerMove();
   requestAnimationFrame(animate);
 }
 requestAnimationFrame(animate);
