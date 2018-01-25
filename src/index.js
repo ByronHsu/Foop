@@ -8,6 +8,7 @@ dataMgr.bindKey();
 function animate() {
   pixiMgr.updatePlayer(dataMgr.player);
   dataMgr.collideExit();
+  // dataMgr.collideObj();
   requestAnimationFrame(animate);
 }
 requestAnimationFrame(animate);

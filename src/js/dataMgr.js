@@ -1,5 +1,5 @@
 import key from 'keymaster';
-import { Box } from './entity.js';
+import { Box, Coin } from './entity.js';
 import { isCollided, isExceed } from './physic.js';
 
 const SPEED = 5;
@@ -28,6 +28,18 @@ class DataMgr {
     (this.player.hp = 100), (this.player.speed = SPEED);
     this.exit = new Box(exitBox);
     this.loop = new Box(loopBox);
+    this.coins = [];
+    for (let i = 0; i < 3; i++) {
+      this.coins.push(
+        new Coin({
+          x: Math.random() * 200,
+          y: Math.random() * 200,
+          width: 50,
+          height: 50,
+        })
+      );
+      console.log(this);
+    }
   }
   bindKey() {
     let arr = [
@@ -48,6 +60,9 @@ class DataMgr {
       });
     });
   }
+  // collideObj() {
+  //   if (isCollided(this.player, ))
+  // }
   collideExit() {
     let start = { x: -150, y: -150 };
     if (isCollided(this.player, this.exit) === true) {
