@@ -26,6 +26,7 @@ class PixiMgr {
     // tile.x = ww / 2, tile.y = wh / 2;
     this.container.addChild(tile);
 
+    // 婉君
     let wan = new PIXI.Sprite.fromImage('../assets/wan.png');
     wan.anchor.set(0.5, 0.5);
     (wan.width = 100), (wan.height = 100);
@@ -33,6 +34,14 @@ class PixiMgr {
     this.player = wan;
     this.container.addChild(wan);
 
+    // Coin (mock)
+    let coin = new PIXI.Sprite.fromImage('../assets/coin.png');
+    coin.anchor.set(0.5, 0.5);
+    (coin.width = 100), (coin.height = 100);
+    (coin.x = 40), (coin.y = -50);
+    this.container.addChild(coin);
+
+    // Exit
     let exit = new PIXI.Sprite.fromImage('../assets/exit.png');
     exit.anchor.set(0.5, 0.5);
     (exit.width = 50), (exit.height = 50);
