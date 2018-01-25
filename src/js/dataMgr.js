@@ -42,7 +42,7 @@ class DataMgr {
       console.log(this);
     }
   }
-  bindKey() {
+  playerMove() {
     let arr = [
       { key: 'w', x: 0, y: -1 },
       { key: 's', x: 0, y: 1 },
@@ -50,7 +50,7 @@ class DataMgr {
       { key: 'd', x: 1, y: 0 },
     ];
     arr.forEach(obj => {
-      key(obj.key, () => {
+      if (key.isPressed(obj.key)) {
         let tmp = new Box(this.player);
         tmp.x += this.player.speed * obj.x;
         tmp.y += this.player.speed * obj.y;
@@ -58,12 +58,9 @@ class DataMgr {
           this.player.x += this.player.speed * obj.x;
           this.player.y += this.player.speed * obj.y;
         }
-      });
+      }
     });
   }
-  // collideObj() {
-  //   if (isCollided(this.player, ))
-  // }
   collideExit() {
     let start = { x: -150, y: -150 };
     if (isCollided(this.player, this.exit) === true) {
