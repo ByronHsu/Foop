@@ -31,9 +31,16 @@ class Coin extends Box {
   }
   collide(player) {
     player.money += 10;
-    console.log('coin id: ', this.id);
-    console.log('player.money', player.money);
   }
 }
 
-export { Box, Coin };
+class Shoe extends Box {
+  constructor(args) {
+    super(args);
+  }
+  collide(player) {
+    player.speed += 10;
+  }
+}
+
+export { Box, Coin, Shoe };

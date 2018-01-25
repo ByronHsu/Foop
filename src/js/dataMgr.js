@@ -1,5 +1,5 @@
 import key from 'keymaster';
-import { Box, Coin } from './entity.js';
+import { Box, Coin, Shoe } from './entity.js';
 import { isCollided, isExceed } from './physic.js';
 
 const SPEED = 5;
@@ -44,6 +44,15 @@ class DataMgr {
       );
       console.log(this);
     }
+    this.objs.push(
+      new Shoe({
+        x: (Math.random() > 0.5 ? 1 : -1) * Math.random() * loopBox.width / 2,
+        y: (Math.random() > 0.5 ? 1 : -1) * Math.random() * loopBox.height / 2,
+        width: 50,
+        height: 50,
+        id: `shoe-0`,
+      })
+    );
     this.destroyId = '';
   }
   playerMove() {

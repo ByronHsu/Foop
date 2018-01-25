@@ -52,8 +52,9 @@ class PixiMgr {
   }
   generateObjs(objs) {
     for (let i = 0; i < objs.length; i++) {
-      // let coin = new PIXI.Sprite.fromImage('../assets/coin.png');
-      let obj = new PIXI.Sprite.fromImage('../assets/coin.png');
+      // Find object id pattern (Name-ID)
+      let objName = objs[i].id.match(/\w+(?=-)/)[0];
+      let obj = new PIXI.Sprite.fromImage(`../assets/${objName}.png`);
       obj.anchor.set(0.5, 0.5);
       (obj.width = objs[i].width), (obj.height = objs[i].width);
       (obj.x = objs[i].x), (obj.y = objs[i].y);
