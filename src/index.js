@@ -4,6 +4,7 @@ import PixiMgr from './js/PixiMgr';
 
 const dataMgr = new DataMgr();
 const pixiMgr = new PixiMgr();
+pixiMgr.randomCoin(dataMgr.coins);
 dataMgr.bindKey();
 function animate() {
   pixiMgr.updatePlayer(dataMgr.player);

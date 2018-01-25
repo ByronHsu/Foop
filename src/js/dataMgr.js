@@ -32,8 +32,9 @@ class DataMgr {
     for (let i = 0; i < 3; i++) {
       this.coins.push(
         new Coin({
-          x: Math.random() * 200,
-          y: Math.random() * 200,
+          x: (Math.random() > 0.5 ? 1 : -1) * Math.random() * loopBox.width / 2,
+          y:
+            (Math.random() > 0.5 ? 1 : -1) * Math.random() * loopBox.height / 2,
           width: 50,
           height: 50,
         })

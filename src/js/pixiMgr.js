@@ -34,13 +34,6 @@ class PixiMgr {
     this.player = wan;
     this.container.addChild(wan);
 
-    // Coin (mock)
-    let coin = new PIXI.Sprite.fromImage('../assets/coin.png');
-    coin.anchor.set(0.5, 0.5);
-    (coin.width = 100), (coin.height = 100);
-    (coin.x = 40), (coin.y = -50);
-    this.container.addChild(coin);
-
     // Exit
     let exit = new PIXI.Sprite.fromImage('../assets/exit.png');
     exit.anchor.set(0.5, 0.5);
@@ -53,6 +46,15 @@ class PixiMgr {
     this.player.y = player.y;
     // let player focus on center
     this.container.pivot.copy(this.player);
+  }
+  randomCoin(coins) {
+    for (let i = 0; i < coins.length; i++) {
+      let coin = new PIXI.Sprite.fromImage('../assets/coin.png');
+      coin.anchor.set(0.5, 0.5);
+      (coin.width = coins[i].width), (coin.height = coins[i].width);
+      (coin.x = coins[i].x), (coin.y = coins[i].y);
+      this.container.addChild(coin);
+    }
   }
 }
 
