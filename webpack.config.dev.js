@@ -3,6 +3,7 @@ const webpack = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 const OpenBrowserPlugin = require('open-browser-webpack-plugin');
+const Jarvis = require('webpack-jarvis');
 
 module.exports = {
   entry: {
@@ -34,5 +35,8 @@ module.exports = {
     new webpack.HotModuleReplacementPlugin(),
     new CopyWebpackPlugin([{ from: 'src/assets', to: 'assets' }]),
     new OpenBrowserPlugin({ url: 'http://localhost:3000' }),
+    new Jarvis({
+      port: 3001
+    })
   ],
 };

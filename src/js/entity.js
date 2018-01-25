@@ -1,17 +1,35 @@
 class Box {
   constructor(args) {
-    this.border = {
-      xL: args.x - args.width / 2,
-      xR: args.x + args.width / 2,
-      yT: args.y - args.height / 2,
-      yB: args.y + args.height / 2,
+    this.x = args.x;
+    this.y = args.y;
+    this.width = args.width;
+    this.height = args.height;
+  }
+  get edge(){
+    return {
+      xL: this.x - this.width / 2,
+      xR: this.x + this.width / 2,
+      yT: this.y - this.height / 2,
+      yB: this.y + this.height / 2,
     };
-    this.dots = [
-      { x: this.border.xL, y: this.border.yT }, //左上
-      { x: this.border.xR, y: this.border.yT }, //右上
-      { x: this.border.xR, y: this.border.yB }, //右下
-      { x: this.border.xL, y: this.border.yB }, //左下
+  }
+  get vtx(){
+    let e = this.edge;
+    return [
+      { x: e.xL, y: e.yT }, //左上
+      { x: e.xR, y: e.yT }, //右上
+      { x: e.xR, y: e.yB }, //右下
+      { x: e.xL, y: e.yB }, //左下
     ];
+  }
+}
+
+class Coin extends Box {
+  constructor(args) {
+    super(args);
+  }
+  hit(player) {
+    player.money += 10;
   }
 }
 
