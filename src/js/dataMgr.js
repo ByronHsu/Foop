@@ -42,7 +42,6 @@ class DataMgr {
           id: `coin-${i}`,
         })
       );
-      console.log(this);
     }
     this.objs.push(
       new Shoe({
