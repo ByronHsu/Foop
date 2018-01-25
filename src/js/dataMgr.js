@@ -30,16 +30,16 @@ class DataMgr {
     this.player.money = 0;
     this.exit = new Box(exitBox);
     this.loop = new Box(loopBox);
-    this.coins = [];
+    this.objs = [];
     for (let i = 0; i < 3; i++) {
-      this.coins.push(
+      this.objs.push(
         new Coin({
           x: (Math.random() > 0.5 ? 1 : -1) * Math.random() * loopBox.width / 2,
           y:
             (Math.random() > 0.5 ? 1 : -1) * Math.random() * loopBox.height / 2,
           width: 50,
           height: 50,
-          id: `coin${i}`,
+          id: `coin-${i}`,
         })
       );
       console.log(this);
@@ -62,12 +62,11 @@ class DataMgr {
           this.player.x += this.player.speed * obj.x;
           this.player.y += this.player.speed * obj.y;
         }
-        // Mock coins, will later replace with objects
-        for (let i = 0; i < this.coins.length; i++) {
-          if (isCollided(this.player, this.coins[i])) {
-            this.coins[i].collide(this.player);
-            this.destroyId = this.coins[i].id;
-            this.coins.splice(i, 1);
+        for (let i = 0; i < this.objs.length; i++) {
+          if (isCollided(this.player, this.objs[i])) {
+            this.objs[i].collide(this.player);
+            this.destroyId = this.objs[i].id;
+            this.objs.splice(i, 1);
           }
         }
       }

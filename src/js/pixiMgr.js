@@ -34,8 +34,8 @@ class PixiMgr {
     this.player = wan;
     this.container.addChild(wan);
 
-    // Coins
-    this.coins = [];
+    // Objs
+    this.objs = [];
 
     // Exit
     let exit = new PIXI.Sprite.fromImage('../assets/exit.png');
@@ -50,21 +50,22 @@ class PixiMgr {
     // let player focus on center
     this.container.pivot.copy(this.player);
   }
-  randomCoins(coins) {
-    for (let i = 0; i < coins.length; i++) {
-      let coin = new PIXI.Sprite.fromImage('../assets/coin.png');
-      coin.anchor.set(0.5, 0.5);
-      (coin.width = coins[i].width), (coin.height = coins[i].width);
-      (coin.x = coins[i].x), (coin.y = coins[i].y);
-      coin.id = coins[i].id;
-      this.coins.push(coin);
-      this.container.addChild(coin);
+  generateObjs(objs) {
+    for (let i = 0; i < objs.length; i++) {
+      // let coin = new PIXI.Sprite.fromImage('../assets/coin.png');
+      let obj = new PIXI.Sprite.fromImage('../assets/coin.png');
+      obj.anchor.set(0.5, 0.5);
+      (obj.width = objs[i].width), (obj.height = objs[i].width);
+      (obj.x = objs[i].x), (obj.y = objs[i].y);
+      obj.id = objs[i].id;
+      this.objs.push(obj);
+      this.container.addChild(obj);
     }
   }
-  destroyCoins(id) {
-    for (let i = 0; i < this.coins.length; i++) {
-      if (this.coins[i].id === id) {
-        this.coins[i].destroy();
+  destroyObjs(id) {
+    for (let i = 0; i < this.objs.length; i++) {
+      if (this.objs[i].id === id) {
+        this.objs[i].destroy();
       }
     }
   }

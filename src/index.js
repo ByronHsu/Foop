@@ -5,12 +5,12 @@ import PixiMgr from './js/PixiMgr';
 const dataMgr = new DataMgr();
 const pixiMgr = new PixiMgr();
 
-pixiMgr.randomCoins(dataMgr.coins);
+pixiMgr.generateObjs(dataMgr.objs);
 function animate() {
   pixiMgr.updatePlayer(dataMgr.player);
   dataMgr.collideExit();
   dataMgr.playerMove();
-  pixiMgr.destroyCoins(dataMgr.destroyId);
+  pixiMgr.destroyObjs(dataMgr.destroyId);
   requestAnimationFrame(animate);
 }
 requestAnimationFrame(animate);
