@@ -25,7 +25,9 @@ const loopBox = {
 class DataMgr {
   constructor() {
     this.player = new Box(playerBox);
-    (this.player.hp = 100), (this.player.speed = SPEED);
+    this.player.hp = 100;
+    this.player.speed = SPEED;
+    this.player.money = 0;
     this.exit = new Box(exitBox);
     this.loop = new Box(loopBox);
     this.coins = [];
@@ -37,10 +39,12 @@ class DataMgr {
             (Math.random() > 0.5 ? 1 : -1) * Math.random() * loopBox.height / 2,
           width: 50,
           height: 50,
+          id: `coin${i}`,
         })
       );
       console.log(this);
     }
+    this.destroyId = '';
   }
   playerMove() {
     let arr = [
@@ -57,6 +61,14 @@ class DataMgr {
         if (!isExceed(tmp, this.loop)) {
           this.player.x += this.player.speed * obj.x;
           this.player.y += this.player.speed * obj.y;
+        }
+        // Mock coins, will later replace with objects
+        for (let i = 0; i < this.coins.length; i++) {
+          if (isCollided(this.player, this.coins[i])) {
+            this.coins[i].hit(this.player);
+            this.destroyId = this.coins[i].id;
+            this.coins.splice(i, 1);
+          }
         }
       }
     });

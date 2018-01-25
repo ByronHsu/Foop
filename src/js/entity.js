@@ -27,9 +27,12 @@ class Box {
 class Coin extends Box {
   constructor(args) {
     super(args);
+    this.id = args.id;
   }
   hit(player) {
     player.money += 10;
+    console.log('coin id: ', this.id);
+    console.log('player.money', player.money);
   }
 }
 
