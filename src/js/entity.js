@@ -4,6 +4,7 @@ class Box {
     this.y = args.y;
     this.width = args.width;
     this.height = args.height;
+    this.id = args.id;
   }
   get edge() {
     return {
@@ -27,9 +28,8 @@ class Box {
 class Coin extends Box {
   constructor(args) {
     super(args);
-    this.id = args.id;
   }
-  hit(player) {
+  collide(player) {
     player.money += 10;
     console.log('coin id: ', this.id);
     console.log('player.money', player.money);

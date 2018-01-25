@@ -65,7 +65,7 @@ class DataMgr {
         // Mock coins, will later replace with objects
         for (let i = 0; i < this.coins.length; i++) {
           if (isCollided(this.player, this.coins[i])) {
-            this.coins[i].hit(this.player);
+            this.coins[i].collide(this.player);
             this.destroyId = this.coins[i].id;
             this.coins.splice(i, 1);
           }
