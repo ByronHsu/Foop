@@ -3,7 +3,8 @@ const webpack = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 const OpenBrowserPlugin = require('open-browser-webpack-plugin');
-const Jarvis = require('webpack-jarvis');
+// const Jarvis = require('webpack-jarvis');
+const DashboardPlugin = require('webpack-dashboard/plugin');
 
 module.exports = {
   entry: {
@@ -27,6 +28,7 @@ module.exports = {
     ],
   },
   plugins: [
+    new DashboardPlugin(),
     new HtmlWebpackPlugin({
       title: 'Foop! | dev',
       template: './src/template.html',
@@ -35,8 +37,8 @@ module.exports = {
     new webpack.HotModuleReplacementPlugin(),
     new CopyWebpackPlugin([{ from: 'src/assets', to: 'assets' }]),
     new OpenBrowserPlugin({ url: 'http://localhost:3000' }),
-    new Jarvis({
-      port: 3001
-    })
+    // new Jarvis({
+    //   port: 3001
+    // })
   ],
 };
