@@ -3,6 +3,9 @@ import { Box, Coin, Shoe, Trap, Pill, Bug } from './entity.js';
 import { isCollided, isExceed } from './physic.js';
 import { rnGen, rnGenInt } from './utils.js';
 
+const dat = require('dat.gui');
+const gui = new dat.default.GUI();
+
 const SPEED = 5;
 const playerBox = {
   x: 0,
@@ -29,6 +32,9 @@ class DataMgr {
     this.player.hp = 100;
     this.player.speed = SPEED;
     this.player.money = 0;
+    gui.add(this.player, 'hp', 0, 200).listen();
+    gui.add(this.player, 'speed', 0, 50).listen();
+    gui.add(this.player, 'money', 0, 200).listen();
     this.exit = new Box(exitBox);
     this.loop = new Box(loopBox);
     this.objs = [];

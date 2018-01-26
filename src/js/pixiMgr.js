@@ -90,9 +90,9 @@ function updatePlayer(player) {
   // let player focus on center
   worldCtn.pivot.copy(playerRef);
 
-  document.querySelector('#hp').innerHTML = `hp: ${player.hp}`;
-  document.querySelector('#speed').innerHTML = `speed: ${player.speed}`;
-  document.querySelector('#money').innerHTML = `money: ${player.money}`;
+  // document.querySelector('#hp').innerHTML = `hp: ${player.hp}`;
+  // document.querySelector('#speed').innerHTML = `speed: ${player.speed}`;
+  // document.querySelector('#money').innerHTML = `money: ${player.money}`;
 }
 
 function updateObjs(objs) {
