@@ -2,3 +2,4 @@ public
 webpack.*
 node_modules/
 *.config.js
+src/bin/

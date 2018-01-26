@@ -1,9 +1,9 @@
 import DataMgr from './js/DataMgr';
-import PixiMgr from './js/PixiMgr';
+import * as pixiMgr from './js/PixiMgr';
 import './scss/index.scss';
 
 const dataMgr = new DataMgr();
-const pixiMgr = new PixiMgr();
+pixiMgr.init();
 
 function animate() {
   dataMgr.playerMove();
