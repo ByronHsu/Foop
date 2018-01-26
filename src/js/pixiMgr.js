@@ -51,6 +51,9 @@ class PixiMgr {
     this.player.y = player.y;
     // let player focus on center
     this.container.pivot.copy(this.player);
+    document.querySelector('#hp').innerHTML = `hp: ${player.hp}`;
+    document.querySelector('#speed').innerHTML = `speed: ${player.speed}`;
+    document.querySelector('#money').innerHTML = `money: ${player.money}`;
   }
   updateObjs(objs) {
     // console.log(objs);

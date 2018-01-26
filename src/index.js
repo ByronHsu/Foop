@@ -1,6 +1,6 @@
 import DataMgr from './js/DataMgr';
 import PixiMgr from './js/PixiMgr';
-// Import eventemitter3 from 'eventemitter3';
+import './scss/index.scss';
 
 const dataMgr = new DataMgr();
 const pixiMgr = new PixiMgr();
