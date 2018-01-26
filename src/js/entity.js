@@ -31,6 +31,7 @@ class Coin extends Box {
   constructor(args) {
     super(args);
     this.type = 'coin';
+    this.img = 'coin';
   }
   collide(player) {
     player.money += 1;
@@ -41,6 +42,7 @@ class Shoe extends Box {
   constructor(args) {
     super(args);
     this.type = 'shoe';
+    this.img = 'shoe';
   }
   collide(player) {
     player.speed += 1;
@@ -51,6 +53,7 @@ class Trap extends Box {
   constructor(args) {
     super(args);
     this.type = 'trap';
+    this.img = 'trap';
   }
   collide(player) {
     player.speed -= 1;
@@ -61,6 +64,7 @@ class Pill extends Box {
   constructor(args) {
     super(args);
     this.type = 'pill';
+    this.img = 'pill';
   }
   collide(player) {
     player.hp += 1;
@@ -71,6 +75,7 @@ class Bug extends Box {
   constructor(args) {
     super(args);
     this.type = 'bug';
+    this.img = 'bug';
   }
   collide(player) {
     player.hp -= 1;
