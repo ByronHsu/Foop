@@ -2,9 +2,8 @@ import key from 'keymaster';
 import { Box, Coin, Shoe, Trap, Pill, Bug } from './entity.js';
 import { isCollided, isExceed } from './physic.js';
 import { rnGen, rnGenInt } from './utils.js';
-
-const dat = require('dat.gui');
-const gui = new dat.default.GUI();
+import dat from 'dat.gui';
+const gui = new dat.GUI();
 
 const SPEED = 5;
 const playerBox = {
