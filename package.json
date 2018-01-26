@@ -18,7 +18,8 @@
     "express": "^4.16.2",
     "keymaster": "^1.6.2",
     "pixi-display": "^1.1.1",
-    "pixi.js": "^4.7.0"
+    "pixi.js": "^4.7.0",
+    "uuid": "^3.2.1"
   },
   "devDependencies": {
     "copy-webpack-plugin": "^4.3.1",

@@ -1,6 +1,7 @@
 import key from 'keymaster';
-import { Box, Coin, Shoe } from './entity.js';
+import { Box, Coin, Shoe, Trap, Pill, Bug } from './entity.js';
 import { isCollided, isExceed } from './physic.js';
+import { rnGen, rnGenInt } from './utils.js';
 
 const SPEED = 5;
 const playerBox = {
@@ -31,28 +32,6 @@ class DataMgr {
     this.exit = new Box(exitBox);
     this.loop = new Box(loopBox);
     this.objs = [];
-    for (let i = 0; i < 3; i++) {
-      this.objs.push(
-        new Coin({
-          x: (Math.random() > 0.5 ? 1 : -1) * Math.random() * loopBox.width / 2,
-          y:
-            (Math.random() > 0.5 ? 1 : -1) * Math.random() * loopBox.height / 2,
-          width: 50,
-          height: 50,
-          id: `coin-${i}`,
-        })
-      );
-    }
-    this.objs.push(
-      new Shoe({
-        x: (Math.random() > 0.5 ? 1 : -1) * Math.random() * loopBox.width / 2,
-        y: (Math.random() > 0.5 ? 1 : -1) * Math.random() * loopBox.height / 2,
-        width: 50,
-        height: 50,
-        id: `shoe-0`,
-      })
-    );
-    this.destroyId = '';
   }
   playerMove() {
     let arr = [
@@ -70,13 +49,6 @@ class DataMgr {
           this.player.x += this.player.speed * obj.x;
           this.player.y += this.player.speed * obj.y;
         }
-        for (let i = 0; i < this.objs.length; i++) {
-          if (isCollided(this.player, this.objs[i])) {
-            this.objs[i].collide(this.player);
-            this.destroyId = this.objs[i].id;
-            this.objs.splice(i, 1);
-          }
-        }
       }
     });
   }
@@ -84,6 +56,34 @@ class DataMgr {
     let start = { x: -150, y: -150 };
     if (isCollided(this.player, this.exit) === true) {
       (this.player.x = start.x), (this.player.y = start.y);
+    }
+  }
+  collideObjs() {
+    // 要從後面刪回來，不然如果直接刪掉，i++，會跳過一個obj
+    for (let i = this.objs.length - 1; i >= 0; i--) {
+      if (isCollided(this.player, this.objs[i])) {
+        this.objs[i].collide(this.player);
+        this.objs.splice(i, 1);
+      }
+    }
+  }
+  randomGenObjs() {
+    // 持續保持5個在場面上
+    while (this.objs.length < 5) {
+      let args = {
+        x: rnGen(-loopBox.width / 2, loopBox.width / 2),
+        y: rnGen(-loopBox.height / 2, loopBox.height / 2),
+        width: 50,
+        height: 50,
+      };
+      let arr = [
+        new Coin(args),
+        new Shoe(args),
+        new Trap(args),
+        new Pill(args),
+        new Bug(args),
+      ];
+      this.objs.push(arr[rnGenInt(0, 4)]);
     }
   }
 }

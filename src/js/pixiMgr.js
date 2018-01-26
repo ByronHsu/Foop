@@ -34,15 +34,17 @@ class PixiMgr {
     this.player = wan;
     this.container.addChild(wan);
 
-    // Objs
-    this.objs = [];
-
     // Exit
     let exit = new PIXI.Sprite.fromImage('../assets/exit.png');
     exit.anchor.set(0.5, 0.5);
     (exit.width = 50), (exit.height = 50);
     (exit.x = 250), (exit.y = 250);
     this.container.addChild(exit);
+
+    // Objs
+    this.objs = []; // store obj reference
+    this.objsContainer = new PIXI.Container();
+    this.container.addChild(this.objsContainer);
   }
   updatePlayer(player) {
     this.player.x = player.x;
@@ -50,24 +52,42 @@ class PixiMgr {
     // let player focus on center
     this.container.pivot.copy(this.player);
   }
-  generateObjs(objs) {
+  updateObjs(objs) {
+    // console.log(objs);
+    // console.log(this.objs);
+
+    // remove deleted obj from container
+    // 1. iterate this.objsContainer
+    // 2. 看傳進來的objs有無這個item
+    // 3. 若沒有則表示他已不存在 => 刪除
+    let length = this.objsContainer.children.length;
+    for (let i = length - 1; i >= 0; i--) {
+      let child = this.objsContainer.children[i];
+
+      let x = objs.findIndex(obj => obj.id === child.id);
+
+      if (x === -1) {
+        //找不到
+        this.objsContainer.removeChild(child);
+        this.objs.splice(i, 1);
+      }
+    }
+    // add new objs into container
+    // 1. iterate objs
+    // 2. 看this.objsContainer中有沒有這個obj
+    // 3. 若沒有，則加進去
     for (let i = 0; i < objs.length; i++) {
-      // Find object id pattern (Name-ID)
-      let objName = objs[i].id.match(/\w+(?=-)/)[0];
-      let obj = new PIXI.Sprite.fromImage(`../assets/${objName}.png`);
+      let x = this.objs.findIndex(obj => obj.id === objs[i].id);
+      if (x !== -1) continue;
+      let objType = objs[i].type;
+      let obj = new PIXI.Sprite.fromImage(`../assets/${objType}.png`);
       obj.anchor.set(0.5, 0.5);
-      (obj.width = objs[i].width), (obj.height = objs[i].width);
+      (obj.width = objs[i].width), (obj.height = objs[i].height);
       (obj.x = objs[i].x), (obj.y = objs[i].y);
       obj.id = objs[i].id;
+      obj.type = objs[i].type;
       this.objs.push(obj);
-      this.container.addChild(obj);
-    }
-  }
-  destroyObjs(id) {
-    for (let i = 0; i < this.objs.length; i++) {
-      if (this.objs[i].id === id) {
-        this.objs[i].destroy();
-      }
+      this.objsContainer.addChild(obj);
     }
   }
 }

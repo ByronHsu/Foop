@@ -1,4 +1,5 @@
 function isCollided(box1, box2) {
+  // console.log(box1, box2);
   for (let i = 0; i < 4; i++) {
     if (
       box1.vtx[i].x < box2.edge.xR &&

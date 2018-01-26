@@ -1,10 +1,12 @@
+import uuid from 'uuid/v1';
+
 class Box {
   constructor(args) {
     this.x = args.x;
     this.y = args.y;
     this.width = args.width;
     this.height = args.height;
-    this.id = args.id;
+    this.id = uuid();
   }
   get edge() {
     return {
@@ -28,45 +30,50 @@ class Box {
 class Coin extends Box {
   constructor(args) {
     super(args);
+    this.type = 'coin';
   }
   collide(player) {
-    player.money += 10;
+    player.money += 1;
   }
 }
 
 class Shoe extends Box {
   constructor(args) {
     super(args);
+    this.type = 'shoe';
   }
   collide(player) {
-    player.speed += 10;
+    player.speed += 1;
   }
 }
 
 class Trap extends Box {
   constructor(args) {
     super(args);
+    this.type = 'trap';
   }
   collide(player) {
-    player.speed -= 10;
+    player.speed -= 1;
   }
 }
 
 class Pill extends Box {
   constructor(args) {
     super(args);
+    this.type = 'pill';
   }
   collide(player) {
-    player.hp += 10;
+    player.hp += 1;
   }
 }
 
 class Bug extends Box {
   constructor(args) {
     super(args);
+    this.type = 'bug';
   }
   collide(player) {
-    player.hp -= 10;
+    player.hp -= 1;
   }
 }
 

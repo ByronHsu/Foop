@@ -5,12 +5,13 @@ import PixiMgr from './js/PixiMgr';
 const dataMgr = new DataMgr();
 const pixiMgr = new PixiMgr();
 
-pixiMgr.generateObjs(dataMgr.objs);
 function animate() {
-  pixiMgr.updatePlayer(dataMgr.player);
-  dataMgr.collideExit();
   dataMgr.playerMove();
-  pixiMgr.destroyObjs(dataMgr.destroyId);
+  dataMgr.randomGenObjs();
+  dataMgr.collideExit();
+  dataMgr.collideObjs();
+  pixiMgr.updatePlayer(dataMgr.player);
+  pixiMgr.updateObjs(dataMgr.objs);
   requestAnimationFrame(animate);
 }
 requestAnimationFrame(animate);
