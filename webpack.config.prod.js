@@ -25,7 +25,7 @@ module.exports = {
   plugins: [
     new WebpackCleanUpPlugin(),
     new HtmlWebpackPlugin({
-      title: 'Foop!',
+      // title: 'Foop!',
       template: './src/template.html',
       filename: 'index.html',
     }),
@@ -39,5 +39,8 @@ module.exports = {
       }
     }),
     new CopyWebpackPlugin([{ from: 'src/assets', to: 'assets' }]),
+    new webpack.DefinePlugin({
+      'process.env.NODE_ENV': JSON.stringify('prod')
+    })
   ],
 };

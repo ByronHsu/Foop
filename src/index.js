@@ -2,6 +2,10 @@ import DataMgr from './js/DataMgr';
 import * as pixiMgr from './js/PixiMgr';
 import './scss/index.scss';
 
+if (process.env.NODE_ENV !== 'prod') {
+  require('./template.html');
+}
+
 const dataMgr = new DataMgr();
 pixiMgr.init();
 
