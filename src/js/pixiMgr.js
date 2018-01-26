@@ -16,6 +16,11 @@ document.querySelector('#game').appendChild(app.view);
 app.stage = new PIXI.display.Stage();
 app.stage.group.enableSort = true;
 
+app.renderer.view.style.position = 'absolute';
+app.renderer.view.style.display = 'block';
+app.renderer.autoResize = true;
+app.renderer.resize(window.innerWidth, window.innerHeight);
+
 // init ctn: world, player, objs, back
 var worldCtn = new PIXI.Container();
 (worldCtn.x = ww / 2), (worldCtn.y = wh / 2);

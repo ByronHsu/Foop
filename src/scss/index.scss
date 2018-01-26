@@ -1,9 +1,18 @@
-#status{
-   position: absolute;
-   width: 300px;
-   right: 0;
-   top: 10px;
-   margin-left: auto;
-   margin-right: auto;
-   border: 1px solid black;
+* {
+  padding: 0;
+  margin: 0
+}
+#status {
+  position: fixed;
+  width: 300px;
+  height: auto;
+  right: 0;
+  top: 10px;
+  margin-left: auto;
+  margin-right: auto;
+  border: 1px solid black;
+  z-index: 1;
+  ul {
+    list-style-type: none;
+  }
 }
