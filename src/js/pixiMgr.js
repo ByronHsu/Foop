@@ -68,8 +68,7 @@ function init() {
 
   let exit, wan;
   PIXI.loader
-    .add('../assets/exit.png')
-    .add('../assets/wan.png')
+    .add(['../assets/exit.png', '../assets/wan.png'])
     .load(onAssetsLoaded);
 
   function onAssetsLoaded() {
