@@ -80,7 +80,7 @@ function init() {
     exit = new PIXI.Sprite(PIXI.loader.resources['../assets/exit.png'].texture);
     exit.anchor.set(0.5, 0.5);
     (exit.width = 50), (exit.height = 50);
-    (exit.x = 250), (exit.y = 250);
+    exit.position.set(250, 250);
     exit.parentGroup = backGrp;
     backCtn.addChild(exit);
   }
@@ -89,7 +89,7 @@ function init() {
     wan = new PIXI.Sprite(PIXI.loader.resources['../assets/wan.png'].texture);
     wan.anchor.set(0.5, 0.5);
     (wan.width = 100), (wan.height = 100);
-    (wan.x = 0), (wan.y = 0);
+    wan.position.set(0, 0);
     wan.parentGroup = playerGrp;
     playerRef = wan;
     playerCtn.addChild(wan);
