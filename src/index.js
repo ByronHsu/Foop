@@ -16,6 +16,7 @@ function animate() {
   dataMgr.collideObjs();
   pixiMgr.updatePlayer(dataMgr.player);
   pixiMgr.updateObjs(dataMgr.objs);
+  pixiMgr.updateLaser(dataMgr.laser);
   // dataMgr.player.speed > 10 ? pixiMgr.shine() : pixiMgr.unShine();
   requestAnimationFrame(animate);
 }

@@ -24,6 +24,12 @@ const loopBox = {
   width: 500,
   height: 500,
 };
+const laserBox = {
+  x: -250,
+  y: -230,
+  width: 0,
+  height: 100,
+};
 
 class DataMgr {
   constructor() {
@@ -36,6 +42,7 @@ class DataMgr {
     gui.add(this.player, 'money', 0, 200).listen();
     this.exit = new Box(exitBox);
     this.loop = new Box(loopBox);
+    this.laser = new Box(laserBox);
     this.objs = [];
   }
   playerMove() {
@@ -61,6 +68,8 @@ class DataMgr {
     let start = { x: -150, y: -150 };
     if (isCollided(this.player, this.exit) === true) {
       (this.player.x = start.x), (this.player.y = start.y);
+      (this.laser.x = -250), (this.laser.y = -230);
+      this.laser.width = 0;
     }
   }
   collideObjs() {

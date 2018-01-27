@@ -27,16 +27,19 @@ var worldCtn = new PIXI.Container();
 var playerCtn = new PIXI.Container();
 var objsCtn = new PIXI.Container();
 var backCtn = new PIXI.Container();
+var laserCtn = new PIXI.Container();
 app.stage.addChild(worldCtn);
 worldCtn.addChild(playerCtn);
 worldCtn.addChild(objsCtn);
 worldCtn.addChild(backCtn);
+worldCtn.addChild(laserCtn);
 
 // init group: player, objs, back
 var backGrp = new PIXI.display.Group(0, true);
 var objsGrp = new PIXI.display.Group(1, true);
 var playerGrp = new PIXI.display.Group(2, true);
-var arr = [backGrp, objsGrp, playerGrp];
+var laserGrp = new PIXI.display.Group(3, true);
+var arr = [backGrp, objsGrp, playerGrp, laserGrp];
 arr.forEach(g => {
   g.on('sort', sprite => {
     sprite.zOrder = -sprite.z;
@@ -45,13 +48,15 @@ arr.forEach(g => {
 app.stage.addChild(new PIXI.display.Layer(backGrp));
 app.stage.addChild(new PIXI.display.Layer(objsGrp));
 app.stage.addChild(new PIXI.display.Layer(playerGrp));
+app.stage.addChild(new PIXI.display.Layer(laserGrp));
 
 // init displayObjects reference
 var playerRef = {};
 var objsRef = [];
 // var loopRef = [];
 // var exitRef = [];
-let exit, wan;
+let exit, wan, laser;
+let laserRef = {};
 
 function init() {
   // default
@@ -68,13 +73,14 @@ function init() {
   backCtn.addChild(tile);
 
   PIXI.loader
-    .add(['../assets/exit.png', '../assets/wan.png'])
+    .add(['../assets/exit.png', '../assets/laser.png'])
     .add('../assets/images/wan.json')
     .load(onAssetsLoaded);
 
   function onAssetsLoaded() {
     setupExit();
     setupPlayer();
+    setupLaser();
   }
 
   function setupExit() {
@@ -99,6 +105,17 @@ function init() {
     wan.parentGroup = playerGrp;
     playerRef = wan;
     playerCtn.addChild(wan);
+  }
+  function setupLaser() {
+    laser = new PIXI.Sprite(
+      PIXI.loader.resources['../assets/laser.png'].texture
+    );
+    laser.anchor.set(0, 0.5);
+    (laser.width = 50), (laser.height = 100);
+    laser.position.set(-250, -230);
+    laser.parentGroup = laserGrp;
+    laserRef = laser;
+    laserCtn.addChild(laser);
   }
 }
 
@@ -144,6 +161,15 @@ function updateObjs(objs) {
   }
 }
 
+function updateLaser(laser) {
+  if (laser.width < 500) {
+    laserRef.width = laser.width += 5;
+    laserRef.y = laser.y = -230;
+  } else if (laser.y < 250) {
+    laserRef.y = laser.y += 3;
+  }
+}
+
 function createSprite(obj, group) {
   let sprite = new PIXI.Sprite.fromImage(`../assets/${obj.img}.png`);
   sprite.anchor.set(0.5, 0.5);
@@ -171,4 +197,12 @@ function unShine() {
   playerRef.gotoAndStop(0);
 }
 
-export { init, updatePlayer, updateObjs, createSprite, shine, unShine };
+export {
+  init,
+  updatePlayer,
+  updateObjs,
+  updateLaser,
+  createSprite,
+  shine,
+  unShine,
+};
