@@ -66,16 +66,17 @@ function init() {
   // tile.x = ww / 2, tile.y = wh / 2;
   backCtn.addChild(tile);
 
-  // Exit
   let exit, wan;
   PIXI.loader
     .add('../assets/exit.png')
     .add('../assets/wan.png')
     .load(onAssetsLoaded);
+
   function onAssetsLoaded() {
     setupExit();
     setupPlayer();
   }
+
   function setupExit() {
     exit = new PIXI.Sprite(PIXI.loader.resources['../assets/exit.png'].texture);
     exit.anchor.set(0.5, 0.5);
@@ -85,7 +86,6 @@ function init() {
     backCtn.addChild(exit);
   }
 
-  // 婉君
   function setupPlayer() {
     wan = new PIXI.Sprite(PIXI.loader.resources['../assets/wan.png'].texture);
     wan.anchor.set(0.5, 0.5);
