@@ -20,8 +20,26 @@ function overlap(box1, box2) {
   }
   return false;
 }
+function inside(box1, box2) {
+  // box1是否包含在box2
+  let cnt = 0;
+  for (let i = 0; i < 4; i++) {
+    if (
+      box1.vtx[i].x < box2.edge.xR &&
+      box1.vtx[i].x > box2.edge.xL &&
+      box1.vtx[i].y > box2.edge.yT &&
+      box1.vtx[i].y < box2.edge.yB
+    ) {
+      cnt++;
+    }
+  }
+  if (cnt == 4) return true;
+  else return false;
+}
+
 function outside(box1, box2) {
-  // box1是否超過box2
+  // box1是否在box2外
+  let cnt = 0;
   for (let i = 0; i < 4; i++) {
     if (
       !(
@@ -30,10 +48,12 @@ function outside(box1, box2) {
         box1.vtx[i].y > box2.edge.yT &&
         box1.vtx[i].y < box2.edge.yB
       )
-    )
-      return true;
+    ) {
+      cnt++;
+    }
   }
-  return false;
+  if (cnt == 4) return true;
+  else return false;
 }
 
 function hit(box1, box2) {
@@ -48,4 +68,4 @@ function hit(box1, box2) {
     return true;
   else return false;
 }
-export { overlap, outside, hit };
+export { overlap, inside, outside, hit };

@@ -2,7 +2,7 @@ import PixiMgr from './js/PixiMgr';
 import './scss/index.scss';
 import key from 'keymaster';
 import { Box, Coin, Shoe, Trap, Pill, Bug, Border, Door } from './js/entity.js';
-import { outside, hit } from './js/physic.js';
+import { inside, outside, hit } from './js/physic.js';
 import { rnGen, rnGenInt } from './js/utils.js';
 import dat from 'dat.gui';
 
@@ -128,13 +128,16 @@ class DataMgr {
       { key: 'a', x: -1, y: 0 },
       { key: 'd', x: 1, y: 0 },
     ];
+    // console.log('x', this.player.x);
+    // console.log('y', this.player.y);
+    // console.log('now', this.looper.now);
     arr.forEach(obj => {
       if (key.isPressed(obj.key)) {
         let tmp = new Box(this.player);
         tmp.x += this.player.speed * obj.x;
         tmp.y += this.player.speed * obj.y;
         if (
-          !outside(tmp, this.looper.loop.border) &&
+          inside(tmp, this.looper.loop.border) &&
           ((this.looper.prevLoop !== undefined &&
             outside(tmp, this.looper.prevLoop.border)) ||
             this.looper.prevLoop === undefined)
