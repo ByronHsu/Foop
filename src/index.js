@@ -1,5 +1,5 @@
-import DataMgr from './js/DataMgr';
-import * as pixiMgr from './js/PixiMgr';
+import DataMgr from './js/dataMgr';
+import * as pixiMgr from './js/pixiMgr';
 import './scss/index.scss';
 
 if (process.env.NODE_ENV !== 'prod') {
@@ -16,6 +16,7 @@ function animate() {
   dataMgr.collideObjs();
   pixiMgr.updatePlayer(dataMgr.player);
   pixiMgr.updateObjs(dataMgr.objs);
+  // dataMgr.player.speed > 10 ? pixiMgr.shine() : pixiMgr.unShine();
   requestAnimationFrame(animate);
 }
 requestAnimationFrame(animate);

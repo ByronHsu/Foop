@@ -51,6 +51,7 @@ var playerRef = {};
 var objsRef = [];
 // var loopRef = [];
 // var exitRef = [];
+let exit, wan;
 
 function init() {
   // default
@@ -66,7 +67,6 @@ function init() {
   // tile.x = ww / 2, tile.y = wh / 2;
   backCtn.addChild(tile);
 
-  let exit, wan;
   PIXI.loader
     .add(['../assets/exit.png', '../assets/wan.png'])
     .add('../assets/images/wan.json')
@@ -87,10 +87,12 @@ function init() {
   }
 
   function setupPlayer() {
-    // wan = new PIXI.Sprite(PIXI.loader.resources['../assets/wan.png'].texture);
-    wan = new PIXI.Sprite(
-      PIXI.loader.resources['../assets/images/wan.json'].textures['wan1.png']
-    );
+    let wans = [];
+    for (let i = 0; i < 3; i++) {
+      let wanTex = PIXI.Texture.fromFrame(`wan${i}.png`);
+      wans.push(wanTex);
+    }
+    wan = new PIXI.extras.AnimatedSprite(wans);
     wan.anchor.set(0.5, 0.5);
     (wan.width = 100), (wan.height = 100);
     wan.position.set(0, 0);
@@ -161,4 +163,12 @@ function createSprite(obj, group) {
   return sprite;
 }
 
-export { init, updatePlayer, updateObjs, createSprite };
+function shine() {
+  playerRef.play();
+}
+
+function unShine() {
+  playerRef.gotoAndStop(0);
+}
+
+export { init, updatePlayer, updateObjs, createSprite, shine, unShine };
