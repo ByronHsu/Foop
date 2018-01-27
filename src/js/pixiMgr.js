@@ -68,16 +68,7 @@ function init() {
 
   let exit, wan;
   PIXI.loader
-    .add([
-      {
-        name: 'exitImg',
-        url: '../assets/exit.png',
-      },
-      {
-        name: 'wanImg',
-        url: '../assets/wan.png',
-      },
-    ])
+    .add(['../assets/exit.png', '../assets/wan.png'])
     .load(onAssetsLoaded);
 
   function onAssetsLoaded() {
@@ -86,7 +77,7 @@ function init() {
   }
 
   function setupExit() {
-    exit = new PIXI.Sprite(PIXI.loader.resources.exitImg.texture);
+    exit = new PIXI.Sprite(PIXI.loader.resources['../assets/exit.png'].texture);
     exit.anchor.set(0.5, 0.5);
     (exit.width = 50), (exit.height = 50);
     (exit.x = 250), (exit.y = 250);
@@ -95,7 +86,7 @@ function init() {
   }
 
   function setupPlayer() {
-    wan = new PIXI.Sprite(PIXI.loader.resources.wanImg.texture);
+    wan = new PIXI.Sprite(PIXI.loader.resources['../assets/wan.png'].texture);
     wan.anchor.set(0.5, 0.5);
     (wan.width = 100), (wan.height = 100);
     (wan.x = 0), (wan.y = 0);
