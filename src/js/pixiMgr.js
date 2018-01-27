@@ -69,6 +69,7 @@ function init() {
   let exit, wan;
   PIXI.loader
     .add(['../assets/exit.png', '../assets/wan.png'])
+    .add('../assets/images/wan.json')
     .load(onAssetsLoaded);
 
   function onAssetsLoaded() {
@@ -86,7 +87,10 @@ function init() {
   }
 
   function setupPlayer() {
-    wan = new PIXI.Sprite(PIXI.loader.resources['../assets/wan.png'].texture);
+    // wan = new PIXI.Sprite(PIXI.loader.resources['../assets/wan.png'].texture);
+    wan = new PIXI.Sprite(
+      PIXI.loader.resources['../assets/images/wan.json'].textures['wan1.png']
+    );
     wan.anchor.set(0.5, 0.5);
     (wan.width = 100), (wan.height = 100);
     wan.position.set(0, 0);
