@@ -29,20 +29,21 @@ module.exports = {
         test: /\.scss$/,
         loaders: ['style-loader', 'css-loader', 'sass-loader'],
       },
+      {
+        test: /\.html$/,
+        loader: "raw-loader" // for html hot-load
+      }
     ],
   },
   plugins: [
     new DashboardPlugin(),
     new HtmlWebpackPlugin({
-      title: 'Foop! | dev',
+      // title: 'Foop! | dev',
       template: './src/template.html',
       filename: 'index.html',
     }),
     new webpack.HotModuleReplacementPlugin(),
     new CopyWebpackPlugin([{ from: 'src/assets', to: 'assets' }]),
     new OpenBrowserPlugin({ url: 'http://localhost:3000' }),
-    // new Jarvis({
-    //   port: 3001
-    // })
   ],
 };
