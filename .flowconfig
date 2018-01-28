@@ -1,0 +1,13 @@
+[ignore]
+
+[include]
+
+[libs]
+
+[lints]
+
+[options]
+module.name_mapper.extension='scss' -> '<PROJECT_ROOT>/flow/scss.js.flow'
+module.name_mapper.extension='html' -> '<PROJECT_ROOT>/flow/html.js.flow'
+
+[strict]
