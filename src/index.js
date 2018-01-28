@@ -20,7 +20,7 @@ const playerBox = {
 };
 const laserBox = {
   x: -250,
-  y: -230,
+  y: -250,
   width: 0,
   height: 100,
 };
@@ -32,6 +32,7 @@ class Looper {
     this.arr = [];
     this.now = 0;
     this.stack = [2];
+    gui.add(this, 'now').listen();
   }
   hitExitUp() {
     // 決定裡面那圈要走幾輪
@@ -159,13 +160,13 @@ class DataMgr {
     if (hit(this.player, this.looper.loop.exitDownBox)) {
       let ret = this.looper.hitExitDown();
       (this.player.x = ret.x), (this.player.y = ret.y);
-      (this.laser.x = -250), (this.laser.y = ret.y);
+      (this.laser.x = -250), (this.laser.y = ret.y - 100);
       this.laser.width = 0;
     }
     if (hit(this.player, this.looper.loop.exitUpBox)) {
       let ret = this.looper.hitExitUp();
       (this.player.x = ret.x), (this.player.y = ret.y);
-      (this.laser.x = -250), (this.laser.y = ret.y);
+      (this.laser.x = -250), (this.laser.y = ret.y - 100);
       this.laser.width = 0;
     }
   }

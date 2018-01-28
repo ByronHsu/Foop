@@ -57,6 +57,7 @@ class PixiMgr {
     this.exitRef = [];
     this.laserRef = {};
     this.wan, this.laser;
+    this.laserEnd = 0;
   }
   init() {
     PIXI.loader
@@ -88,7 +89,7 @@ class PixiMgr {
     );
     this.laser.anchor.set(0, 0.5);
     (this.laser.width = 50), (this.laser.height = 100);
-    this.laser.position.set(-250, -230);
+    this.laser.position.set(-250, -250);
     this.laser.parentGroup = this.laserGrp;
     this.laserRef = this.laser;
     this.laserCtn.addChild(this.laser);
@@ -131,8 +132,9 @@ class PixiMgr {
   updateLaser(laser) {
     if (laser.width < 500) {
       this.laserRef.width = laser.width += 5;
-      this.laserRef.y = laser.y = -230;
-    } else if (laser.y < 250) {
+      this.laserRef.y = laser.y;
+      this.laserEnd = laser.y + 500;
+    } else if (laser.y < this.laserEnd) {
       this.laserRef.y = laser.y += 3;
     }
   }
