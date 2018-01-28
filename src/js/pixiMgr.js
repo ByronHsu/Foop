@@ -62,7 +62,11 @@ class PixiMgr {
   }
   init() {
     PIXI.loader
-      .add(['../assets/laser.png', '../assets/pause.png'])
+      .add([
+        '../assets/laser.png',
+        '../assets/pause.png',
+        '../assets/door5.png',
+      ])
       .add('../assets/images/wan.json')
       .load(this.onAssetsLoaded.bind(this));
   }
@@ -70,6 +74,7 @@ class PixiMgr {
     this.setupPlayer();
     this.setupLaser();
     this.setupPause();
+    this.setupGameOverScene();
   }
   setupPlayer() {
     let wans = [];
@@ -107,6 +112,16 @@ class PixiMgr {
     this.pause.on('click', () => (this.isPausedRef = !this.isPausedRef));
     this.pause.parentGroup = this.laserGrp;
     this.laserCtn.addChild(this.pause);
+  }
+  setupGameOverScene() {
+    this.gameOverScene = new PIXI.Container();
+    this.gameOverScene.visible = false;
+    let endMsg = new PIXI.Sprite.fromImage(`../assets/door1.png`);
+    endMsg.x = this.app.renderer.view.width / 2;
+    endMsg.y = this.app.renderer.view.height / 2;
+    this.gameOverScene.addChild(endMsg);
+    this.gameOverScene.visible = false;
+    this.app.stage.addChild(this.gameOverScene);
   }
   updatePlayer(player) {
     this.playerRef.x = player.x;

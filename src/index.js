@@ -185,6 +185,8 @@ class DataMgr {
       this.player.hp = 0;
       pixiMgr.isPausedRef = true;
       this.setIsPaused(pixiMgr.isPausedRef);
+      pixiMgr.worldCtn.visible = false;
+      pixiMgr.gameOverScene.visible = true;
     }
   }
   randomGenObjs() {
