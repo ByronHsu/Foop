@@ -233,6 +233,8 @@ function animate() {
     // dataMgr.player.speed > 10 ? pixiMgr.shine() : pixiMgr.unShine();
     requestAnimationFrame(animate);
   } else {
+    // stop pixi animations
+    // ex. pixiMgr.animationsStop();
     requestAnimationFrame(animate);
   }
 }
