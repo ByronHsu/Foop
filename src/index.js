@@ -18,6 +18,12 @@ const playerBox = {
   width: 100,
   height: 100,
 };
+const laserBox = {
+  x: -250,
+  y: -230,
+  width: 0,
+  height: 100,
+};
 
 var pixiMgr = new PixiMgr();
 
@@ -120,6 +126,7 @@ class DataMgr {
     this.objs = [];
     this.looper = new Looper();
     this.looper.createLoop(500);
+    this.laser = new Box(laserBox);
   }
   playerMove() {
     let arr = [
@@ -152,10 +159,14 @@ class DataMgr {
     if (hit(this.player, this.looper.loop.exitDownBox)) {
       let ret = this.looper.hitExitDown();
       (this.player.x = ret.x), (this.player.y = ret.y);
+      (this.laser.x = -250), (this.laser.y = ret.y);
+      this.laser.width = 0;
     }
     if (hit(this.player, this.looper.loop.exitUpBox)) {
       let ret = this.looper.hitExitUp();
       (this.player.x = ret.x), (this.player.y = ret.y);
+      (this.laser.x = -250), (this.laser.y = ret.y);
+      this.laser.width = 0;
     }
   }
   hitObjs() {
@@ -203,6 +214,8 @@ function animate() {
   dataMgr.hitObjs();
   pixiMgr.updatePlayer(dataMgr.player);
   pixiMgr.updateObjs(dataMgr.objs);
+  pixiMgr.updateLaser(dataMgr.laser);
+  // dataMgr.player.speed > 10 ? pixiMgr.shine() : pixiMgr.unShine();
   requestAnimationFrame(animate);
 }
 

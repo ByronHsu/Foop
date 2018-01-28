@@ -16,22 +16,30 @@ class PixiMgr {
     this.app.stage = new PIXI.display.Stage();
     this.app.stage.group.enableSort = true;
 
-    // init ctn: world, player, objs, back
+    this.app.renderer.view.style.position = 'absolute';
+    this.app.renderer.view.style.display = 'block';
+    this.app.renderer.autoResize = true;
+    this.app.renderer.resize(window.innerWidth, window.innerHeight);
+
+    // init ctn: world, player, objs, back, laser
     this.worldCtn = new PIXI.Container();
     (this.worldCtn.x = ww / 2), (this.worldCtn.y = wh / 2);
     this.playerCtn = new PIXI.Container();
     this.objsCtn = new PIXI.Container();
     this.backCtn = new PIXI.Container();
+    this.laserCtn = new PIXI.Container();
     this.app.stage.addChild(this.worldCtn);
     this.worldCtn.addChild(this.playerCtn);
     this.worldCtn.addChild(this.objsCtn);
     this.worldCtn.addChild(this.backCtn);
+    this.worldCtn.addChild(this.laserCtn);
 
     // init group: player, objs, back
     this.backGrp = new PIXI.display.Group(0, true);
     this.objsGrp = new PIXI.display.Group(1, true);
     this.playerGrp = new PIXI.display.Group(2, true);
-    let arr = [this.backGrp, this.objsGrp, this.playerGrp];
+    this.laserGrp = new PIXI.display.Group(3, true);
+    let arr = [this.backGrp, this.objsGrp, this.playerGrp, this.laserGrp];
     arr.forEach(g => {
       g.on('sort', sprite => {
         sprite.zOrder = -sprite.z;
@@ -40,22 +48,50 @@ class PixiMgr {
     this.app.stage.addChild(new PIXI.display.Layer(this.backGrp));
     this.app.stage.addChild(new PIXI.display.Layer(this.objsGrp));
     this.app.stage.addChild(new PIXI.display.Layer(this.playerGrp));
+    this.app.stage.addChild(new PIXI.display.Layer(this.laserGrp));
 
     // init displayObjects reference
     this.playerRef = {};
     this.objsRef = [];
     this.loopRef = [];
     this.exitRef = [];
+    this.laserRef = {};
+    this.wan, this.laser;
   }
   init() {
-    // 婉君
-    let wan = new PIXI.Sprite.fromImage('../assets/wan.png');
-    wan.anchor.set(0.5, 0.5);
-    (wan.width = 100), (wan.height = 100);
-    (wan.x = 0), (wan.y = 0);
-    wan.parentGroup = this.playerGrp;
-    this.playerRef = wan;
-    this.playerCtn.addChild(wan);
+    PIXI.loader
+      .add(['../assets/laser.png'])
+      .add('../assets/images/wan.json')
+      .load(this.onAssetsLoaded.bind(this));
+  }
+  onAssetsLoaded() {
+    this.setupPlayer();
+    this.setupLaser();
+  }
+  setupPlayer() {
+    let wans = [];
+    for (let i = 0; i < 3; i++) {
+      let wanTex = PIXI.Texture.fromFrame(`wan${i}.png`);
+      wans.push(wanTex);
+    }
+    this.wan = new PIXI.extras.AnimatedSprite(wans);
+    this.wan.anchor.set(0.5, 0.5);
+    (this.wan.width = 100), (this.wan.height = 100);
+    (this.wan.x = 0), (this.wan.y = 0);
+    this.wan.parentGroup = this.playerGrp;
+    this.playerRef = this.wan;
+    this.playerCtn.addChild(this.wan);
+  }
+  setupLaser() {
+    this.laser = new PIXI.Sprite(
+      PIXI.loader.resources['../assets/laser.png'].texture
+    );
+    this.laser.anchor.set(0, 0.5);
+    (this.laser.width = 50), (this.laser.height = 100);
+    this.laser.position.set(-250, -230);
+    this.laser.parentGroup = this.laserGrp;
+    this.laserRef = this.laser;
+    this.laserCtn.addChild(this.laser);
   }
   updatePlayer(player) {
     this.playerRef.x = player.x;
@@ -92,6 +128,14 @@ class PixiMgr {
       this.objsRef.push(sprite);
     }
   }
+  updateLaser(laser) {
+    if (laser.width < 500) {
+      this.laserRef.width = laser.width += 5;
+      this.laserRef.y = laser.y = -230;
+    } else if (laser.y < 250) {
+      this.laserRef.y = laser.y += 3;
+    }
+  }
   addSprite(obj, tiling = false) {
     let sprite;
     let arr = ['tile-glass', 'tile-gold', 'tile-grass', 'tile-red'];
@@ -122,6 +166,12 @@ class PixiMgr {
     Object.assign(sprite, obj);
     ctn.addChild(sprite);
     return sprite;
+  }
+  shine() {
+    this.playerRef.play();
+  }
+  unShine() {
+    this.playerRef.gotoAndStop(0);
   }
 }
 
