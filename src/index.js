@@ -1,4 +1,4 @@
-import PixiMgr from './js/PixiMgr';
+import PixiMgr from './js/pixiMgr';
 import './scss/index.scss';
 import key from 'keymaster';
 import { Box, Coin, Shoe, Trap, Pill, Bug, Border, Door } from './js/entity.js';
@@ -117,6 +117,7 @@ class Looper {
 
 class DataMgr {
   constructor() {
+    this.isPaused = false;
     this.player = new Box(playerBox);
     this.player.hp = 100;
     this.player.speed = SPEED;
@@ -204,20 +205,28 @@ class DataMgr {
       this.objs.push(arr[rnGenInt(0, 4)]);
     }
   }
+  setIsPaused(isPaused) {
+    this.isPaused = isPaused;
+  }
 }
 
 var dataMgr = new DataMgr();
 
 function animate() {
-  dataMgr.playerMove();
-  dataMgr.randomGenObjs();
-  dataMgr.hitExit();
-  dataMgr.hitObjs();
-  pixiMgr.updatePlayer(dataMgr.player);
-  pixiMgr.updateObjs(dataMgr.objs);
-  pixiMgr.updateLaser(dataMgr.laser);
-  // dataMgr.player.speed > 10 ? pixiMgr.shine() : pixiMgr.unShine();
-  requestAnimationFrame(animate);
+  dataMgr.setIsPaused(pixiMgr.isPausedRef);
+  if (!dataMgr.isPaused) {
+    dataMgr.playerMove();
+    dataMgr.randomGenObjs();
+    dataMgr.hitExit();
+    dataMgr.hitObjs();
+    pixiMgr.updatePlayer(dataMgr.player);
+    pixiMgr.updateObjs(dataMgr.objs);
+    pixiMgr.updateLaser(dataMgr.laser);
+    // dataMgr.player.speed > 10 ? pixiMgr.shine() : pixiMgr.unShine();
+    requestAnimationFrame(animate);
+  } else {
+    requestAnimationFrame(animate);
+  }
 }
 
 pixiMgr.init();

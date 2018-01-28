@@ -56,18 +56,20 @@ class PixiMgr {
     this.loopRef = [];
     this.exitRef = [];
     this.laserRef = {};
-    this.wan, this.laser;
+    this.wan, this.laser, this.pause;
     this.laserEnd = 0;
+    this.isPausedRef = false;
   }
   init() {
     PIXI.loader
-      .add(['../assets/laser.png'])
+      .add(['../assets/laser.png', '../assets/pause.png'])
       .add('../assets/images/wan.json')
       .load(this.onAssetsLoaded.bind(this));
   }
   onAssetsLoaded() {
     this.setupPlayer();
     this.setupLaser();
+    this.setupPause();
   }
   setupPlayer() {
     let wans = [];
@@ -93,6 +95,18 @@ class PixiMgr {
     this.laser.parentGroup = this.laserGrp;
     this.laserRef = this.laser;
     this.laserCtn.addChild(this.laser);
+  }
+  setupPause() {
+    this.pause = new PIXI.Sprite(
+      PIXI.loader.resources['../assets/pause.png'].texture
+    );
+    (this.pause.width = 50), (this.pause.height = 50);
+    this.pause.position.set(-400, this.playerRef.y);
+    this.pause.interactive = true;
+    this.pause.buttonMode = true;
+    this.pause.on('click', () => (this.isPausedRef = !this.isPausedRef));
+    this.pause.parentGroup = this.laserGrp;
+    this.laserCtn.addChild(this.pause);
   }
   updatePlayer(player) {
     this.playerRef.x = player.x;
