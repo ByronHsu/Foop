@@ -217,6 +217,17 @@ class DataMgr {
   setIsPaused(isPaused) {
     this.isPaused = isPaused;
   }
+  reset() {
+    this.isPaused = false;
+    this.player = new Box(playerBox);
+    this.player.hp = 100;
+    this.player.speed = SPEED;
+    this.player.money = 0;
+    this.objs = [];
+    this.looper = new Looper();
+    this.looper.createLoop(500);
+    this.laser = new Box(laserBox);
+  }
 }
 
 var dataMgr = new DataMgr();
@@ -237,6 +248,11 @@ function animate() {
   } else {
     // stop pixi animations
     // ex. pixiMgr.animationsStop();
+    if (pixiMgr.shouldReset) {
+      dataMgr.reset();
+      pixiMgr.isPausedRef = false;
+      pixiMgr.shouldReset = false;
+    }
     requestAnimationFrame(animate);
   }
 }

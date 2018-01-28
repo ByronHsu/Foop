@@ -59,6 +59,7 @@ class PixiMgr {
     this.wan, this.laser, this.pause;
     this.laserEnd = 0;
     this.isPausedRef = false;
+    this.shouldReset = false;
   }
   init() {
     PIXI.loader
@@ -119,9 +120,18 @@ class PixiMgr {
     let endMsg = new PIXI.Sprite.fromImage(`../assets/door1.png`);
     endMsg.x = this.app.renderer.view.width / 2;
     endMsg.y = this.app.renderer.view.height / 2;
+    endMsg.interactive = true;
+    endMsg.buttonMode = true;
+    endMsg.on('click', this.restart.bind(this));
     this.gameOverScene.addChild(endMsg);
     this.gameOverScene.visible = false;
     this.app.stage.addChild(this.gameOverScene);
+  }
+  restart() {
+    // temporary function
+    this.gameOverScene.visible = false;
+    this.worldCtn.visible = true;
+    this.shouldReset = true;
   }
   updatePlayer(player) {
     this.playerRef.x = player.x;
