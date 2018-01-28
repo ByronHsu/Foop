@@ -68,4 +68,11 @@ function hit(box1, box2) {
     return true;
   else return false;
 }
-export { overlap, inside, outside, hit };
+
+function hitLaser(box1, box2) {
+  if (box1 === undefined || box2 === undefined) return false;
+  if (box2.y > box1.edge.yT + 10) return true;
+  else return false;
+}
+
+export { overlap, inside, outside, hit, hitLaser };

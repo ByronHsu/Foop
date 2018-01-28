@@ -2,7 +2,7 @@ import PixiMgr from './js/pixiMgr';
 import './scss/index.scss';
 import key from 'keymaster';
 import { Box, Coin, Shoe, Trap, Pill, Bug, Border, Door } from './js/entity.js';
-import { inside, outside, hit } from './js/physic.js';
+import { inside, outside, hit, hitLaser } from './js/physic.js';
 import { rnGen, rnGenInt } from './js/utils.js';
 import dat from 'dat.gui';
 
@@ -180,6 +180,13 @@ class DataMgr {
       }
     }
   }
+  hitLaser() {
+    if (hitLaser(this.player, this.laser)) {
+      this.player.hp = 0;
+      pixiMgr.isPausedRef = true;
+      this.setIsPaused(pixiMgr.isPausedRef);
+    }
+  }
   randomGenObjs() {
     // 持續保持5個在場面上
     while (this.objs.length < 5) {
@@ -219,6 +226,7 @@ function animate() {
     dataMgr.randomGenObjs();
     dataMgr.hitExit();
     dataMgr.hitObjs();
+    dataMgr.hitLaser();
     pixiMgr.updatePlayer(dataMgr.player);
     pixiMgr.updateObjs(dataMgr.objs);
     pixiMgr.updateLaser(dataMgr.laser);
