@@ -1,6 +1,6 @@
 import * as PIXI from 'pixi.js';
 import '../bin/pixi-display.js';
-var idx = 0; // hack for tiling
+
 class PixiMgr {
   constructor() {
     // init app
@@ -178,13 +178,14 @@ class PixiMgr {
     }
   }
   addSprite(obj, tiling = false) {
+    // tiles' z value is negative, modulo 4 to loop from 4 imgs
+    let idx = Math.abs(obj.z) % 4;
     let sprite;
     let arr = ['tile-glass', 'tile-gold', 'tile-grass', 'tile-red'];
     if (tiling === true) {
       sprite = new PIXI.extras.TilingSprite.fromImage(
         `../assets/${arr[idx]}.png`
       );
-      idx = idx + 1 > 3 ? 0 : idx + 1;
     } else sprite = new PIXI.Sprite.fromImage(`../assets/${obj.img}.png`);
     let grp, ctn;
     sprite.anchor.set(0.5, 0.5);
