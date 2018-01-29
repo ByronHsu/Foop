@@ -133,9 +133,9 @@ class PixiMgr {
     this.worldCtn.visible = true;
     this.shouldReset = true;
   }
-  updatePlayer(player) {
-    this.playerRef.x = player.x;
-    this.playerRef.y = player.y;
+  updatePlayer({ x, y }) {
+    this.playerRef.x = x;
+    this.playerRef.y = y;
     // let player focus on center
     this.worldCtn.pivot.copy(this.playerRef);
   }

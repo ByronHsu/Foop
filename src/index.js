@@ -34,7 +34,7 @@ class Looper {
     this.stack = [2];
     this.skip = 2;
     gui.add(this, 'now').listen();
-    gui.add(this, 'skip').listen();
+    gui.add(this, 'skip', 0, 5).listen();
   }
   hitExitUp() {
     // 如果可以skip掉裡面的 就直接return這層的startUpBox
