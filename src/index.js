@@ -34,7 +34,10 @@ class Looper {
     this.stack = [2];
     this.skip = 2;
     gui.add(this, 'now').listen();
-    gui.add(this, 'skip', 0, 5).listen();
+    gui
+      .add(this, 'skip', 0, 5)
+      .step(1)
+      .listen();
   }
   hitExitUp() {
     // 如果可以skip掉裡面的 就直接return這層的startUpBox
@@ -127,7 +130,10 @@ class DataMgr {
     this.player.speed = SPEED;
     this.player.money = 0;
     gui.add(this.player, 'hp', 0, 200).listen();
-    gui.add(this.player, 'speed', 0, 50).listen();
+    gui
+      .add(this.player, 'speed', 0, 50)
+      .step(1)
+      .listen();
     gui.add(this.player, 'money', 0, 200).listen();
     this.objs = [];
     this.looper = new Looper();
