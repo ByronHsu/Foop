@@ -32,9 +32,13 @@ class Looper {
     this.arr = [];
     this.now = 0;
     this.stack = [2];
+    this.skip = 2;
     gui.add(this, 'now').listen();
+    gui.add(this, 'skip').listen();
   }
   hitExitUp() {
+    // 如果可以skip掉裡面的 就直接return這層的startUpBox
+    if (this.skip == this.now) return this.arr[this.now].startDownBox;
     // 決定裡面那圈要走幾輪
     // 如果他已經是最裡面，就不用再push
     if (this.now !== 0) this.stack.unshift(2);
