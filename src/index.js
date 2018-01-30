@@ -150,9 +150,6 @@ class DataMgr {
       { key: 'a', x: -1, y: 0 },
       { key: 'd', x: 1, y: 0 },
     ];
-    // console.log('x', this.player.x);
-    // console.log('y', this.player.y);
-    // console.log('now', this.looper.now);
     arr.forEach(obj => {
       if (key.isPressed(obj.key)) {
         let tmp = new Box(this.player);

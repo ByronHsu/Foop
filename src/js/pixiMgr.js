@@ -141,9 +141,6 @@ class PixiMgr {
     this.worldCtn.pivot.copy(this.playerRef);
   }
   updateObjs(objs) {
-    // console.log(objs);
-    // console.log(this.objsRef);
-
     // remove deleted obj from container
     // 1. iterate this.objsCtn
     // 2. 看傳進來的objs有無這個item
