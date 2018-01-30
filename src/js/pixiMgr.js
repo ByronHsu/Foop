@@ -16,11 +16,15 @@ class PixiMgr {
     document.querySelector('#game').appendChild(this.app.view);
     this.app.stage = new PIXI.display.Stage();
     this.app.stage.group.enableSort = true;
-
     this.app.renderer.view.style.position = 'absolute';
     this.app.renderer.view.style.display = 'block';
     this.app.renderer.autoResize = true;
     this.app.renderer.resize(window.innerWidth, window.innerHeight);
+    // Load resources
+    PIXI.loader
+      .add(['../assets/laser.png', '../assets/pause.png'])
+      .add('../assets/images/wan.json')
+      .load(this.onAssetsLoaded.bind(this));
 
     // init ctn: world, player, objs, back, laser
     this.worldCtn = new PIXI.Container();
@@ -34,7 +38,6 @@ class PixiMgr {
     this.worldCtn.addChild(this.objsCtn);
     this.worldCtn.addChild(this.backCtn);
     this.worldCtn.addChild(this.laserCtn);
-
     // init group: player, objs, back
     this.backGrp = new PIXI.display.Group(0, true);
     this.objsGrp = new PIXI.display.Group(1, true);
@@ -50,7 +53,6 @@ class PixiMgr {
     this.app.stage.addChild(new PIXI.display.Layer(this.objsGrp));
     this.app.stage.addChild(new PIXI.display.Layer(this.playerGrp));
     this.app.stage.addChild(new PIXI.display.Layer(this.laserGrp));
-
     // init displayObjects reference
     this.playerRef = {};
     this.objsRef = [];
@@ -61,16 +63,6 @@ class PixiMgr {
     this.laserEnd = 0;
     this.isPausedRef = false;
     this.shouldReset = false;
-  }
-  init() {
-    PIXI.loader
-      .add([
-        '../assets/laser.png',
-        '../assets/pause.png',
-        '../assets/door5.png',
-      ])
-      .add('../assets/images/wan.json')
-      .load(this.onAssetsLoaded.bind(this));
   }
   onAssetsLoaded() {
     this.setupPlayer();
@@ -178,36 +170,27 @@ class PixiMgr {
       this.laserRef.y = laser.y += 1.5;
     }
   }
-  addSprite(obj, tiling = false) {
+  addTile(obj) {
     // tiles' z value is negative, modulo 4 to loop from 4 imgs
     let idx = Math.abs(obj.z) % 4;
-    let sprite;
     let arr = ['tile-glass', 'tile-gold', 'tile-grass', 'tile-red'];
-    if (tiling === true) {
-      sprite = new PIXI.extras.TilingSprite.fromImage(
-        `../assets/${arr[idx]}.png`
-      );
-    } else sprite = new PIXI.Sprite.fromImage(`../assets/${obj.img}.png`);
-    let grp, ctn;
+    let sprite = new PIXI.extras.TilingSprite.fromImage(
+      `../assets/${arr[idx]}.png`
+    );
     sprite.anchor.set(0.5, 0.5);
-    switch (obj.group) {
-      case 'player':
-        grp = this.playerGrp;
-        ctn = this.playerCtn;
-        break;
-      case 'back':
-        grp = this.backGrp;
-        ctn = this.backCtn;
-        break;
-      case 'objs':
-        grp = this.objsGrp;
-        ctn = this.objsCtn;
-        break;
-      default:
+    sprite.parentGroup = this.backGrp;
+    this.backCtn.addChild(Object.assign(sprite, obj));
+  }
+  addSprite(obj) {
+    let sprite = new PIXI.Sprite.fromImage(`../assets/${obj.img}.png`);
+    sprite.anchor.set(0.5, 0.5);
+    if (obj.group === 'back') {
+      sprite.parentGroup = this.backGrp;
+      this.backCtn.addChild(Object.assign(sprite, obj));
+    } else {
+      sprite.parentGroup = this.objsGrp;
+      this.objsCtn.addChild(Object.assign(sprite, obj));
     }
-    sprite.parentGroup = grp;
-    Object.assign(sprite, obj);
-    ctn.addChild(sprite);
     return sprite;
   }
   shine() {

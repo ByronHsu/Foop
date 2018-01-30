@@ -109,9 +109,10 @@ class Looper {
       obj.exitDownBox,
     ];
     arr.forEach(val => {
+      // Doors
       if (val !== undefined) pixiMgr.addSprite(val);
     });
-    pixiMgr.addSprite(obj.border, true); // tiling
+    pixiMgr.addTile(obj.border);
     this.arr.push(obj);
   }
   get prevLoop() {
@@ -137,7 +138,6 @@ class DataMgr {
       .add(this.player, 'speed', 0, 50)
       .step(1)
       .listen();
-    gui.add(this.player, 'money', 0, 200).listen();
     this.objs = [];
     this.looper = new Looper();
     this.looper.createLoop(WH);
@@ -267,5 +267,4 @@ function animate() {
   }
 }
 
-pixiMgr.init();
 requestAnimationFrame(animate);
