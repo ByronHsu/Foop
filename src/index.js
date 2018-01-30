@@ -10,18 +10,16 @@ if (process.env.NODE_ENV !== 'prod') {
   require('./template.html');
 }
 const gui = new dat.GUI();
-
 const SPEED = 5;
 const WW = window.innerWidth;
 const WH = window.innerHeight;
-
-const playerBox = {
+const PLAYERBOX = {
   x: 0,
   y: 0,
   width: 100,
   height: 100,
 };
-const laserBox = {
+const LASERBOX = {
   x: -1 * WW / 2,
   y: -1 * WH / 2,
   width: 0,
@@ -129,7 +127,7 @@ class Looper {
 class DataMgr {
   constructor() {
     this.isPaused = false;
-    this.player = new Box(playerBox);
+    this.player = new Box(PLAYERBOX);
     this.player.hp = 100;
     this.player.speed = SPEED;
     this.player.money = 0;
@@ -141,7 +139,7 @@ class DataMgr {
     this.objs = [];
     this.looper = new Looper();
     this.looper.createLoop(WH);
-    this.laser = new Box(laserBox);
+    this.laser = new Box(LASERBOX);
   }
   playerMove() {
     let arr = [
@@ -229,14 +227,14 @@ class DataMgr {
   }
   reset() {
     this.isPaused = false;
-    this.player = new Box(playerBox);
+    this.player = new Box(PLAYERBOX);
     this.player.hp = 100;
     this.player.speed = SPEED;
     this.player.money = 0;
     this.objs = [];
     this.looper = new Looper();
     this.looper.createLoop(500);
-    this.laser = new Box(laserBox);
+    this.laser = new Box(LASERBOX);
   }
 }
 
