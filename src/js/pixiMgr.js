@@ -170,16 +170,16 @@ class PixiMgr {
       this.laserRef.y = laser.y += 1.5;
     }
   }
-  addTile(obj) {
+  addTile(border) {
     // tiles' z value is negative, modulo 4 to loop from 4 imgs
-    let idx = Math.abs(obj.z) % 4;
+    let idx = Math.abs(border.z) % 4;
     let arr = ['tile-glass', 'tile-gold', 'tile-grass', 'tile-red'];
     let sprite = new PIXI.extras.TilingSprite.fromImage(
       `../assets/${arr[idx]}.png`
     );
     sprite.anchor.set(0.5, 0.5);
     sprite.parentGroup = this.backGrp;
-    this.backCtn.addChild(Object.assign(sprite, obj));
+    this.backCtn.addChild(Object.assign(sprite, border));
   }
   addSprite(obj) {
     let sprite = new PIXI.Sprite.fromImage(`../assets/${obj.img}.png`);
