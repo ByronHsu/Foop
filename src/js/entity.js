@@ -92,7 +92,7 @@ class Border extends Box {
     let obj = {
       x: 0,
       y: 0,
-      width: 500,
+      width: window.innerWidth,
     };
     super(Object.assign(args, obj));
     this.img = 'tile-gold';

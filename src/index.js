@@ -12,6 +12,9 @@ if (process.env.NODE_ENV !== 'prod') {
 const gui = new dat.GUI();
 
 const SPEED = 5;
+const WW = window.innerWidth;
+const WH = window.innerHeight;
+
 const playerBox = {
   x: 0,
   y: 0,
@@ -19,8 +22,8 @@ const playerBox = {
   height: 100,
 };
 const laserBox = {
-  x: -250,
-  y: -250,
+  x: -1 * WW / 2,
+  y: -1 * WH / 2,
   width: 0,
   height: 100,
 };
@@ -62,7 +65,7 @@ class Looper {
       if (this.stack.length === 0) {
         // 開新世界
         this.now = this.now + 1;
-        this.createLoop((this.now * 2 + 1) * 500);
+        this.createLoop((this.now * 2 + 1) * WH);
         this.stack.unshift(2);
         return this.arr[this.now].startDownBox;
       } else {
@@ -137,7 +140,7 @@ class DataMgr {
     gui.add(this.player, 'money', 0, 200).listen();
     this.objs = [];
     this.looper = new Looper();
-    this.looper.createLoop(500);
+    this.looper.createLoop(WH);
     this.laser = new Box(laserBox);
   }
   playerMove() {

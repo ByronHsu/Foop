@@ -1,14 +1,15 @@
 import * as PIXI from 'pixi.js';
 import '../bin/pixi-display.js';
 
+const WW = window.innerWidth;
+const WH = window.innerHeight;
+
 class PixiMgr {
   constructor() {
     // init app
-    let ww = window.innerWidth,
-      wh = window.innerHeight;
     this.app = new PIXI.Application({
-      width: ww,
-      height: wh,
+      width: WW,
+      height: WH,
       antialias: true,
       backgroundColor: 0xb4b4b4,
     });
@@ -23,7 +24,7 @@ class PixiMgr {
 
     // init ctn: world, player, objs, back, laser
     this.worldCtn = new PIXI.Container();
-    (this.worldCtn.x = ww / 2), (this.worldCtn.y = wh / 2);
+    (this.worldCtn.x = WW / 2), (this.worldCtn.y = WH / 2);
     this.playerCtn = new PIXI.Container();
     this.objsCtn = new PIXI.Container();
     this.backCtn = new PIXI.Container();
@@ -96,8 +97,8 @@ class PixiMgr {
       PIXI.loader.resources['../assets/laser.png'].texture
     );
     this.laser.anchor.set(0, 0.5);
-    (this.laser.width = 50), (this.laser.height = 100);
-    this.laser.position.set(-250, -250);
+    (this.laser.width = 0), (this.laser.height = 100);
+    this.laser.position.set(-1 * WW / 2, -1 * WH);
     this.laser.parentGroup = this.laserGrp;
     this.laserRef = this.laser;
     this.laserCtn.addChild(this.laser);
@@ -169,12 +170,12 @@ class PixiMgr {
     }
   }
   updateLaser(laser) {
-    if (laser.width < 500) {
-      this.laserRef.width = laser.width += 5;
+    if (laser.width < WW) {
+      this.laserRef.width = laser.width += 50;
       this.laserRef.y = laser.y;
-      this.laserEnd = laser.y + 500;
+      this.laserEnd = laser.y + WH;
     } else if (laser.y < this.laserEnd) {
-      this.laserRef.y = laser.y += 3;
+      this.laserRef.y = laser.y += 1.5;
     }
   }
   addSprite(obj, tiling = false) {
