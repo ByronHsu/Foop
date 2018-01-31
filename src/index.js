@@ -9,7 +9,7 @@ import dat from 'dat.gui';
 if (process.env.NODE_ENV !== 'prod') {
   require('./template.html');
 }
-const gui = new dat.GUI();
+let gui = new dat.GUI();
 const SPEED = 5;
 const WW = window.innerWidth;
 const WH = window.innerHeight;
@@ -263,7 +263,9 @@ function animate() {
     // stop pixi animations
     // ex. pixiMgr.animationsStop();
     if (pixiMgr.shouldReset) {
-      dataMgr.reset();
+      gui.destroy();
+      gui = new dat.GUI();
+      dataMgr = new DataMgr();
       pixiMgr.isPausedRef = false;
       pixiMgr.shouldReset = false;
     }
