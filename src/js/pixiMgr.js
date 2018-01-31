@@ -38,12 +38,23 @@ class PixiMgr {
     this.worldCtn.addChild(this.objsCtn);
     this.worldCtn.addChild(this.backCtn);
     this.worldCtn.addChild(this.laserCtn);
+    this.mapCtn = new PIXI.Container();
+    (this.mapCtn.x = WW - 200), (this.mapCtn.y = WH / 2);
+    this.app.stage.addChild(this.mapCtn);
+
     // init group: player, objs, back
     this.backGrp = new PIXI.display.Group(0, true);
     this.objsGrp = new PIXI.display.Group(1, true);
     this.playerGrp = new PIXI.display.Group(2, true);
     this.laserGrp = new PIXI.display.Group(3, true);
-    let arr = [this.backGrp, this.objsGrp, this.playerGrp, this.laserGrp];
+    this.mapGrp = new PIXI.display.Group(4, true);
+    let arr = [
+      this.backGrp,
+      this.objsGrp,
+      this.playerGrp,
+      this.laserGrp,
+      this.mapGrp,
+    ];
     arr.forEach(g => {
       g.on('sort', sprite => {
         sprite.zOrder = -sprite.z;
@@ -53,6 +64,7 @@ class PixiMgr {
     this.app.stage.addChild(new PIXI.display.Layer(this.objsGrp));
     this.app.stage.addChild(new PIXI.display.Layer(this.playerGrp));
     this.app.stage.addChild(new PIXI.display.Layer(this.laserGrp));
+    this.app.stage.addChild(new PIXI.display.Layer(this.mapGrp));
     // init displayObjects reference
     this.playerRef = {};
     this.objsRef = [];
@@ -63,6 +75,7 @@ class PixiMgr {
     this.laserEnd = 0;
     this.isPausedRef = false;
     this.shouldReset = false;
+    this.wanMap = {};
   }
   onAssetsLoaded() {
     this.setupPlayer();
@@ -83,6 +96,14 @@ class PixiMgr {
     this.wan.parentGroup = this.playerGrp;
     this.playerRef = this.wan;
     this.playerCtn.addChild(this.wan);
+
+    this.wanMap = new PIXI.Sprite.fromImage('../assets/reddot.png');
+    this.wanMap.anchor.set(0.5, 0.5);
+    (this.wanMap.width = this.wan.width / 5),
+      (this.wanMap.height = this.wan.height / 5);
+    this.wanMap.z = 1;
+    this.wanMap.parentGroup = this.playerGrp;
+    this.mapCtn.addChild(this.wanMap);
   }
   setupLaser() {
     this.laser = new PIXI.Sprite(
@@ -133,6 +154,8 @@ class PixiMgr {
     this.playerRef.x = x;
     this.playerRef.y = y;
     this.worldCtn.pivot.set(0, y);
+    this.wanMap.x = x / 10;
+    this.wanMap.y = y / 10;
   }
   updateObjs(objs) {
     // remove deleted obj from container
@@ -179,6 +202,16 @@ class PixiMgr {
     sprite.anchor.set(0.5, 0.5);
     sprite.parentGroup = this.backGrp;
     this.backCtn.addChild(Object.assign(sprite, border));
+
+    // for map
+    let spriteMap = new PIXI.extras.TilingSprite.fromImage(
+      `../assets/${arr[idx]}.png`
+    );
+    spriteMap.anchor.set(0.5, 0.5);
+    spriteMap.parentGroup = this.playerGrp;
+    spriteMap = Object.assign(spriteMap, border);
+    (spriteMap.width /= 10), (spriteMap.height /= 10);
+    this.mapCtn.addChild(spriteMap);
   }
   addSprite(obj) {
     let sprite = new PIXI.Sprite.fromImage(`../assets/${obj.img}.png`);
