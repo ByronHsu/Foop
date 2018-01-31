@@ -239,6 +239,12 @@ class DataMgr {
 }
 
 var dataMgr = new DataMgr();
+document.addEventListener('visibilitychange', () => {
+  if (document.hidden) {
+    pixiMgr.isPausedRef = true;
+    pixiMgr.worldCtn.alpha = 0.5;
+  }
+});
 
 function animate() {
   dataMgr.setIsPaused(pixiMgr.isPausedRef);

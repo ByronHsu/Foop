@@ -103,7 +103,10 @@ class PixiMgr {
     this.pause.position.set(-400, this.playerRef.y);
     this.pause.interactive = true;
     this.pause.buttonMode = true;
-    this.pause.on('click', () => (this.isPausedRef = !this.isPausedRef));
+    this.pause.on('click', () => {
+      this.isPausedRef = !this.isPausedRef;
+      this.worldCtn.alpha = this.isPausedRef ? 0.5 : 1;
+    });
     this.pause.parentGroup = this.laserGrp;
     this.laserCtn.addChild(this.pause);
   }
