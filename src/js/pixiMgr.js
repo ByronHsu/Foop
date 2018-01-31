@@ -132,11 +132,7 @@ class PixiMgr {
   updatePlayer({ x, y }) {
     this.playerRef.x = x;
     this.playerRef.y = y;
-    if (y > WH / 3) {
-      this.worldCtn.pivot.set(0, y - WH / 3);
-    } else if (y < -1 * WH / 3) {
-      this.worldCtn.pivot.set(0, y + WH / 3);
-    }
+    this.worldCtn.pivot.set(0, y);
   }
   updateObjs(objs) {
     // remove deleted obj from container
