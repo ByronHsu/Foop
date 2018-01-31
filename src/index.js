@@ -225,17 +225,6 @@ class DataMgr {
   setIsPaused(isPaused) {
     this.isPaused = isPaused;
   }
-  reset() {
-    this.isPaused = false;
-    this.player = new Box(PLAYERBOX);
-    this.player.hp = 100;
-    this.player.speed = SPEED;
-    this.player.money = 0;
-    this.objs = [];
-    this.looper = new Looper();
-    this.looper.createLoop(500);
-    this.laser = new Box(LASERBOX);
-  }
 }
 
 var dataMgr = new DataMgr();
