@@ -22,7 +22,11 @@ class PixiMgr {
     this.app.renderer.resize(window.innerWidth, window.innerHeight);
     // Load resources
     PIXI.loader
-      .add(['../assets/laser.png', '../assets/pause.png'])
+      .add([
+        '../assets/laser.png',
+        '../assets/pause.png',
+        '../assets/reddot.png',
+      ])
       .add('../assets/images/wan.json')
       .load(this.onAssetsLoaded.bind(this));
 
@@ -97,7 +101,9 @@ class PixiMgr {
     this.playerRef = this.wan;
     this.playerCtn.addChild(this.wan);
 
-    this.wanMap = new PIXI.Sprite.fromImage('../assets/reddot.png');
+    this.wanMap = new PIXI.Sprite(
+      PIXI.loader.resources['../assets/reddot.png'].texture
+    );
     this.wanMap.anchor.set(0.5, 0.5);
     (this.wanMap.width = this.wan.width / 5),
       (this.wanMap.height = this.wan.height / 5);
