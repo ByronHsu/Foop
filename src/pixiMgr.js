@@ -1,6 +1,6 @@
 import * as PIXI from 'pixi.js';
-import '../bin/pixi-display.js';
-import * as config from './config.js';
+import './bin/pixi-display.js';
+import * as config from './js/config.js';
 
 const WW = window.innerWidth;
 const WH = window.innerHeight;
@@ -78,12 +78,12 @@ class PixiMgr {
     // Load resources
     return new Promise(resolve => {
       PIXI.loader
-        .add(['../assets/laser.png', '../assets/pause.png'])
-        .add('../assets/images/wan.json')
-        .add('../assets/images/potion.json')
-        .add('../assets/images/shoe.json')
-        .add('../assets/images/trap.json')
-        .add('../assets/images/coin.json')
+        .add(['./assets/laser.png', './assets/pause.png'])
+        .add('./assets/images/wan.json')
+        .add('./assets/images/potion.json')
+        .add('./assets/images/shoe.json')
+        .add('./assets/images/trap.json')
+        .add('./assets/images/coin.json')
         .load(() => {
           this.setupPlayer();
           this.setupLaser();
@@ -160,7 +160,7 @@ class PixiMgr {
     let sprite;
     let texs = [];
     let length = Object.keys(
-      PIXI.loader.resources[`../assets/images/${obj.type}.json`].textures
+      PIXI.loader.resources[`./assets/images/${obj.type}.json`].textures
     ).length;
     for (let i = 0; i < length; i++) {
       let tex = PIXI.Texture.fromFrame(`${obj.type}${i}.png`);
@@ -177,7 +177,7 @@ class PixiMgr {
     return sprite;
   }
   addDoor(obj, idx) {
-    let sprite = new PIXI.Sprite.fromImage(`../assets/${obj.img}.png`);
+    let sprite = new PIXI.Sprite.fromImage(`./assets/${obj.img}.png`);
     sprite.anchor.set(0.5, 0.5);
     sprite.tint = config.lineColor[idx];
     sprite.parentGroup = this.backGrp;
@@ -199,7 +199,7 @@ class PixiMgr {
     this.player = wan;
     this.playerCtn.addChild(this.player);
 
-    this.playerMap = new PIXI.Sprite.fromImage('../assets/reddot.png');
+    this.playerMap = new PIXI.Sprite.fromImage('./assets/reddot.png');
     this.playerMap.anchor.set(0.5, 0.5);
     (this.playerMap.width = this.player.width / 5),
       (this.playerMap.height = this.player.height / 5);
@@ -209,7 +209,7 @@ class PixiMgr {
   }
   setupLaser() {
     this.laser = new PIXI.Sprite(
-      PIXI.loader.resources['../assets/laser.png'].texture
+      PIXI.loader.resources['./assets/laser.png'].texture
     );
     this.laser.anchor.set(0, 0.5);
     (this.laser.width = 0), (this.laser.height = 100);
@@ -220,7 +220,7 @@ class PixiMgr {
   }
   setupPause() {
     this.pause = new PIXI.Sprite(
-      PIXI.loader.resources['../assets/pause.png'].texture
+      PIXI.loader.resources['./assets/pause.png'].texture
     );
     this.pause.anchor.set(0.5);
     (this.pause.width = 50), (this.pause.height = 50);
@@ -243,7 +243,7 @@ class PixiMgr {
     this.mapCtn.removeChildren();
     this.laserCtn.removeChildren();
     let gameCtn = new PIXI.Container();
-    gameCtn.addChild(new PIXI.Sprite.fromImage('../assets/gameover.png'));
+    gameCtn.addChild(new PIXI.Sprite.fromImage('./assets/gameover.png'));
     this.app.stage.addChild(gameCtn);
     this.setupPause();
     this.pause.on('click', () => {

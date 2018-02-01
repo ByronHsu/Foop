@@ -1,4 +1,4 @@
-import PixiMgr from './js/pixiMgr';
+import PixiMgr from './pixiMgr';
 import './scss/index.scss';
 import key from 'keymaster';
 import { Box, Coin, Shoe, Trap, Potion, Border, Door } from './js/entity.js';
