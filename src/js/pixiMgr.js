@@ -100,7 +100,7 @@ class PixiMgr {
     this.playerMap.y = y / 10;
   }
   updateObjs(objs) {
-    console.log('in', objs);
+    // console.log('in', objs);
     // remove deleted obj from container
     // 1. iterate this.objsCtn
     // 2. 看傳進來的objs有無這個item
@@ -125,7 +125,7 @@ class PixiMgr {
       let sprite = this.addObj(objs[i]);
       this.objs.push(sprite);
     }
-    console.log('out', objs);
+    // console.log('out', objs);
   }
   updateLaser(laser, speedUp) {
     if (laser.width < WW) {

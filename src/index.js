@@ -1,7 +1,16 @@
 import PixiMgr from './js/pixiMgr';
 import './scss/index.scss';
 import key from 'keymaster';
-import { Box, Coin, Shoe, Trap, Potion, Border, Door } from './js/entity.js';
+import {
+  Box,
+  Coin,
+  Shoe,
+  Trap,
+  Potion,
+  Border,
+  Door,
+  // Bug,
+} from './js/entity.js';
 import { inside, outside, hit, hitLaser } from './js/physic.js';
 import { rnGen, rnGenInt } from './js/utils.js';
 import dat from 'dat.gui';
@@ -148,6 +157,9 @@ class DataMgr {
     this.looper = new Looper();
     this.looper.createLoop(WH);
     this.laser = new Box(LASERBOX);
+    // this.objs = [];
+    // this.bugs = [];
+    // this.hasBug = false;
   }
   playerMove() {
     let arr = [
@@ -237,9 +249,26 @@ class DataMgr {
     this.looper.vec.forEach(loop => {
       arr = arr.concat(loop.objs);
     });
-    console.log('get objs', arr);
+    // console.log('get objs', arr);
     return arr;
   }
+  // randomGenBug() {
+  //   for (let i = 0; i < this.looper.vec.length; i++) {
+  //     let loop = this.looper.vec[i];
+  //     let bug = new Bug({
+  //       x: rnGen(-loop.border.width / 2, loop.border.width / 2),
+  //       y: rnGen(
+  //         -loop.border.height / 2 + loop.border.y,
+  //         loop.border.height / 2 + loop.border.y
+  //       ),
+  //       width: 50,
+  //       height: 50,
+  //       idx: loop.idx,
+  //     });
+  //   }
+  //   // this.bugs.push(bug);
+  //   // this.hasBug = true;
+  // }
 }
 
 var dataMgr = new DataMgr();
@@ -259,6 +288,7 @@ function animate() {
     dataMgr.hitLaser();
     pixiMgr.updatePlayer(dataMgr.player);
     pixiMgr.updateObjs(dataMgr.objs);
+    // pixiMgr.updateObjs(dataMgr.bugs);
     pixiMgr.updateLaser(dataMgr.laser, dataMgr.looper.arr.length * SPEEDUP);
     // dataMgr.player.speed > 10 ? pixiMgr.shine() : pixiMgr.unShine();
     requestAnimationFrame(animate);
