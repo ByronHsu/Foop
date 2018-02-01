@@ -97,7 +97,7 @@ class Border extends Box {
     super(Object.assign(args, obj));
     this.img = 'tile-gold';
     this.group = 'back';
-    this.z = -args.z;
+    this.z = args.z;
   }
 }
 
