@@ -11,6 +11,7 @@ if (process.env.NODE_ENV !== 'prod') {
 }
 let gui = new dat.GUI();
 const SPEED = 5;
+const SPEEDUP = 0.5;
 const WW = window.innerWidth;
 const WH = window.innerHeight;
 const PLAYERBOX = {
@@ -159,8 +160,10 @@ class DataMgr {
             outside(tmp, this.looper.prevLoop.border)) ||
             this.looper.prevLoop === undefined)
         ) {
-          this.player.x += this.player.speed * obj.x;
-          this.player.y += this.player.speed * obj.y;
+          this.player.x +=
+            (this.player.speed + this.looper.arr.length * SPEEDUP) * obj.x;
+          this.player.y +=
+            (this.player.speed + this.looper.arr.length * SPEEDUP) * obj.y;
         }
       }
     });
@@ -238,7 +241,7 @@ function animate() {
     dataMgr.hitLaser();
     pixiMgr.updatePlayer(dataMgr.player);
     pixiMgr.updateObjs(dataMgr.objs);
-    pixiMgr.updateLaser(dataMgr.laser);
+    pixiMgr.updateLaser(dataMgr.laser, dataMgr.looper.arr.length * SPEEDUP);
     // dataMgr.player.speed > 10 ? pixiMgr.shine() : pixiMgr.unShine();
     requestAnimationFrame(animate);
   } else {
