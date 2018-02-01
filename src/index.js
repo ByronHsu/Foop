@@ -79,7 +79,7 @@ class Looper {
   }
   createLoop(height) {
     let pad = 100;
-    let obj = { border: new Border({ height, z: this.now }) };
+    let obj = { border: new Border({ height, z: -this.now }) };
     let prevLoop = this.arr[this.now - 1];
 
     obj.startUpBox = new Door({
@@ -190,11 +190,8 @@ class DataMgr {
   }
   hitLaser() {
     if (hitLaser(this.player, this.laser)) {
-      this.player.hp = 0;
-      pixiMgr.isPausedRef = true;
-      this.setIsPaused(pixiMgr.isPausedRef);
-      pixiMgr.worldCtn.visible = false;
-      pixiMgr.gameOverScene.visible = true;
+      pixiMgr.isPaused = true;
+      pixiMgr.shouldReset = true;
     }
   }
   randomGenObjs() {
@@ -222,22 +219,18 @@ class DataMgr {
       this.objs.push(arr[rnGenInt(0, 4)]);
     }
   }
-  setIsPaused(isPaused) {
-    this.isPaused = isPaused;
-  }
 }
 
 var dataMgr = new DataMgr();
 document.addEventListener('visibilitychange', () => {
   if (document.hidden) {
-    pixiMgr.isPausedRef = true;
+    pixiMgr.isPaused = true;
     pixiMgr.worldCtn.alpha = 0.5;
   }
 });
 
 function animate() {
-  dataMgr.setIsPaused(pixiMgr.isPausedRef);
-  if (!dataMgr.isPaused) {
+  if (!pixiMgr.isPaused) {
     dataMgr.playerMove();
     dataMgr.randomGenObjs();
     dataMgr.hitExit();
@@ -252,14 +245,14 @@ function animate() {
     // stop pixi animations
     // ex. pixiMgr.animationsStop();
     if (pixiMgr.shouldReset) {
+      pixiMgr.reset();
       gui.destroy();
       gui = new dat.GUI();
       dataMgr = new DataMgr();
-      pixiMgr.isPausedRef = false;
-      pixiMgr.shouldReset = false;
     }
     requestAnimationFrame(animate);
   }
 }
-
-requestAnimationFrame(animate);
+pixiMgr.setup().then(() => {
+  requestAnimationFrame(animate);
+});

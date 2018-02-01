@@ -20,15 +20,6 @@ class PixiMgr {
     this.app.renderer.view.style.display = 'block';
     this.app.renderer.autoResize = true;
     this.app.renderer.resize(window.innerWidth, window.innerHeight);
-    // Load resources
-    PIXI.loader
-      .add([
-        '../assets/laser.png',
-        '../assets/pause.png',
-        '../assets/reddot.png',
-      ])
-      .add('../assets/images/wan.json')
-      .load(this.onAssetsLoaded.bind(this));
 
     // init ctn: world, player, objs, back, laser
     this.worldCtn = new PIXI.Container();
@@ -59,6 +50,7 @@ class PixiMgr {
       this.laserGrp,
       this.mapGrp,
     ];
+    // sprite.z 越大在越上面
     arr.forEach(g => {
       g.on('sort', sprite => {
         sprite.zOrder = -sprite.z;
@@ -70,98 +62,39 @@ class PixiMgr {
     this.app.stage.addChild(new PIXI.display.Layer(this.laserGrp));
     this.app.stage.addChild(new PIXI.display.Layer(this.mapGrp));
     // init displayObjects reference
-    this.playerRef = {};
-    this.objsRef = [];
+    this.player = {};
+    this.objs = [];
     this.loopRef = [];
     this.exitRef = [];
     this.laserRef = {};
-    this.wan, this.laser, this.pause;
+    this.laser, this.pause;
     this.laserEnd = 0;
-    this.isPausedRef = false;
+    this.isPaused = false;
     this.shouldReset = false;
-    this.wanMap = {};
+    this.playerMap = {};
   }
-  onAssetsLoaded() {
-    this.setupPlayer();
-    this.setupLaser();
-    this.setupPause();
-    this.setupGameOverScene();
-  }
-  setupPlayer() {
-    let wans = [];
-    for (let i = 0; i < 3; i++) {
-      let wanTex = PIXI.Texture.fromFrame(`wan${i}.png`);
-      wans.push(wanTex);
-    }
-    this.wan = new PIXI.extras.AnimatedSprite(wans);
-    this.wan.anchor.set(0.5, 0.5);
-    (this.wan.width = 100), (this.wan.height = 100);
-    (this.wan.x = 0), (this.wan.y = 0);
-    this.wan.parentGroup = this.playerGrp;
-    this.playerRef = this.wan;
-    this.playerCtn.addChild(this.wan);
-
-    this.wanMap = new PIXI.Sprite(
-      PIXI.loader.resources['../assets/reddot.png'].texture
-    );
-    this.wanMap.anchor.set(0.5, 0.5);
-    (this.wanMap.width = this.wan.width / 5),
-      (this.wanMap.height = this.wan.height / 5);
-    this.wanMap.z = 1;
-    this.wanMap.parentGroup = this.playerGrp;
-    this.mapCtn.addChild(this.wanMap);
-  }
-  setupLaser() {
-    this.laser = new PIXI.Sprite(
-      PIXI.loader.resources['../assets/laser.png'].texture
-    );
-    this.laser.anchor.set(0, 0.5);
-    (this.laser.width = 0), (this.laser.height = 100);
-    this.laser.position.set(-1 * WW / 2, -1 * WH);
-    this.laser.parentGroup = this.laserGrp;
-    this.laserRef = this.laser;
-    this.laserCtn.addChild(this.laser);
-  }
-  setupPause() {
-    this.pause = new PIXI.Sprite(
-      PIXI.loader.resources['../assets/pause.png'].texture
-    );
-    (this.pause.width = 50), (this.pause.height = 50);
-    this.pause.position.set(-400, this.playerRef.y);
-    this.pause.interactive = true;
-    this.pause.buttonMode = true;
-    this.pause.on('click', () => {
-      this.isPausedRef = !this.isPausedRef;
-      this.worldCtn.alpha = this.isPausedRef ? 0.5 : 1;
+  setup() {
+    // Load resources
+    return new Promise(resolve => {
+      PIXI.loader
+        .add(['../assets/laser.png', '../assets/pause.png'])
+        .add('../assets/images/wan.json')
+        .add('../assets/images/coin.json')
+        .load(() => {
+          this.setupPlayer();
+          this.setupLaser();
+          this.setupPause();
+          this.setupGameOverScene();
+          resolve();
+        });
     });
-    this.pause.parentGroup = this.laserGrp;
-    this.laserCtn.addChild(this.pause);
-  }
-  setupGameOverScene() {
-    this.gameOverScene = new PIXI.Container();
-    this.gameOverScene.visible = false;
-    let endMsg = new PIXI.Sprite.fromImage(`../assets/door1.png`);
-    endMsg.x = this.app.renderer.view.width / 2;
-    endMsg.y = this.app.renderer.view.height / 2;
-    endMsg.interactive = true;
-    endMsg.buttonMode = true;
-    endMsg.on('click', this.restart.bind(this));
-    this.gameOverScene.addChild(endMsg);
-    this.gameOverScene.visible = false;
-    this.app.stage.addChild(this.gameOverScene);
-  }
-  restart() {
-    // temporary function
-    this.gameOverScene.visible = false;
-    this.worldCtn.visible = true;
-    this.shouldReset = true;
   }
   updatePlayer({ x, y }) {
-    this.playerRef.x = x;
-    this.playerRef.y = y;
+    this.player.x = x;
+    this.player.y = y;
     this.worldCtn.pivot.set(0, y);
-    this.wanMap.x = x / 10;
-    this.wanMap.y = y / 10;
+    this.playerMap.x = x / 10;
+    this.playerMap.y = y / 10;
   }
   updateObjs(objs) {
     // remove deleted obj from container
@@ -175,7 +108,7 @@ class PixiMgr {
       if (x === -1) {
         //找不到
         this.objsCtn.removeChild(child);
-        this.objsRef.splice(i, 1);
+        this.objs.splice(i, 1);
       }
     }
     // add new objs into container
@@ -183,10 +116,10 @@ class PixiMgr {
     // 2. 看this.objsCtn中有沒有這個obj
     // 3. 若沒有，則加進去
     for (let i = 0; i < objs.length; i++) {
-      let x = this.objsRef.findIndex(obj => obj.id === objs[i].id);
+      let x = this.objs.findIndex(obj => obj.id === objs[i].id);
       if (x !== -1) continue;
       let sprite = this.addSprite(objs[i]);
-      this.objsRef.push(sprite);
+      this.objs.push(sprite);
     }
   }
   updateLaser(laser) {
@@ -214,13 +147,25 @@ class PixiMgr {
       `../assets/${arr[idx]}.png`
     );
     spriteMap.anchor.set(0.5, 0.5);
-    spriteMap.parentGroup = this.playerGrp;
+    spriteMap.parentGroup = this.mapGrp;
     spriteMap = Object.assign(spriteMap, border);
     (spriteMap.width /= 10), (spriteMap.height /= 10);
     this.mapCtn.addChild(spriteMap);
   }
   addSprite(obj) {
-    let sprite = new PIXI.Sprite.fromImage(`../assets/${obj.img}.png`);
+    let sprite;
+    if (obj.type === 'coin') {
+      let tex = [];
+      for (let i = 0; i < 3; i++) {
+        let coinTex = PIXI.Texture.fromFrame(`coin${i}.png`);
+        tex.push(coinTex);
+      }
+      sprite = new PIXI.extras.AnimatedSprite(tex);
+      sprite.animationSpeed = 0.3;
+      sprite.play();
+      sprite.tint = 0x0072d3;
+    } else sprite = new PIXI.Sprite.fromImage(`../assets/${obj.img}.png`);
+
     sprite.anchor.set(0.5, 0.5);
     if (obj.group === 'back') {
       sprite.parentGroup = this.backGrp;
@@ -232,10 +177,97 @@ class PixiMgr {
     return sprite;
   }
   shine() {
-    this.playerRef.play();
+    this.player.play();
   }
   unShine() {
-    this.playerRef.gotoAndStop(0);
+    this.player.gotoAndStop(0);
+  }
+  // dummy function
+  setupPlayer() {
+    let wans = [];
+    for (let i = 0; i < 3; i++) {
+      let wanTex = PIXI.Texture.fromFrame(`wan${i}.png`);
+      wans.push(wanTex);
+    }
+    let wan = new PIXI.extras.AnimatedSprite(wans);
+    wan.anchor.set(0.5, 0.5);
+    (wan.width = 100), (wan.height = 100);
+    (wan.x = 0), (wan.y = 0);
+    wan.parentGroup = this.playerGrp;
+    this.player = wan;
+    this.playerCtn.addChild(this.player);
+
+    this.playerMap = new PIXI.Sprite.fromImage('../assets/reddot.png');
+    this.playerMap.anchor.set(0.5, 0.5);
+    (this.playerMap.width = this.player.width / 5),
+      (this.playerMap.height = this.player.height / 5);
+    this.playerMap.z = 1;
+    this.playerMap.parentGroup = this.mapGrp;
+    this.mapCtn.addChild(this.playerMap);
+  }
+  setupLaser() {
+    this.laser = new PIXI.Sprite(
+      PIXI.loader.resources['../assets/laser.png'].texture
+    );
+    this.laser.anchor.set(0, 0.5);
+    (this.laser.width = 0), (this.laser.height = 100);
+    this.laser.position.set(-1 * WW / 2, -1 * WH);
+    this.laser.parentGroup = this.laserGrp;
+    this.laserRef = this.laser;
+    this.laserCtn.addChild(this.laser);
+  }
+  setupPause() {
+    this.pause = new PIXI.Sprite(
+      PIXI.loader.resources['../assets/pause.png'].texture
+    );
+    this.pause.anchor.set(0.5);
+    (this.pause.width = 50), (this.pause.height = 50);
+    this.pause.position.set(100, 0);
+    this.pause.interactive = true;
+    this.pause.buttonMode = true;
+    this.pause.z = 2;
+    this.pause.on('click', () => {
+      this.isPaused = !this.isPaused;
+      this.worldCtn.alpha = this.isPaused ? 0.5 : 1;
+    });
+    this.pause.parentGroup = this.mapGrp;
+    this.mapCtn.addChild(this.pause);
+  }
+  setupGameOverScene() {
+    // this.gameOverScene = new PIXI.Container();
+    // this.gameOverScene.visible = false;
+    // let endMsg = new PIXI.Sprite.fromImage(`../assets/door1.png`);
+    // endMsg.x = this.app.renderer.view.width / 2;
+    // endMsg.y = this.app.renderer.view.height / 2;
+    // endMsg.interactive = true;
+    // endMsg.buttonMode = true;
+    // endMsg.on('click', this.restart.bind(this));
+    // this.gameOverScene.addChild(endMsg);
+    // this.gameOverScene.visible = false;
+    // this.app.stage.addChild(this.gameOverScene);
+  }
+  reset() {
+    // temporary function
+    this.playerCtn.removeChildren();
+    this.objsCtn.removeChildren();
+    this.backCtn.removeChildren();
+    this.mapCtn.removeChildren();
+    this.laserCtn.removeChildren();
+    let gameCtn = new PIXI.Container();
+    gameCtn.addChild(new PIXI.Sprite.fromImage('../assets/gameover.png'));
+    this.app.stage.addChild(gameCtn);
+    this.setupPause();
+    this.pause.on('click', () => {
+      this.isPaused = false;
+      this.worldCtn.visible = true;
+      this.setupPlayer();
+      this.setupLaser();
+      this.setupGameOverScene();
+      this.setupPause();
+      this.app.stage.removeChild(gameCtn);
+    });
+    this.shouldReset = false;
+    this.worldCtn.visible = false;
   }
 }
 
