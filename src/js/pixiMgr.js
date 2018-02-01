@@ -84,7 +84,6 @@ class PixiMgr {
           this.setupPlayer();
           this.setupLaser();
           this.setupPause();
-          this.setupGameOverScene();
           resolve();
         });
     });
@@ -176,12 +175,6 @@ class PixiMgr {
     }
     return sprite;
   }
-  shine() {
-    this.player.play();
-  }
-  unShine() {
-    this.player.gotoAndStop(0);
-  }
   // dummy function
   setupPlayer() {
     let wans = [];
@@ -233,19 +226,6 @@ class PixiMgr {
     this.pause.parentGroup = this.mapGrp;
     this.mapCtn.addChild(this.pause);
   }
-  setupGameOverScene() {
-    // this.gameOverScene = new PIXI.Container();
-    // this.gameOverScene.visible = false;
-    // let endMsg = new PIXI.Sprite.fromImage(`../assets/door1.png`);
-    // endMsg.x = this.app.renderer.view.width / 2;
-    // endMsg.y = this.app.renderer.view.height / 2;
-    // endMsg.interactive = true;
-    // endMsg.buttonMode = true;
-    // endMsg.on('click', this.restart.bind(this));
-    // this.gameOverScene.addChild(endMsg);
-    // this.gameOverScene.visible = false;
-    // this.app.stage.addChild(this.gameOverScene);
-  }
   reset() {
     // temporary function
     this.playerCtn.removeChildren();
@@ -262,7 +242,6 @@ class PixiMgr {
       this.worldCtn.visible = true;
       this.setupPlayer();
       this.setupLaser();
-      this.setupGameOverScene();
       this.setupPause();
       this.app.stage.removeChild(gameCtn);
     });
