@@ -33,6 +33,7 @@ class Coin extends Box {
     this.type = 'coin';
     this.img = 'coin';
     this.group = 'objs';
+    this.idx = args.idx;
   }
   hit(player) {
     player.money += 1;
@@ -45,6 +46,7 @@ class Shoe extends Box {
     this.type = 'shoe';
     this.img = 'shoe';
     this.group = 'objs';
+    this.idx = args.idx;
   }
   hit(player) {
     player.speed += 1;
@@ -57,18 +59,20 @@ class Trap extends Box {
     this.type = 'trap';
     this.img = 'trap';
     this.group = 'objs';
+    this.idx = args.idx;
   }
   hit(player) {
     player.speed -= 1;
   }
 }
 
-class Pill extends Box {
+class Potion extends Box {
   constructor(args) {
     super(args);
-    this.type = 'pill';
-    this.img = 'pill';
+    this.type = 'potion';
+    this.img = 'potion';
     this.group = 'objs';
+    this.idx = args.idx;
   }
   hit(player) {
     player.hp += 1;
@@ -108,10 +112,10 @@ class Door extends Box {
       height: 50,
     };
     super(Object.assign(args, obj));
-    this.img = 'door1';
+    this.img = 'door';
     this.group = 'back';
     this.z = 1;
   }
 }
 
-export { Box, Coin, Shoe, Pill, Bug, Trap, Border, Door };
+export { Box, Coin, Shoe, Potion, Bug, Trap, Border, Door };

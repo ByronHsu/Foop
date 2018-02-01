@@ -1,5 +1,6 @@
 import * as PIXI from 'pixi.js';
 import '../bin/pixi-display.js';
+import * as config from './config.js';
 
 const WW = window.innerWidth;
 const WH = window.innerHeight;
@@ -79,6 +80,9 @@ class PixiMgr {
       PIXI.loader
         .add(['../assets/laser.png', '../assets/pause.png'])
         .add('../assets/images/wan.json')
+        .add('../assets/images/potion.json')
+        .add('../assets/images/shoe.json')
+        .add('../assets/images/trap.json')
         .add('../assets/images/coin.json')
         .load(() => {
           this.setupPlayer();
@@ -96,6 +100,7 @@ class PixiMgr {
     this.playerMap.y = y / 10;
   }
   updateObjs(objs) {
+    console.log('in', objs);
     // remove deleted obj from container
     // 1. iterate this.objsCtn
     // 2. 看傳進來的objs有無這個item
@@ -117,9 +122,10 @@ class PixiMgr {
     for (let i = 0; i < objs.length; i++) {
       let x = this.objs.findIndex(obj => obj.id === objs[i].id);
       if (x !== -1) continue;
-      let sprite = this.addSprite(objs[i]);
+      let sprite = this.addObj(objs[i]);
       this.objs.push(sprite);
     }
+    console.log('out', objs);
   }
   updateLaser(laser, speedUp) {
     if (laser.width < WW) {
@@ -131,48 +137,51 @@ class PixiMgr {
     }
   }
   addTile(border) {
-    // tiles' z value is negative, modulo 4 to loop from 4 imgs
-    let idx = Math.abs(border.z) % 4;
-    let arr = ['tile-glass', 'tile-gold', 'tile-grass', 'tile-red'];
-    let sprite = new PIXI.extras.TilingSprite.fromImage(
-      `../assets/${arr[idx]}.png`
-    );
+    const idx = Math.abs(border.z) % 7;
+    let painter = new PIXI.Graphics();
+    painter.beginFill(config.tileColor, 1);
+    (painter.lineColor = config.lineColor[idx]), (painter.lineWidth = 10);
+    painter.drawRect(0, 0, border.width, border.height);
+    let sprite = new PIXI.Sprite(painter.generateCanvasTexture());
     sprite.anchor.set(0.5, 0.5);
     sprite.parentGroup = this.backGrp;
     this.backCtn.addChild(Object.assign(sprite, border));
-
     // for map
-    let spriteMap = new PIXI.extras.TilingSprite.fromImage(
-      `../assets/${arr[idx]}.png`
-    );
+    painter.lineWidth = 40;
+    painter.drawRect(0, 0, border.width, border.height);
+    let spriteMap = new PIXI.Sprite(painter.generateCanvasTexture());
     spriteMap.anchor.set(0.5, 0.5);
     spriteMap.parentGroup = this.mapGrp;
     spriteMap = Object.assign(spriteMap, border);
     (spriteMap.width /= 10), (spriteMap.height /= 10);
     this.mapCtn.addChild(spriteMap);
   }
-  addSprite(obj) {
+  addObj(obj) {
     let sprite;
-    if (obj.type === 'coin') {
-      let tex = [];
-      for (let i = 0; i < 3; i++) {
-        let coinTex = PIXI.Texture.fromFrame(`coin${i}.png`);
-        tex.push(coinTex);
-      }
-      sprite = new PIXI.extras.AnimatedSprite(tex);
-      sprite.animationSpeed = 0.3;
-      sprite.play();
-      sprite.tint = 0x0072d3;
-    } else sprite = new PIXI.Sprite.fromImage(`../assets/${obj.img}.png`);
+    let texs = [];
+    let length = Object.keys(
+      PIXI.loader.resources[`../assets/images/${obj.type}.json`].textures
+    ).length;
+    for (let i = 0; i < length; i++) {
+      let tex = PIXI.Texture.fromFrame(`${obj.type}${i}.png`);
+      texs.push(tex);
+    }
+    sprite = new PIXI.extras.AnimatedSprite(texs);
+    sprite.animationSpeed = 0.3;
+    sprite.play();
+    sprite.tint = config.lineColor[obj.idx];
 
     sprite.anchor.set(0.5, 0.5);
-    if (obj.group === 'back') {
-      sprite.parentGroup = this.backGrp;
-      this.backCtn.addChild(Object.assign(sprite, obj));
-    } else {
-      sprite.parentGroup = this.objsGrp;
-      this.objsCtn.addChild(Object.assign(sprite, obj));
-    }
+    sprite.parentGroup = this.objsGrp;
+    this.objsCtn.addChild(Object.assign(sprite, obj));
+    return sprite;
+  }
+  addDoor(obj, idx) {
+    let sprite = new PIXI.Sprite.fromImage(`../assets/${obj.img}.png`);
+    sprite.anchor.set(0.5, 0.5);
+    sprite.tint = config.lineColor[idx];
+    sprite.parentGroup = this.backGrp;
+    this.backCtn.addChild(Object.assign(sprite, obj));
     return sprite;
   }
   // dummy function

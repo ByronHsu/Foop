@@ -1,7 +1,7 @@
 import PixiMgr from './js/pixiMgr';
 import './scss/index.scss';
 import key from 'keymaster';
-import { Box, Coin, Shoe, Trap, Pill, Bug, Border, Door } from './js/entity.js';
+import { Box, Coin, Shoe, Trap, Potion, Border, Door } from './js/entity.js';
 import { inside, outside, hit, hitLaser } from './js/physic.js';
 import { rnGen, rnGenInt } from './js/utils.js';
 import dat from 'dat.gui';
@@ -32,6 +32,7 @@ var pixiMgr = new PixiMgr();
 class Looper {
   constructor() {
     this.arr = [];
+    this.vec = []; // 儲存每一層的邊框
     this.now = 0;
     this.stack = [2];
     this.skip = 2;
@@ -82,7 +83,14 @@ class Looper {
     let pad = 100;
     let obj = { border: new Border({ height, z: -this.now }) };
     let prevLoop = this.arr[this.now - 1];
-
+    let frameUp = new Box({ x: 0, y: this.now * WH, width: WW, height: WH });
+    let frameDown = new Box({ x: 0, y: -this.now * WH, width: WW, height: WH });
+    if (height === WH)
+      //最裡面
+      this.vec.push({ border: frameUp, objs: [], idx: this.now });
+    else
+      this.vec.unshift({ border: frameUp, objs: [], idx: this.now }),
+        this.vec.push({ border: frameDown, objs: [], idx: this.now });
     obj.startUpBox = new Door({
       x: obj.border.vtx[0].x + pad,
       y: obj.border.vtx[0].y + pad,
@@ -109,7 +117,7 @@ class Looper {
     ];
     arr.forEach(val => {
       // Doors
-      if (val !== undefined) pixiMgr.addSprite(val);
+      if (val !== undefined) pixiMgr.addDoor(val, this.now);
     });
     pixiMgr.addTile(obj.border);
     this.arr.push(obj);
@@ -137,7 +145,6 @@ class DataMgr {
       .add(this.player, 'speed', 0, 50)
       .step(1)
       .listen();
-    this.objs = [];
     this.looper = new Looper();
     this.looper.createLoop(WH);
     this.laser = new Box(LASERBOX);
@@ -184,10 +191,13 @@ class DataMgr {
   }
   hitObjs() {
     // 要從後面刪回來，不然如果直接刪掉，i++，會跳過一個obj
-    for (let i = this.objs.length - 1; i >= 0; i--) {
-      if (hit(this.player, this.objs[i])) {
-        this.objs[i].hit(this.player);
-        this.objs.splice(i, 1);
+    for (let i = 0; i < this.looper.vec.length; i++) {
+      let loop = this.looper.vec[i];
+      for (let j = loop.objs.length - 1; j >= 0; j--) {
+        if (hit(this.player, loop.objs[j])) {
+          loop.objs[j].hit(this.player);
+          loop.objs.splice(j, 1);
+        }
       }
     }
   }
@@ -198,29 +208,37 @@ class DataMgr {
     }
   }
   randomGenObjs() {
-    // 持續保持5個在場面上
-    while (this.objs.length < 5) {
-      let args = {
-        x: rnGen(
-          -this.looper.backLoop.border.width / 2,
-          this.looper.backLoop.border.width / 2
-        ),
-        y: rnGen(
-          -this.looper.backLoop.border.height / 2,
-          this.looper.backLoop.border.height / 2
-        ),
-        width: 50,
-        height: 50,
-      };
-      let arr = [
-        new Coin(args),
-        new Shoe(args),
-        new Trap(args),
-        new Pill(args),
-        new Bug(args),
-      ];
-      this.objs.push(arr[rnGenInt(0, 4)]);
+    for (let i = 0; i < this.looper.vec.length; i++) {
+      let loop = this.looper.vec[i];
+      while (loop.objs.length < 5) {
+        let args = {
+          x: rnGen(-loop.border.width / 2, loop.border.width / 2),
+          y: rnGen(
+            -loop.border.height / 2 + loop.border.y,
+            loop.border.height / 2 + loop.border.y
+          ),
+          width: 50,
+          height: 50,
+          idx: loop.idx,
+        };
+        let arr = [
+          new Coin(args),
+          new Shoe(args),
+          new Trap(args),
+          new Potion(args),
+        ];
+        loop.objs.push(arr[rnGenInt(0, 3)]);
+      }
     }
+    // console.log(this.looper.vec);
+  }
+  get objs() {
+    let arr = [];
+    this.looper.vec.forEach(loop => {
+      arr = arr.concat(loop.objs);
+    });
+    console.log('get objs', arr);
+    return arr;
   }
 }
 
