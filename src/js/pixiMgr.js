@@ -20,11 +20,6 @@ class PixiMgr {
     this.app.renderer.view.style.display = 'block';
     this.app.renderer.autoResize = true;
     this.app.renderer.resize(window.innerWidth, window.innerHeight);
-    // Load resources
-    PIXI.loader
-      .add(['../assets/laser.png', '../assets/pause.png'])
-      .add('../assets/images/wan.json')
-      .load(this.onAssetsLoaded.bind(this));
 
     // init ctn: world, player, objs, back, laser
     this.worldCtn = new PIXI.Container();
@@ -77,11 +72,21 @@ class PixiMgr {
     this.shouldReset = false;
     this.wanMap = {};
   }
-  onAssetsLoaded() {
-    this.setupPlayer();
-    this.setupLaser();
-    this.setupPause();
-    this.setupGameOverScene();
+  setup() {
+    // Load resources
+    return new Promise(resolve => {
+      PIXI.loader
+        .add(['../assets/laser.png', '../assets/pause.png'])
+        .add('../assets/images/wan.json')
+        .add('../assets/images/coin.json')
+        .load(() => {
+          this.setupPlayer();
+          this.setupLaser();
+          this.setupPause();
+          this.setupGameOverScene();
+          resolve();
+        });
+    });
   }
   setupPlayer() {
     let wans = [];
@@ -214,7 +219,19 @@ class PixiMgr {
     this.mapCtn.addChild(spriteMap);
   }
   addSprite(obj) {
-    let sprite = new PIXI.Sprite.fromImage(`../assets/${obj.img}.png`);
+    let sprite;
+    if (obj.type === 'coin') {
+      let tex = [];
+      for (let i = 0; i < 3; i++) {
+        let coinTex = PIXI.Texture.fromFrame(`coin${i}.png`);
+        tex.push(coinTex);
+      }
+      sprite = new PIXI.extras.AnimatedSprite(tex);
+      sprite.animationSpeed = 0.3;
+      sprite.play();
+      sprite.tint = 0x0072d3;
+    } else sprite = new PIXI.Sprite.fromImage(`../assets/${obj.img}.png`);
+
     sprite.anchor.set(0.5, 0.5);
     if (obj.group === 'back') {
       sprite.parentGroup = this.backGrp;

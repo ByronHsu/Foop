@@ -261,5 +261,6 @@ function animate() {
     requestAnimationFrame(animate);
   }
 }
-
-requestAnimationFrame(animate);
+pixiMgr.setup().then(() => {
+  requestAnimationFrame(animate);
+});
