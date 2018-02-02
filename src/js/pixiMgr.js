@@ -84,6 +84,7 @@ class PixiMgr {
         .add('../assets/images/shoe.json')
         .add('../assets/images/trap.json')
         .add('../assets/images/coin.json')
+        .add('../assets/images/worm.json')
         .load(() => {
           this.setupPlayer();
           this.setupLaser();
@@ -133,7 +134,7 @@ class PixiMgr {
       this.laserRef.y = laser.y;
       this.laserEnd = laser.y + WH;
     } else if (laser.y < this.laserEnd) {
-      this.laserRef.y = laser.y += 1.5 + speedUp;
+      this.laserRef.y = laser.y += 1 + speedUp;
     }
   }
   addTile(border) {
@@ -151,6 +152,7 @@ class PixiMgr {
     painter.drawRect(0, 0, border.width, border.height);
     let spriteMap = new PIXI.Sprite(painter.generateCanvasTexture());
     spriteMap.anchor.set(0.5, 0.5);
+    spriteMap.alpha = 0.5;
     spriteMap.parentGroup = this.mapGrp;
     spriteMap = Object.assign(spriteMap, border);
     (spriteMap.width /= 10), (spriteMap.height /= 10);

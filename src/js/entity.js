@@ -82,7 +82,7 @@ class Potion extends Box {
 class Bug extends Box {
   constructor(args) {
     super(args);
-    this.type = 'bug';
+    this.type = 'worm';
     this.img = 'bug';
     this.group = 'objs';
   }

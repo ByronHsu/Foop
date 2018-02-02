@@ -9,7 +9,7 @@ import {
   Potion,
   Border,
   Door,
-  // Bug,
+  Bug,
 } from './js/entity.js';
 import { inside, outside, hit, hitLaser } from './js/physic.js';
 import { rnGen, rnGenInt } from './js/utils.js';
@@ -96,10 +96,28 @@ class Looper {
     let frameDown = new Box({ x: 0, y: -this.now * WH, width: WW, height: WH });
     if (height === WH)
       //最裡面
-      this.vec.push({ border: frameUp, objs: [], idx: this.now });
+      this.vec.push({
+        border: frameUp,
+        objs: [],
+        idx: this.now,
+        hasBug: false,
+        hitBug: false,
+      });
     else
-      this.vec.unshift({ border: frameUp, objs: [], idx: this.now }),
-        this.vec.push({ border: frameDown, objs: [], idx: this.now });
+      this.vec.unshift({
+        border: frameUp,
+        objs: [],
+        idx: this.now,
+        hasBug: false,
+        hitBug: false,
+      }),
+        this.vec.push({
+          border: frameDown,
+          objs: [],
+          idx: this.now,
+          hasBug: false,
+          hitBug: false,
+        });
     obj.startUpBox = new Door({
       x: obj.border.vtx[0].x + pad,
       y: obj.border.vtx[0].y + pad,
@@ -158,8 +176,6 @@ class DataMgr {
     this.looper.createLoop(WH);
     this.laser = new Box(LASERBOX);
     // this.objs = [];
-    // this.bugs = [];
-    // this.hasBug = false;
   }
   playerMove() {
     let arr = [
@@ -187,18 +203,33 @@ class DataMgr {
       }
     });
   }
+  // get the frame 'x' the player now stands on. this.looper.vec[x]
+  get playerStack() {
+    let len = this.looper.vec.length;
+    const { y } = this.player;
+    if (y > -1 * WH / 2 && y < WH / 2) {
+      return (len - 1) / 2;
+    } else if (y > 0) {
+      return (len - 1) / 2 + Math.floor((y + WH / 2) / WH);
+    } else if (y < 0) {
+      return (len - 1) / 2 + Math.round((y - WH / 2) / WH);
+    }
+  }
   hitExit() {
     if (hit(this.player, this.looper.loop.exitDownBox)) {
-      let ret = this.looper.hitExitDown();
-      (this.player.x = ret.x), (this.player.y = ret.y);
-      (this.laser.x = -250), (this.laser.y = ret.y - 100);
-      this.laser.width = 0;
-    }
-    if (hit(this.player, this.looper.loop.exitUpBox)) {
-      let ret = this.looper.hitExitUp();
-      (this.player.x = ret.x), (this.player.y = ret.y);
-      (this.laser.x = -250), (this.laser.y = ret.y - 100);
-      this.laser.width = 0;
+      if (this.looper.vec[this.playerStack].hitBug) {
+        let ret = this.looper.hitExitDown();
+        (this.player.x = ret.x), (this.player.y = ret.y);
+        (this.laser.x = -250), (this.laser.y = ret.y - 100);
+        this.laser.width = 0;
+      }
+    } else if (hit(this.player, this.looper.loop.exitUpBox)) {
+      if (this.looper.vec[this.playerStack].hitBug) {
+        let ret = this.looper.hitExitUp();
+        (this.player.x = ret.x), (this.player.y = ret.y);
+        (this.laser.x = -250), (this.laser.y = ret.y - 100);
+        this.laser.width = 0;
+      }
     }
   }
   hitObjs() {
@@ -208,6 +239,8 @@ class DataMgr {
       for (let j = loop.objs.length - 1; j >= 0; j--) {
         if (hit(this.player, loop.objs[j])) {
           loop.objs[j].hit(this.player);
+          if (loop.objs[j].type === 'worm')
+            this.looper.vec[this.playerStack].hitBug = true;
           loop.objs.splice(j, 1);
         }
       }
@@ -233,6 +266,17 @@ class DataMgr {
           height: 50,
           idx: loop.idx,
         };
+        if (!loop.hasBug) {
+          let bugArgs = {
+            x: rnGen(-loop.border.width / 2, loop.border.width / 2),
+            y: rnGen(loop.border.y, loop.border.height / 2 + loop.border.y),
+            width: 50,
+            height: 50,
+            idx: loop.idx,
+          };
+          loop.objs.push(new Bug(bugArgs));
+          loop.hasBug = true;
+        }
         let arr = [
           new Coin(args),
           new Shoe(args),
@@ -242,7 +286,6 @@ class DataMgr {
         loop.objs.push(arr[rnGenInt(0, 3)]);
       }
     }
-    // console.log(this.looper.vec);
   }
   get objs() {
     let arr = [];
@@ -252,23 +295,6 @@ class DataMgr {
     // console.log('get objs', arr);
     return arr;
   }
-  // randomGenBug() {
-  //   for (let i = 0; i < this.looper.vec.length; i++) {
-  //     let loop = this.looper.vec[i];
-  //     let bug = new Bug({
-  //       x: rnGen(-loop.border.width / 2, loop.border.width / 2),
-  //       y: rnGen(
-  //         -loop.border.height / 2 + loop.border.y,
-  //         loop.border.height / 2 + loop.border.y
-  //       ),
-  //       width: 50,
-  //       height: 50,
-  //       idx: loop.idx,
-  //     });
-  //   }
-  //   // this.bugs.push(bug);
-  //   // this.hasBug = true;
-  // }
 }
 
 var dataMgr = new DataMgr();
@@ -288,7 +314,6 @@ function animate() {
     dataMgr.hitLaser();
     pixiMgr.updatePlayer(dataMgr.player);
     pixiMgr.updateObjs(dataMgr.objs);
-    // pixiMgr.updateObjs(dataMgr.bugs);
     pixiMgr.updateLaser(dataMgr.laser, dataMgr.looper.arr.length * SPEEDUP);
     // dataMgr.player.speed > 10 ? pixiMgr.shine() : pixiMgr.unShine();
     requestAnimationFrame(animate);
