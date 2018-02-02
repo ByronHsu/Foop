@@ -84,6 +84,7 @@ class PixiMgr {
         .add('./assets/images/shoe.json')
         .add('./assets/images/trap.json')
         .add('./assets/images/coin.json')
+        .add('./assets/images/worm.json')
         .load(() => {
           this.setupPlayer();
           this.setupLaser();
@@ -100,7 +101,7 @@ class PixiMgr {
     this.playerMap.y = y / 10;
   }
   updateObjs(objs) {
-    console.log('in', objs);
+    // console.log('in', objs);
     // remove deleted obj from container
     // 1. iterate this.objsCtn
     // 2. 看傳進來的objs有無這個item
@@ -125,7 +126,7 @@ class PixiMgr {
       let sprite = this.addObj(objs[i]);
       this.objs.push(sprite);
     }
-    console.log('out', objs);
+    // console.log('out', objs);
   }
   updateLaser(laser, speedUp) {
     if (laser.width < WW) {
@@ -133,7 +134,7 @@ class PixiMgr {
       this.laserRef.y = laser.y;
       this.laserEnd = laser.y + WH;
     } else if (laser.y < this.laserEnd) {
-      this.laserRef.y = laser.y += 1.5 + speedUp;
+      this.laserRef.y = laser.y += 1 + speedUp;
     }
   }
   addTile(border) {
@@ -151,6 +152,7 @@ class PixiMgr {
     painter.drawRect(0, 0, border.width, border.height);
     let spriteMap = new PIXI.Sprite(painter.generateCanvasTexture());
     spriteMap.anchor.set(0.5, 0.5);
+    spriteMap.alpha = 0.5;
     spriteMap.parentGroup = this.mapGrp;
     spriteMap = Object.assign(spriteMap, border);
     (spriteMap.width /= 10), (spriteMap.height /= 10);
