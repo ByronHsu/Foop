@@ -269,7 +269,12 @@ class PixiMgr {
       `This Game Money: ${player.money}, This Game Score: ${
         player.exitTimes
       }, Total Money: ${totalMoney}, Highest Score: ${recordScore}`,
-      { fontFamily: 'Arial', fontSize: 24, fill: '#1c1c1c', align: 'center' }
+      {
+        fontFamily: 'Arial',
+        fontSize: 24,
+        fill: '#1c1c1c',
+        align: 'center',
+      }
     );
     text.position.set(0, WH / 2);
     gameCtn.addChild(text);
