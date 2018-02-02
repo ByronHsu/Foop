@@ -268,8 +268,11 @@ class DataMgr {
         };
         if (!loop.hasBug) {
           let bugArgs = {
-            x: rnGen(-loop.border.width / 2, loop.border.width / 2),
-            y: rnGen(loop.border.y, loop.border.height / 2 + loop.border.y),
+            x: rnGen(-loop.border.width / 2 + 100, loop.border.width / 2 - 100),
+            y: rnGen(
+              loop.border.y,
+              loop.border.height / 2 + loop.border.y - 100
+            ),
             width: 50,
             height: 50,
             idx: loop.idx,

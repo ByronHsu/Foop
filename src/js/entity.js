@@ -83,7 +83,7 @@ class Bug extends Box {
   constructor(args) {
     super(args);
     this.type = 'worm';
-    this.img = 'bug';
+    this.img = 'worm';
     this.group = 'objs';
   }
   hit(player) {
