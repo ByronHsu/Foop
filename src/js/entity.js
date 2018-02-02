@@ -63,6 +63,7 @@ class Trap extends Box {
   }
   hit(player) {
     player.speed -= 1;
+    player.hp -= 1;
   }
 }
 
@@ -87,8 +88,8 @@ class Bug extends Box {
     this.group = 'objs';
     this.idx = args.idx;
   }
-  hit(player) {
-    player.hp -= 1;
+  hit() {
+    // player.hp -= 1;
   }
 }
 

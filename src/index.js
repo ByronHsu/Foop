@@ -164,11 +164,14 @@ class DataMgr {
   constructor() {
     this.isPaused = false;
     this.player = new Box(PLAYERBOX);
-    this.player.hp = 100;
+    this.player.hp = 5;
     this.player.speed = SPEED;
     this.player.money = 0;
     this.player.exitTimes = 0; // increase every time player exits a door.
-    gui.add(this.player, 'hp', 0, 200).listen();
+    gui
+      .add(this.player, 'hp', 0, 200)
+      .step(1)
+      .listen();
     gui
       .add(this.player, 'speed', 0, 50)
       .step(1)
@@ -255,6 +258,12 @@ class DataMgr {
       pixiMgr.shouldReset = true;
     }
   }
+  noHp() {
+    if (this.player.hp < 1) {
+      pixiMgr.isPaused = true;
+      pixiMgr.shouldReset = true;
+    }
+  }
   randomGenObjs() {
     for (let i = 0; i < this.looper.vec.length; i++) {
       let loop = this.looper.vec[i];
@@ -318,6 +327,7 @@ function animate() {
     dataMgr.hitExit();
     dataMgr.hitObjs();
     dataMgr.hitLaser();
+    dataMgr.noHp();
     pixiMgr.updatePlayer(dataMgr.player);
     pixiMgr.updateObjs(dataMgr.objs);
     pixiMgr.updateLaser(dataMgr.laser, dataMgr.looper.arr.length * SPEEDUP);
