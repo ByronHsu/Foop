@@ -20,7 +20,7 @@ if (process.env.NODE_ENV !== 'prod') {
 }
 let gui = new dat.GUI();
 const SPEED = 5;
-const SPEEDUP = 0.5;
+const SPEEDUP = 0;
 const WW = window.innerWidth;
 const WH = window.innerHeight;
 const PLAYERBOX = {
