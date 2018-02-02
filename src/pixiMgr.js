@@ -134,7 +134,7 @@ class PixiMgr {
       this.laserRef.y = laser.y;
       this.laserEnd = laser.y + WH;
     } else if (laser.y < this.laserEnd) {
-      this.laserRef.y = laser.y += 1 + speedUp;
+      this.laserRef.y = laser.y += 2 + speedUp;
     }
   }
   addTile(border) {

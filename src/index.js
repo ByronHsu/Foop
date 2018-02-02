@@ -164,7 +164,7 @@ class DataMgr {
   constructor() {
     this.isPaused = false;
     this.player = new Box(PLAYERBOX);
-    this.player.hp = 5;
+    this.player.hp = 3;
     this.player.speed = SPEED;
     this.player.money = 0;
     this.player.exitTimes = 0; // increase every time player exits a door.
