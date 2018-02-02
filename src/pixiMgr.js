@@ -237,16 +237,44 @@ class PixiMgr {
     this.pause.parentGroup = this.mapGrp;
     this.mapCtn.addChild(this.pause);
   }
-  reset() {
+  reset(player) {
     // temporary function
     this.playerCtn.removeChildren();
     this.objsCtn.removeChildren();
     this.backCtn.removeChildren();
     this.mapCtn.removeChildren();
     this.laserCtn.removeChildren();
+    // Save & show game data
     let gameCtn = new PIXI.Container();
-    gameCtn.addChild(new PIXI.Sprite.fromImage('./assets/gameover.png'));
+    // gameCtn.addChild(new PIXI.Sprite.fromImage('./assets/gameover.png'));
+    let totalMoney = 0;
+    let recordScore = 0;
+    if (!(typeof Storage !== 'undefined')) {
+      console.log('No LocalStorage Support');
+    } else {
+      if (localStorage.getItem('money') && localStorage.getItem('record')) {
+        totalMoney = Number(localStorage.getItem('money')) + player.money;
+        localStorage.setItem('money', totalMoney);
+        recordScore = Math.max(
+          Number(localStorage.getItem('record')),
+          player.exitTimes
+        );
+        localStorage.setItem('record', recordScore);
+      } else {
+        localStorage.setItem('money', player.money);
+        localStorage.setItem('record', player.exitTimes);
+      }
+    }
+    let text = new PIXI.Text(
+      `This Game Money: ${player.money}, This Game Score: ${
+        player.exitTimes
+      }, Total Money: ${totalMoney}, Highest Score: ${recordScore}`,
+      { fontFamily: 'Arial', fontSize: 24, fill: '#1c1c1c', align: 'center' }
+    );
+    text.position.set(0, WH / 2);
+    gameCtn.addChild(text);
     this.app.stage.addChild(gameCtn);
+
     this.setupPause();
     this.pause.on('click', () => {
       this.isPaused = false;

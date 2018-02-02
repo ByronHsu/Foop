@@ -167,6 +167,7 @@ class DataMgr {
     this.player.hp = 100;
     this.player.speed = SPEED;
     this.player.money = 0;
+    this.player.exitTimes = 0; // increase every time player exits a door.
     gui.add(this.player, 'hp', 0, 200).listen();
     gui
       .add(this.player, 'speed', 0, 50)
@@ -218,6 +219,7 @@ class DataMgr {
   hitExit() {
     if (hit(this.player, this.looper.loop.exitDownBox)) {
       if (this.looper.vec[this.playerStack].hitBug) {
+        this.player.exitTimes += 1;
         let ret = this.looper.hitExitDown();
         (this.player.x = ret.x), (this.player.y = ret.y);
         (this.laser.x = -250), (this.laser.y = ret.y - 100);
@@ -225,6 +227,7 @@ class DataMgr {
       }
     } else if (hit(this.player, this.looper.loop.exitUpBox)) {
       if (this.looper.vec[this.playerStack].hitBug) {
+        this.player.exitTimes += 1;
         let ret = this.looper.hitExitUp();
         (this.player.x = ret.x), (this.player.y = ret.y);
         (this.laser.x = -250), (this.laser.y = ret.y - 100);
@@ -324,7 +327,7 @@ function animate() {
     // stop pixi animations
     // ex. pixiMgr.animationsStop();
     if (pixiMgr.shouldReset) {
-      pixiMgr.reset();
+      pixiMgr.reset(dataMgr.player);
       gui.destroy();
       gui = new dat.GUI();
       dataMgr = new DataMgr();
