@@ -85,6 +85,7 @@ class Bug extends Box {
     this.type = 'worm';
     this.img = 'worm';
     this.group = 'objs';
+    this.idx = args.idx;
   }
   hit(player) {
     player.hp -= 1;
