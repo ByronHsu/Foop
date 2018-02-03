@@ -260,6 +260,8 @@ class PixiMgr {
         );
         localStorage.setItem('record', recordScore);
       } else {
+        totalMoney = player.money;
+        recordScore = player.exitTimes;
         localStorage.setItem('money', player.money);
         localStorage.setItem('record', player.exitTimes);
       }
