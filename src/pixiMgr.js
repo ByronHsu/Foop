@@ -171,7 +171,10 @@ class PixiMgr {
     sprite = new PIXI.extras.AnimatedSprite(texs);
     sprite.animationSpeed = 0.3;
     sprite.play();
-    sprite.tint = config.lineColor[obj.idx];
+    sprite.tint =
+      obj.type === 'worm'
+        ? config.lineColor[obj.idx + 1]
+        : config.lineColor[obj.idx];
     sprite.anchor.set(0.5, 0.5);
     sprite.parentGroup = this.objsGrp;
     this.objsCtn.addChild(Object.assign(sprite, obj));
