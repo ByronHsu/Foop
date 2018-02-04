@@ -30,6 +30,13 @@ module.exports = {
         loaders: ['style-loader', 'css-loader', 'sass-loader'],
       },
       {
+        test: /\.(eot|svg|ttf|woff|woff2)$/,
+        loader: "file-loader",
+        options: {
+          name: "assets/fonts/[name].[ext]",
+        }
+      },
+      {
         test: /\.html$/,
         loader: "raw-loader" // for html hot-load
       }
