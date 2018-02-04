@@ -8,5 +8,24 @@ const lineColor = [
   0xef9929,
 ];
 const tileColor = 0x222222;
+const bgColor = 0xb4b4b4;
 
-export { lineColor, tileColor };
+const imgUrl = ['./assets/laser.png', './assets/pause.png'];
+
+const jsonUrl = [
+  './assets/images/wan.json',
+  './assets/images/potion.json',
+  './assets/images/shoe.json',
+  './assets/images/trap.json',
+  './assets/images/coin.json',
+  './assets/images/worm.json',
+];
+
+const soundsUrl = [
+  './assets/sounds/interface6.wav',
+  './assets/sounds/beads.wav',
+  './assets/sounds/coin3.wav',
+  './assets/sounds/slime3.wav',
+];
+
+export { lineColor, tileColor, bgColor, soundsUrl, jsonUrl, imgUrl };

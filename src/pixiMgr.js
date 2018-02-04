@@ -13,7 +13,7 @@ class PixiMgr {
       width: WW,
       height: WH,
       antialias: true,
-      backgroundColor: 0xb4b4b4,
+      backgroundColor: config.bgColor,
     });
     document.querySelector('#game').appendChild(this.app.view);
     this.app.stage = new PIXI.display.Stage();
@@ -80,17 +80,9 @@ class PixiMgr {
     // Load resources
     return new Promise(resolve => {
       PIXI.loader
-        .add(['./assets/laser.png', './assets/pause.png'])
-        .add('./assets/images/wan.json')
-        .add('./assets/images/potion.json')
-        .add('./assets/images/shoe.json')
-        .add('./assets/images/trap.json')
-        .add('./assets/images/coin.json')
-        .add('./assets/images/worm.json')
-        .add('./assets/sounds/interface6.wav')
-        .add('./assets/sounds/beads.wav')
-        .add('./assets/sounds/coin3.wav')
-        .add('./assets/sounds/slime3.wav')
+        .add(config.imgUrl)
+        .add(config.jsonUrl)
+        .add(config.soundsUrl)
         .load(() => {
           this.setupPlayer();
           this.setupLaser();
@@ -242,12 +234,10 @@ class PixiMgr {
     this.mapCtn.addChild(this.pause);
   }
   setupSound() {
-    this.sounds.push(
-      id['./assets/sounds/interface6.wav'],
-      id['./assets/sounds/coin3.wav'],
-      id['./assets/sounds/slime3.wav'],
-      id['./assets/sounds/beads.wav']
-    );
+    const { soundsUrl } = config;
+    for (let i = 0; i < soundsUrl.length; i++) {
+      this.sounds.push(id[soundsUrl[i]]);
+    }
   }
   reset(player) {
     // temporary function
