@@ -21,6 +21,13 @@ module.exports = {
         loader: "babel-loader"
       },
       {
+        test: /\.(eot|svg|ttf|woff|woff2)$/,
+        loader: "file-loader",
+        options: {
+          name: "assets/fonts/[name].[ext]",
+        }
+      },
+      {
         test: /\.scss$/,
         loaders: ['style-loader', 'css-loader', 'sass-loader'],
       },
