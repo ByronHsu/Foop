@@ -87,9 +87,10 @@ class PixiMgr {
         .add('./assets/images/trap.json')
         .add('./assets/images/coin.json')
         .add('./assets/images/worm.json')
-        .add('./assets/sounds/01.mp3')
-        .add('./assets/sounds/02.mp3')
-        .add('./assets/sounds/bounce.mp3')
+        .add('./assets/sounds/interface6.wav')
+        .add('./assets/sounds/beads.wav')
+        .add('./assets/sounds/coin3.wav')
+        .add('./assets/sounds/slime3.wav')
         .load(() => {
           this.setupPlayer();
           this.setupLaser();
@@ -242,9 +243,10 @@ class PixiMgr {
   }
   setupSound() {
     this.sounds.push(
-      id['./assets/sounds/bounce.mp3'],
-      id['./assets/sounds/01.mp3'],
-      id['./assets/sounds/02.mp3']
+      id['./assets/sounds/interface6.wav'],
+      id['./assets/sounds/coin3.wav'],
+      id['./assets/sounds/slime3.wav'],
+      id['./assets/sounds/beads.wav']
     );
   }
   reset(player) {

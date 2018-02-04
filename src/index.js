@@ -225,6 +225,7 @@ class DataMgr {
     if (hit(this.player, this.looper.loop.exitDownBox)) {
       if (this.looper.vec[this.playerStack].hitBug) {
         this.player.exitTimes += 1;
+        pixiMgr.sounds[3].sound.play();
         let ret = this.looper.hitExitDown();
         (this.player.x = ret.x), (this.player.y = ret.y);
         (this.laser.x = -250), (this.laser.y = ret.y - 100);
@@ -233,6 +234,7 @@ class DataMgr {
     } else if (hit(this.player, this.looper.loop.exitUpBox)) {
       if (this.looper.vec[this.playerStack].hitBug) {
         this.player.exitTimes += 1;
+        pixiMgr.sounds[3].sound.play();
         let ret = this.looper.hitExitUp();
         (this.player.x = ret.x), (this.player.y = ret.y);
         (this.laser.x = -250), (this.laser.y = ret.y - 100);
@@ -249,8 +251,8 @@ class DataMgr {
           loop.objs[j].hit(this.player);
           if (loop.objs[j].type === 'worm') {
             this.looper.vec[this.playerStack].hitBug = true;
-            pixiMgr.sounds[1].sound.play();
-          }
+            pixiMgr.sounds[2].sound.play();
+          } else pixiMgr.sounds[1].sound.play();
           loop.objs.splice(j, 1);
         }
       }
@@ -258,7 +260,7 @@ class DataMgr {
   }
   hitLaser() {
     if (hitLaser(this.player, this.laser)) {
-      pixiMgr.sounds[2].sound.play();
+      pixiMgr.sounds[0].sound.play();
       pixiMgr.isPaused = true;
       pixiMgr.shouldReset = true;
     }
