@@ -1,5 +1,6 @@
 import PixiMgr from './pixiMgr';
 import './scss/index.scss';
+import 'pixi-sound';
 import key from 'keymaster';
 import {
   Box,
@@ -18,6 +19,7 @@ import dat from 'dat.gui';
 if (process.env.NODE_ENV !== 'prod') {
   require('./template.html');
 }
+
 let gui = new dat.GUI();
 const SPEED = 5;
 const SPEEDUP = 0;
@@ -245,8 +247,10 @@ class DataMgr {
       for (let j = loop.objs.length - 1; j >= 0; j--) {
         if (hit(this.player, loop.objs[j])) {
           loop.objs[j].hit(this.player);
-          if (loop.objs[j].type === 'worm')
+          if (loop.objs[j].type === 'worm') {
             this.looper.vec[this.playerStack].hitBug = true;
+            pixiMgr.sounds[1].sound.play();
+          }
           loop.objs.splice(j, 1);
         }
       }
@@ -254,6 +258,7 @@ class DataMgr {
   }
   hitLaser() {
     if (hitLaser(this.player, this.laser)) {
+      pixiMgr.sounds[2].sound.play();
       pixiMgr.isPaused = true;
       pixiMgr.shouldReset = true;
     }

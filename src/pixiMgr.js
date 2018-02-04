@@ -4,6 +4,7 @@ import * as config from './js/config.js';
 
 const WW = window.innerWidth;
 const WH = window.innerHeight;
+const id = PIXI.loader.resources;
 
 class PixiMgr {
   constructor() {
@@ -73,6 +74,7 @@ class PixiMgr {
     this.isPaused = false;
     this.shouldReset = false;
     this.playerMap = {};
+    this.sounds = []; // store all sound objects
   }
   setup() {
     // Load resources
@@ -85,10 +87,14 @@ class PixiMgr {
         .add('./assets/images/trap.json')
         .add('./assets/images/coin.json')
         .add('./assets/images/worm.json')
+        .add('./assets/sounds/01.mp3')
+        .add('./assets/sounds/02.mp3')
+        .add('./assets/sounds/bounce.mp3')
         .load(() => {
           this.setupPlayer();
           this.setupLaser();
           this.setupPause();
+          this.setupSound();
           resolve();
         });
     });
@@ -161,9 +167,8 @@ class PixiMgr {
   addObj(obj) {
     let sprite;
     let texs = [];
-    let length = Object.keys(
-      PIXI.loader.resources[`./assets/images/${obj.type}.json`].textures
-    ).length;
+    let length = Object.keys(id[`./assets/images/${obj.type}.json`].textures)
+      .length;
     for (let i = 0; i < length; i++) {
       let tex = PIXI.Texture.fromFrame(`${obj.type}${i}.png`);
       texs.push(tex);
@@ -212,9 +217,7 @@ class PixiMgr {
     this.mapCtn.addChild(this.playerMap);
   }
   setupLaser() {
-    this.laser = new PIXI.Sprite(
-      PIXI.loader.resources['./assets/laser.png'].texture
-    );
+    this.laser = new PIXI.Sprite(id['./assets/laser.png'].texture);
     this.laser.anchor.set(0, 0.5);
     (this.laser.width = 0), (this.laser.height = 100);
     this.laser.position.set(-1 * WW / 2, -1 * WH);
@@ -223,9 +226,7 @@ class PixiMgr {
     this.laserCtn.addChild(this.laser);
   }
   setupPause() {
-    this.pause = new PIXI.Sprite(
-      PIXI.loader.resources['./assets/pause.png'].texture
-    );
+    this.pause = new PIXI.Sprite(id['./assets/pause.png'].texture);
     this.pause.anchor.set(0.5);
     (this.pause.width = 50), (this.pause.height = 50);
     this.pause.position.set(100, 0);
@@ -238,6 +239,13 @@ class PixiMgr {
     });
     this.pause.parentGroup = this.mapGrp;
     this.mapCtn.addChild(this.pause);
+  }
+  setupSound() {
+    this.sounds.push(
+      id['./assets/sounds/bounce.mp3'],
+      id['./assets/sounds/01.mp3'],
+      id['./assets/sounds/02.mp3']
+    );
   }
   reset(player) {
     // temporary function
