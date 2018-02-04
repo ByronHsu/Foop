@@ -19,6 +19,9 @@ module.exports = {
     publicPath: '/',
   },
   devtool: 'eval',
+  resolve: {
+    extensions: ['.js'],
+  },
   module: {
     loaders: [
       { test: /\.js$/,

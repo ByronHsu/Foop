@@ -2,18 +2,9 @@ import PixiMgr from './pixiMgr';
 import './scss/index.scss';
 import 'pixi-sound';
 import key from 'keymaster';
-import {
-  Box,
-  Coin,
-  Shoe,
-  Trap,
-  Potion,
-  Border,
-  Door,
-  Bug,
-} from './js/entity.js';
-import { inside, outside, hit, hitLaser } from './js/physic.js';
-import { rnGen, rnGenInt } from './js/utils.js';
+import { Box, Coin, Shoe, Trap, Potion, Border, Door, Bug } from './js/entity';
+import { inside, outside, hit, hitLaser } from './js/physic';
+import { rnGen, rnGenInt } from './js/utils';
 import dat from 'dat.gui';
 
 if (process.env.NODE_ENV !== 'prod') {

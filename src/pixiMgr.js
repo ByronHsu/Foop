@@ -1,6 +1,6 @@
 import * as PIXI from 'pixi.js';
-import './bin/pixi-display.js';
-import * as config from './js/config.js';
+import './bin/pixi-display';
+import * as config from './js/config';
 
 const WW = window.innerWidth;
 const WH = window.innerHeight;
