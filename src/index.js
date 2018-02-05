@@ -12,7 +12,8 @@ if (process.env.NODE_ENV !== 'prod') {
 }
 
 let gui = new dat.GUI();
-const SPEED = 5;
+const SPEED = 10;
+const FALLSPEED = 1;
 const SPEEDUP = 0;
 const WW = window.innerWidth;
 const WH = window.innerHeight;
@@ -24,7 +25,7 @@ const PLAYERBOX = {
 };
 const LASERBOX = {
   x: -1 * WW / 2,
-  y: -1 * WH / 2,
+  y: -1 * WH / 2 + 10,
   width: 0,
   height: 100,
 };
@@ -175,12 +176,17 @@ class DataMgr {
     // this.objs = [];
   }
   playerMove() {
-    let arr = [
-      { key: 'w', x: 0, y: -1 },
-      { key: 's', x: 0, y: 1 },
-      { key: 'a', x: -1, y: 0 },
-      { key: 'd', x: 1, y: 0 },
-    ];
+    let tmp = new Box(this.player);
+    tmp.y += FALLSPEED;
+    if (
+      inside(tmp, this.looper.loop.border) &&
+      ((this.looper.prevLoop !== undefined &&
+        outside(tmp, this.looper.prevLoop.border)) ||
+        this.looper.prevLoop === undefined)
+    ) {
+      this.player.y += FALLSPEED;
+    }
+    let arr = [{ key: 'a', x: -1, y: 0 }, { key: 'd', x: 1, y: 0 }];
     arr.forEach(obj => {
       if (key.isPressed(obj.key)) {
         let tmp = new Box(this.player);
@@ -194,8 +200,6 @@ class DataMgr {
         ) {
           this.player.x +=
             (this.player.speed + this.looper.arr.length * SPEEDUP) * obj.x;
-          this.player.y +=
-            (this.player.speed + this.looper.arr.length * SPEEDUP) * obj.y;
         }
       }
     });
@@ -328,7 +332,7 @@ function animate() {
     dataMgr.noHp();
     pixiMgr.updatePlayer(dataMgr.player);
     pixiMgr.updateObjs(dataMgr.objs);
-    pixiMgr.updateLaser(dataMgr.laser, dataMgr.looper.arr.length * SPEEDUP);
+    pixiMgr.updateLaser(dataMgr.laser);
     // dataMgr.player.speed > 10 ? pixiMgr.shine() : pixiMgr.unShine();
     requestAnimationFrame(animate);
   } else {
