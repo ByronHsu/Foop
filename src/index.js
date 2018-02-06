@@ -13,7 +13,7 @@ if (process.env.NODE_ENV !== 'prod') {
 
 let gui = new dat.GUI();
 const SPEED = 10;
-const FALLSPEED = 1;
+const FALLSPEED = 5;
 const SPEEDUP = 0;
 const WW = window.innerWidth;
 const WH = window.innerHeight;
@@ -46,6 +46,8 @@ class Looper {
       .listen();
   }
   hitExitUp() {
+    let vecIdx = -this.now + this.arr.length - 1;
+    this.vec[vecIdx].hasBug = false;
     // 如果可以skip掉裡面的 就直接return這層的startUpBox
     if (this.skip == this.now) return this.arr[this.now].startDownBox;
     // 決定裡面那圈要走幾輪
@@ -58,6 +60,8 @@ class Looper {
   }
   hitExitDown() {
     let finish = false;
+    let vecIdx = this.now + this.arr.length - 1;
+    this.vec[vecIdx].hasBug = false;
     this.stack[0]--;
     if (this.stack[0] === 0) {
       this.stack.splice(0, 1);
@@ -86,8 +90,8 @@ class Looper {
     let pad = 100;
     let obj = { border: new Border({ height, z: -this.now }) };
     let prevLoop = this.arr[this.now - 1];
-    let frameUp = new Box({ x: 0, y: this.now * WH, width: WW, height: WH });
-    let frameDown = new Box({ x: 0, y: -this.now * WH, width: WW, height: WH });
+    let frameUp = new Box({ x: 0, y: -this.now * WH, width: WW, height: WH });
+    let frameDown = new Box({ x: 0, y: this.now * WH, width: WW, height: WH });
     if (height === WH)
       //最裡面
       this.vec.push({
@@ -176,17 +180,23 @@ class DataMgr {
     // this.objs = [];
   }
   playerMove() {
-    let tmp = new Box(this.player);
-    tmp.y += FALLSPEED;
-    if (
-      inside(tmp, this.looper.loop.border) &&
-      ((this.looper.prevLoop !== undefined &&
-        outside(tmp, this.looper.prevLoop.border)) ||
-        this.looper.prevLoop === undefined)
-    ) {
-      this.player.y += FALLSPEED;
-    }
-    let arr = [{ key: 'a', x: -1, y: 0 }, { key: 'd', x: 1, y: 0 }];
+    // let tmp = new Box(this.player);
+    // tmp.y += FALLSPEED;
+    // if (
+    //   inside(tmp, this.looper.loop.border) &&
+    //   ((this.looper.prevLoop !== undefined &&
+    //     outside(tmp, this.looper.prevLoop.border)) ||
+    //     this.looper.prevLoop === undefined)
+    // ) {
+    //   this.player.y += FALLSPEED;
+    // }
+    // let arr = [{ key: 'a', x: -1, y: 0 }, { key: 'd', x: 1, y: 0 }];
+    let arr = [
+      { key: 'w', x: 0, y: -1 },
+      { key: 's', x: 0, y: 1 },
+      { key: 'a', x: -1, y: 0 },
+      { key: 'd', x: 1, y: 0 },
+    ];
     arr.forEach(obj => {
       if (key.isPressed(obj.key)) {
         let tmp = new Box(this.player);
@@ -200,25 +210,16 @@ class DataMgr {
         ) {
           this.player.x +=
             (this.player.speed + this.looper.arr.length * SPEEDUP) * obj.x;
+          this.player.y +=
+            (this.player.speed + this.looper.arr.length * SPEEDUP) * obj.y;
         }
       }
     });
   }
-  // get the frame 'x' the player now stands on. this.looper.vec[x]
-  get playerStack() {
-    let len = this.looper.vec.length;
-    const { y } = this.player;
-    if (y > -1 * WH / 2 && y < WH / 2) {
-      return (len - 1) / 2;
-    } else if (y > 0) {
-      return (len - 1) / 2 + Math.floor((y + WH / 2) / WH);
-    } else if (y < 0) {
-      return (len - 1) / 2 + Math.round((y - WH / 2) / WH);
-    }
-  }
   hitExit() {
     if (hit(this.player, this.looper.loop.exitDownBox)) {
-      if (this.looper.vec[this.playerStack].hitBug) {
+      if (this.looper.vec[this.playerVec].hitBug) {
+        this.looper.vec[this.playerVec].hitBug = false;
         this.player.exitTimes += 1;
         pixiMgr.sounds[3].sound.play();
         let ret = this.looper.hitExitDown();
@@ -227,7 +228,8 @@ class DataMgr {
         this.laser.width = 0;
       }
     } else if (hit(this.player, this.looper.loop.exitUpBox)) {
-      if (this.looper.vec[this.playerStack].hitBug) {
+      if (this.looper.vec[this.playerVec].hitBug) {
+        this.looper.vec[this.playerVec].hitBug = false;
         this.player.exitTimes += 1;
         pixiMgr.sounds[3].sound.play();
         let ret = this.looper.hitExitUp();
@@ -245,7 +247,7 @@ class DataMgr {
         if (hit(this.player, loop.objs[j])) {
           loop.objs[j].hit(this.player);
           if (loop.objs[j].type === 'worm') {
-            this.looper.vec[this.playerStack].hitBug = true;
+            this.looper.vec[this.playerVec].hitBug = true;
             pixiMgr.sounds[2].sound.play();
           } else pixiMgr.sounds[1].sound.play();
           loop.objs.splice(j, 1);
@@ -269,40 +271,44 @@ class DataMgr {
   randomGenObjs() {
     for (let i = 0; i < this.looper.vec.length; i++) {
       let loop = this.looper.vec[i];
-      while (loop.objs.length < 5) {
-        let args = {
-          x: rnGen(-loop.border.width / 2, loop.border.width / 2),
+      // while (loop.objs.length < 5) {
+      //   let args = {
+      //     x: rnGen(-loop.border.width / 2, loop.border.width / 2),
+      //     y: rnGen(
+      //       -loop.border.height / 2 + loop.border.y,
+      //       loop.border.height / 2 + loop.border.y
+      //     ),
+      //     width: 50,
+      //     height: 50,
+      //     idx: loop.idx,
+      //   };
+      //   let arr = [
+      //     new Coin(args),
+      //     new Shoe(args),
+      //     new Trap(args),
+      //     new Potion(args),
+      //   ];
+      //   loop.objs.push(arr[rnGenInt(0, 3)]);
+      // }
+      // 在這個vec才放蟲
+      // console.log(this.playerVec, i, loop.hasBug);
+      const pad = 100;
+      if (i === this.playerVec && !loop.hasBug) {
+        let bugArgs = {
+          x: rnGen(-loop.border.width / 2 + pad, loop.border.width / 2 - pad),
           y: rnGen(
-            -loop.border.height / 2 + loop.border.y,
-            loop.border.height / 2 + loop.border.y
+            -loop.border.height / 2 + loop.border.y + pad,
+            loop.border.height / 2 + loop.border.y - pad
           ),
           width: 50,
           height: 50,
           idx: loop.idx,
         };
-        if (!loop.hasBug) {
-          let bugArgs = {
-            x: rnGen(-loop.border.width / 2 + 100, loop.border.width / 2 - 100),
-            y: rnGen(
-              loop.border.y,
-              loop.border.height / 2 + loop.border.y - 100
-            ),
-            width: 50,
-            height: 50,
-            idx: loop.idx,
-          };
-          loop.objs.push(new Bug(bugArgs));
-          loop.hasBug = true;
-        }
-        let arr = [
-          new Coin(args),
-          new Shoe(args),
-          new Trap(args),
-          new Potion(args),
-        ];
-        loop.objs.push(arr[rnGenInt(0, 3)]);
+        loop.objs.push(new Bug(bugArgs));
+        loop.hasBug = true;
       }
     }
+    // console.log(this.looper.vec);
   }
   get objs() {
     let arr = [];
@@ -311,6 +317,13 @@ class DataMgr {
     });
     // console.log('get objs', arr);
     return arr;
+  }
+  // get the frame 'x' the player now stands on. this.looper.vec[x]
+  get playerVec() {
+    let len = this.looper.vec.length;
+    const { y } = this.player;
+    // 距離(y - (-len / 2* WH) )/邊長
+    return Math.floor((y + len / 2 * WH) / WH);
   }
 }
 

@@ -158,6 +158,7 @@ class PixiMgr {
     this.mapCtn.addChild(spriteMap);
   }
   addObj(obj) {
+    console.log(obj);
     let sprite;
     let texs = [];
     let length = Object.keys(id[`./assets/images/${obj.type}.json`].textures)
