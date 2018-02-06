@@ -187,6 +187,7 @@ class DataMgr {
     this.looper = new Looper();
     this.looper.createLoop(config.app.h);
     this.laser = new Box(LASERBOX);
+    this.player.onFloor = false;
     // this.objs = [];
   }
   playerMove() {
@@ -199,7 +200,7 @@ class DataMgr {
         this.looper.prevLoop === undefined)
     ) {
       this.player.y += FALLSPEED;
-    }
+    } else this.hitFloor();
     // let arr = [{ key: 'a', x: -1, y: 0 }, { key: 'd', x: 1, y: 0 }];
     let arr = [
       { key: 'w', x: 0, y: -1 },
@@ -226,6 +227,13 @@ class DataMgr {
       }
     });
   }
+  hitFloor() {
+    if (!this.player.onFloor) {
+      this.player.hp -= 1;
+      this.player.onFloor = true;
+      pixiMgr.sounds[4].sound.play();
+    }
+  }
   hitExit() {
     if (hit(this.player, this.looper.loop.exitDownBox)) {
       if (this.looper.vec[this.playerVec].hitBug) {
@@ -236,6 +244,7 @@ class DataMgr {
         (this.player.x = ret.x), (this.player.y = ret.y);
         (this.laser.x = -250), (this.laser.y = ret.y - 100);
         this.laser.width = 0;
+        this.player.onFloor = false;
       }
     } else if (hit(this.player, this.looper.loop.exitUpBox)) {
       if (this.looper.vec[this.playerVec].hitBug) {
@@ -246,6 +255,7 @@ class DataMgr {
         (this.player.x = ret.x), (this.player.y = ret.y);
         (this.laser.x = -250), (this.laser.y = ret.y - 100);
         this.laser.width = 0;
+        this.player.onFloor = false;
       }
     }
   }

@@ -10,7 +10,11 @@ const lineColor = [
 const tileColor = 0x222222;
 const bgColor = 0xb4b4b4;
 
-const imgUrl = ['./assets/laser.png', './assets/pause.png'];
+const imgUrl = [
+  './assets/laser.png',
+  './assets/pause.png',
+  './assets/thorn.png',
+];
 
 const jsonUrl = [
   './assets/images/wan.json',
@@ -26,6 +30,7 @@ const soundsUrl = [
   './assets/sounds/beads.wav',
   './assets/sounds/coin3.wav',
   './assets/sounds/slime3.wav',
+  './assets/sounds/hitFloor.wav',
 ];
 
 const app = {
