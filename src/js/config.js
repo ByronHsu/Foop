@@ -28,4 +28,9 @@ const soundsUrl = [
   './assets/sounds/slime3.wav',
 ];
 
-export { lineColor, tileColor, bgColor, soundsUrl, jsonUrl, imgUrl };
+const app = {
+  w: 600,
+  h: window.innerHeight,
+};
+
+export { lineColor, tileColor, bgColor, soundsUrl, jsonUrl, imgUrl, app };

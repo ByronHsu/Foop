@@ -1,4 +1,5 @@
 import uuid from 'uuid/v1';
+import * as config from './config';
 
 class Box {
   constructor(args) {
@@ -98,7 +99,7 @@ class Border extends Box {
     let obj = {
       x: 0,
       y: 0,
-      width: window.innerWidth,
+      width: config.app.w,
     };
     super(Object.assign(args, obj));
     this.img = 'tile-gold';

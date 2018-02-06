@@ -21,7 +21,7 @@ class PixiMgr {
     this.app.renderer.view.style.position = 'absolute';
     this.app.renderer.view.style.display = 'block';
     this.app.renderer.autoResize = true;
-    this.app.renderer.resize(window.innerWidth, window.innerHeight);
+    this.app.renderer.resize(WW, WH);
 
     // init ctn: world, player, objs, back, laser
     this.worldCtn = new PIXI.Container();
@@ -128,12 +128,12 @@ class PixiMgr {
     // console.log('out', objs);
   }
   updateLaser(laser) {
-    if (laser.width < WW) {
-      this.laserRef.width = laser.width += 50;
+    if (this.laserRef.width < config.app.w) {
+      this.laserRef.width += 10;
       this.laserRef.y = laser.y;
-      this.laserEnd = laser.y + WH;
+      this.laserEnd = laser.y + config.app.w;
     } else if (laser.y < this.laserEnd) {
-      this.laserRef.width = laser.width += 5;
+      this.laserRef.width += 5;
     }
   }
   addTile(border) {
@@ -158,7 +158,6 @@ class PixiMgr {
     this.mapCtn.addChild(spriteMap);
   }
   addObj(obj) {
-    console.log(obj);
     let sprite;
     let texs = [];
     let length = Object.keys(id[`./assets/images/${obj.type}.json`].textures)
@@ -214,7 +213,7 @@ class PixiMgr {
     this.laser = new PIXI.Sprite(id['./assets/laser.png'].texture);
     this.laser.anchor.set(0, 0.5);
     (this.laser.width = 0), (this.laser.height = 100);
-    this.laser.position.set(-1 * WW / 2, -1 * WH);
+    this.laser.position.set(-1 * config.app.w / 2, -1 * config.app.h);
     this.laser.parentGroup = this.laserGrp;
     this.laserRef = this.laser;
     this.laserCtn.addChild(this.laser);

@@ -6,6 +6,7 @@ import { Box, Coin, Shoe, Trap, Potion, Border, Door, Bug } from './js/entity';
 import { inside, outside, hit, hitLaser } from './js/physic';
 import { rnGen, rnGenInt } from './js/utils';
 import dat from 'dat.gui';
+import * as config from './js/config';
 
 if (process.env.NODE_ENV !== 'prod') {
   require('./template.html');
@@ -15,8 +16,8 @@ let gui = new dat.GUI();
 const SPEED = 10;
 const FALLSPEED = 5;
 const SPEEDUP = 0;
-const WW = window.innerWidth;
-const WH = window.innerHeight;
+
+
 const PLAYERBOX = {
   x: 0,
   y: 0,
@@ -24,8 +25,8 @@ const PLAYERBOX = {
   height: 100,
 };
 const LASERBOX = {
-  x: -1 * WW / 2,
-  y: -1 * WH / 2 + 10,
+  x: -1 * config.app.w / 2,
+  y: -1 * config.app.h / 2 + 10,
   width: 0,
   height: 100,
 };
@@ -72,7 +73,7 @@ class Looper {
       if (this.stack.length === 0) {
         // 開新世界
         this.now = this.now + 1;
-        this.createLoop((this.now * 2 + 1) * WH);
+        this.createLoop((this.now * 2 + 1) * config.app.h);
         this.stack.unshift(2);
         return this.arr[this.now].startDownBox;
       } else {
@@ -90,9 +91,19 @@ class Looper {
     let pad = 100;
     let obj = { border: new Border({ height, z: -this.now }) };
     let prevLoop = this.arr[this.now - 1];
-    let frameUp = new Box({ x: 0, y: -this.now * WH, width: WW, height: WH });
-    let frameDown = new Box({ x: 0, y: this.now * WH, width: WW, height: WH });
-    if (height === WH)
+    let frameUp = new Box({
+      x: 0,
+      y: -this.now * config.app.h,
+      width: config.app.w,
+      height: config.app.h,
+    });
+    let frameDown = new Box({
+      x: 0,
+      y: this.now * config.app.h,
+      width: config.app.w,
+      height: config.app.h,
+    });
+    if (height === config.app.h)
       //最裡面
       this.vec.push({
         border: frameUp,
@@ -175,21 +186,21 @@ class DataMgr {
       .step(1)
       .listen();
     this.looper = new Looper();
-    this.looper.createLoop(WH);
+    this.looper.createLoop(config.app.h);
     this.laser = new Box(LASERBOX);
     // this.objs = [];
   }
   playerMove() {
-    // let tmp = new Box(this.player);
-    // tmp.y += FALLSPEED;
-    // if (
-    //   inside(tmp, this.looper.loop.border) &&
-    //   ((this.looper.prevLoop !== undefined &&
-    //     outside(tmp, this.looper.prevLoop.border)) ||
-    //     this.looper.prevLoop === undefined)
-    // ) {
-    //   this.player.y += FALLSPEED;
-    // }
+    let tmp = new Box(this.player);
+    tmp.y += FALLSPEED;
+    if (
+      inside(tmp, this.looper.loop.border) &&
+      ((this.looper.prevLoop !== undefined &&
+        outside(tmp, this.looper.prevLoop.border)) ||
+        this.looper.prevLoop === undefined)
+    ) {
+      this.player.y += FALLSPEED;
+    }
     // let arr = [{ key: 'a', x: -1, y: 0 }, { key: 'd', x: 1, y: 0 }];
     let arr = [
       { key: 'w', x: 0, y: -1 },
@@ -322,8 +333,8 @@ class DataMgr {
   get playerVec() {
     let len = this.looper.vec.length;
     const { y } = this.player;
-    // 距離(y - (-len / 2* WH) )/邊長
-    return Math.floor((y + len / 2 * WH) / WH);
+    // 距離(y - (-len / 2* config.app.h) )/邊長
+    return Math.floor((y + len / 2 * config.app.h) / config.app.h);
   }
 }
 
