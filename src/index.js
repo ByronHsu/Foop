@@ -356,7 +356,7 @@ function animate() {
     dataMgr.noHp();
     pixiMgr.updatePlayer(dataMgr.player);
     pixiMgr.updateObjs(dataMgr.objs);
-    pixiMgr.updateLaser(dataMgr.laser);
+    pixiMgr.updateLaser(dataMgr.laser, FALLSPEED);
     // dataMgr.player.speed > 10 ? pixiMgr.shine() : pixiMgr.unShine();
     requestAnimationFrame(animate);
   } else {

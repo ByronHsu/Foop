@@ -127,14 +127,11 @@ class PixiMgr {
     }
     // console.log('out', objs);
   }
-  updateLaser(laser) {
+  updateLaser(laser, fallspeed) {
     if (this.laserRef.width < config.app.w) {
       this.laserRef.width += 10;
-      this.laserRef.y = laser.y;
-      this.laserEnd = laser.y + config.app.w;
-    } else if (laser.y < this.laserEnd) {
-      this.laserRef.width += 5;
     }
+    this.laserRef.y = laser.y += fallspeed;
   }
   addTile(border) {
     const idx = Math.abs(border.z) % 7;
