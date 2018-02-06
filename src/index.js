@@ -235,29 +235,22 @@ class DataMgr {
     }
   }
   hitExit() {
-    if (hit(this.player, this.looper.loop.exitDownBox)) {
-      if (this.looper.vec[this.playerVec].hitBug) {
-        this.looper.vec[this.playerVec].hitBug = false;
-        this.player.exitTimes += 1;
-        pixiMgr.sounds[3].sound.play();
-        let ret = this.looper.hitExitDown();
-        (this.player.x = ret.x), (this.player.y = ret.y);
-        (this.laser.x = -250), (this.laser.y = ret.y - 100);
-        this.laser.width = 0;
-        this.player.onFloor = false;
-      }
-    } else if (hit(this.player, this.looper.loop.exitUpBox)) {
-      if (this.looper.vec[this.playerVec].hitBug) {
-        this.looper.vec[this.playerVec].hitBug = false;
-        this.player.exitTimes += 1;
-        pixiMgr.sounds[3].sound.play();
-        let ret = this.looper.hitExitUp();
-        (this.player.x = ret.x), (this.player.y = ret.y);
-        (this.laser.x = -250), (this.laser.y = ret.y - 100);
-        this.laser.width = 0;
-        this.player.onFloor = false;
+    if (this.looper.vec[this.playerVec].hitBug) {
+      if (hit(this.player, this.looper.loop.exitDownBox)) {
+        this.handleHitExit(this.looper.hitExitDown());
+      } else if (hit(this.player, this.looper.loop.exitUpBox)) {
+        this.handleHitExit(this.looper.hitExitUp());
       }
     }
+  }
+  handleHitExit(ret) {
+    this.looper.vec[this.playerVec].hitBug = false;
+    this.player.exitTimes += 1;
+    pixiMgr.sounds[3].sound.play();
+    (this.player.x = ret.x), (this.player.y = ret.y);
+    (this.laser.x = -250), (this.laser.y = ret.y - 100);
+    this.laser.width = 0;
+    this.player.onFloor = false;
   }
   hitObjs() {
     // 要從後面刪回來，不然如果直接刪掉，i++，會跳過一個obj
