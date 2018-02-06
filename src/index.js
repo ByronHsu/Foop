@@ -2,9 +2,9 @@ import PixiMgr from './pixiMgr';
 import './scss/index.scss';
 import 'pixi-sound';
 import key from 'keymaster';
-import { Box, Coin, Shoe, Trap, Potion, Border, Door, Bug } from './js/entity';
+import { Box, Border, Door, Bug } from './js/entity';
 import { inside, outside, hit, hitLaser } from './js/physic';
-import { rnGen, rnGenInt } from './js/utils';
+import { rnGen } from './js/utils';
 import dat from 'dat.gui';
 import * as config from './js/config';
 
@@ -16,7 +16,6 @@ let gui = new dat.GUI();
 const SPEED = 10;
 const FALLSPEED = 5;
 const SPEEDUP = 0;
-
 
 const PLAYERBOX = {
   x: 0,
@@ -308,7 +307,8 @@ class DataMgr {
         let bugArgs = {
           x: rnGen(-loop.border.width / 2 + pad, loop.border.width / 2 - pad),
           y: rnGen(
-            -loop.border.height / 2 + loop.border.y + pad,
+            loop.border.y + pad,
+            // -loop.border.height / 2 + loop.border.y + pad, // 蟲出生位置太高會吃不到，暫時弄低一點
             loop.border.height / 2 + loop.border.y - pad
           ),
           width: 50,
