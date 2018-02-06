@@ -128,10 +128,10 @@ class PixiMgr {
     // console.log('out', objs);
   }
   updateLaser(laser, fallspeed) {
-    if (this.laserRef.width < config.app.w) {
-      this.laserRef.width += 10;
-    }
-    this.laserRef.y = laser.y += fallspeed;
+    if (laser.width < config.app.w) {
+      this.laserRef.width = laser.width += 20;
+      this.laserRef.y = laser.y;
+    } else this.laserRef.y = laser.y += fallspeed;
   }
   addTile(border) {
     const idx = Math.abs(border.z) % 7;
