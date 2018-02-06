@@ -216,7 +216,9 @@ class PixiMgr {
     this.player = wan;
     this.playerCtn.addChild(this.player);
 
-    this.playerMap = new PIXI.Sprite.fromImage('./assets/reddot.png');
+    this.playerMap = new PIXI.Sprite(
+      PIXI.utils.TextureCache['./assets/reddot.png']
+    );
     this.playerMap.anchor.set(0.5, 0.5);
     (this.playerMap.width = this.player.width / 5),
       (this.playerMap.height = this.player.height / 5);
