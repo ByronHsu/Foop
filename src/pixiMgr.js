@@ -203,18 +203,20 @@ class PixiMgr {
   }
   // dummy function
   setupPlayer() {
-    let wans = [];
+    let foops = [];
     for (let i = 0; i < 3; i++) {
-      let wanTex = PIXI.Texture.fromFrame(`wan${i}.png`);
-      wans.push(wanTex);
+      let foopTex = PIXI.Texture.fromFrame(`foop${i}.png`);
+      foops.push(foopTex);
     }
-    let wan = new PIXI.extras.AnimatedSprite(wans);
-    wan.anchor.set(0.5, 0.5);
-    (wan.width = 100), (wan.height = 100);
-    (wan.x = 0), (wan.y = 0);
-    wan.parentGroup = this.playerGrp;
-    this.player = wan;
+    let foop = new PIXI.extras.AnimatedSprite(foops);
+    foop.anchor.set(0.5, 0.5);
+    (foop.width = 100), (foop.height = 100);
+    (foop.x = 0), (foop.y = 0);
+    foop.parentGroup = this.playerGrp;
+    this.player = foop;
     this.playerCtn.addChild(this.player);
+    foop.animationSpeed = 0.1;
+    foop.play();
 
     this.playerMap = new PIXI.Sprite(
       PIXI.utils.TextureCache['./assets/reddot.png']

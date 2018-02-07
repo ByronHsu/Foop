@@ -18,7 +18,7 @@ const imgUrl = [
 ];
 
 const jsonUrl = [
-  './assets/images/wan.json',
+  './assets/images/foop.json',
   './assets/images/potion.json',
   './assets/images/shoe.json',
   './assets/images/trap.json',
