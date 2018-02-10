@@ -89,8 +89,8 @@ class Bug extends Box {
     this.group = 'objs';
     this.idx = args.idx;
   }
-  hit() {
-    // player.hp -= 1;
+  hit(player) {
+    player.money += this.idx + 1;
   }
 }
 

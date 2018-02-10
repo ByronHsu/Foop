@@ -14,14 +14,14 @@ if (process.env.NODE_ENV !== 'prod') {
 
 let gui = new dat.GUI();
 const SPEED = 10;
-const FALLSPEED = 4;
-const SPEEDUP = 0;
+const FALLSPEED = 5;
+const SPEEDUP = 0.5;
 
 const PLAYERBOX = {
-  x: -100,
-  y: -150,
-  width: 32,
-  height: 19,
+  x: -200,
+  y: -250,
+  width: 64,
+  height: 38,
 };
 const LASERBOX = {
   x: -1 * config.app.w / 2,
@@ -38,7 +38,7 @@ class Looper {
     this.vec = []; // 儲存每一層的邊框
     this.now = 0;
     this.stack = [2];
-    this.skip = 2;
+    this.skip = 0;
     gui.add(this, 'now').listen();
     gui
       .add(this, 'skip', 0, 5)
@@ -174,7 +174,9 @@ class Looper {
     const pad = 100;
     while (loop.wallList.length < (loop.idx + 1) * 2) {
       let wallArgs = {};
+      let wallMarArgs = {};
       let wall = {};
+      let wallMar = {}; //設定一個假想margin, 讓牆壁不要疊太近
       do {
         wallArgs = {
           x: rnGen(-loop.border.width / 2 + pad, loop.border.width / 2 - pad),
@@ -183,11 +185,15 @@ class Looper {
             loop.border.height / 2 + loop.border.y - pad
           ),
           width: 150,
-          height: 10,
+          height: 15,
           idx: loop.idx,
         };
+        Object.assign(wallMarArgs, wallArgs);
+        wallMarArgs.width += 100;
+        wallMarArgs.height += 100;
         wall = new Wall(wallArgs);
-      } while (detectlap(wall));
+        wallMar = new Wall(wallMarArgs);
+      } while (detectlap(wallMar));
       loop.wallList.push(wall);
       pixiMgr.addWall(wall);
       items.push(wall);

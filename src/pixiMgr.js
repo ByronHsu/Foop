@@ -221,7 +221,7 @@ class PixiMgr {
     }
     let foop = new PIXI.extras.AnimatedSprite(foops);
     foop.anchor.set(0.5, 0.5);
-    (foop.width = 32), (foop.height = 19);
+    (foop.width = 64), (foop.height = 38);
     (foop.x = 0), (foop.y = 0);
     foop.parentGroup = this.playerGrp;
     this.player = foop;
