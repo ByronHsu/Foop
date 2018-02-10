@@ -189,14 +189,15 @@ class Looper {
           idx: loop.idx,
         };
         Object.assign(wallMarArgs, wallArgs);
-        wallMarArgs.width += 100;
-        wallMarArgs.height += 100;
+        wallMarArgs.width += 80;
+        wallMarArgs.height += 60;
         wall = new Wall(wallArgs);
         wallMar = new Wall(wallMarArgs);
       } while (detectlap(wallMar));
       loop.wallList.push(wall);
+      // pixiMgr.addWall(wallMarArgs); //debug
       pixiMgr.addWall(wall);
-      items.push(wall);
+      items.push(wallMar);
     }
   }
   get prevLoop() {

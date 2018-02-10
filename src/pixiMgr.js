@@ -1,5 +1,6 @@
 import * as PIXI from 'pixi.js';
 import './bin/pixi-display';
+import * as filters from 'pixi-filters';
 import * as config from './js/config';
 
 const WW = window.innerWidth;
@@ -143,6 +144,9 @@ class PixiMgr {
     let sprite = new PIXI.Sprite(painter.generateCanvasTexture());
     sprite.anchor.set(0.5, 0.5);
     sprite.parentGroup = this.backGrp;
+    sprite.filters = [
+      new filters.GlowFilter(10, 2, 1, config.lineColor[idx], 1),
+    ];
     this.backCtn.addChild(Object.assign(sprite, wall));
   }
   addTile(border) {
@@ -225,6 +229,8 @@ class PixiMgr {
     (foop.x = 0), (foop.y = 0);
     foop.parentGroup = this.playerGrp;
     this.player = foop;
+    console.log(filters);
+    this.player.filters = [new filters.GlowFilter(15, 2, 1, 0xffffff, 0.5)];
     this.playerCtn.addChild(this.player);
     foop.animationSpeed = 0.1;
     foop.play();
