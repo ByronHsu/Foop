@@ -3,7 +3,7 @@ import './scss/index.scss';
 import 'pixi-sound';
 import key from 'keymaster';
 import { Box, Border, Door, Bug, Wall } from './js/entity';
-import { inside, outside, hit, hitLaser, overlap } from './js/physic';
+import { inside, outside, hitLaser, overlap } from './js/physic';
 import { rnGen } from './js/utils';
 import dat from 'dat.gui';
 import * as config from './js/config';
@@ -14,7 +14,7 @@ if (process.env.NODE_ENV !== 'prod') {
 
 let gui = new dat.GUI();
 const SPEED = 10;
-const FALLSPEED = 3;
+const FALLSPEED = 5;
 const SPEEDUP = 0;
 
 const PLAYERBOX = {
@@ -153,12 +153,45 @@ class Looper {
       obj.exitUpBox,
       obj.exitDownBox,
     ];
-    arr.forEach(val => {
-      // Doors
-      if (val !== undefined) pixiMgr.addDoor(val, this.now);
-    });
+    for (let i = arr.length - 1; i >= 0; i--) {
+      if (arr[i] !== undefined) pixiMgr.addDoor(arr[i], this.now);
+      else arr.splice(i, 1);
+    }
     pixiMgr.addTile(obj.border);
+    this.randomGenWall(0, arr);
+    this.randomGenWall(this.vec.length - 1, arr);
     this.arr.push(obj);
+  }
+  randomGenWall(i, arr) {
+    let loop = this.vec[i];
+    let items = [...arr];
+    let detectlap = x => {
+      for (let e in items) {
+        if (overlap(items[e], x)) return true;
+      }
+      return false;
+    };
+    const pad = 100;
+    while (loop.wallList.length < (loop.idx + 1) * 2) {
+      let wallArgs = {};
+      let wall = {};
+      do {
+        wallArgs = {
+          x: rnGen(-loop.border.width / 2 + pad, loop.border.width / 2 - pad),
+          y: rnGen(
+            -loop.border.height / 2 + loop.border.y + pad,
+            loop.border.height / 2 + loop.border.y - pad
+          ),
+          width: 150,
+          height: 10,
+          idx: loop.idx,
+        };
+        wall = new Wall(wallArgs);
+      } while (detectlap(wall));
+      loop.wallList.push(wall);
+      pixiMgr.addWall(wall);
+      items.push(wall);
+    }
   }
   get prevLoop() {
     return this.arr[this.now - 1];
@@ -217,7 +250,6 @@ class DataMgr {
     let tmp = new Box(player);
     (tmp.x += vector.x), (tmp.y += vector.y);
     let loop = this.looper.vec[this.playerVec];
-    console.log(loop.wallList);
     for (let i = 0; i < loop.wallList.length; i++) {
       if (overlap(tmp, loop.wallList[i])) return true;
     }
@@ -242,9 +274,9 @@ class DataMgr {
   }
   hitExit() {
     if (this.looper.vec[this.playerVec].hitBug) {
-      if (hit(this.player, this.looper.loop.exitDownBox)) {
+      if (overlap(this.player, this.looper.loop.exitDownBox)) {
         this.handleHitExit(this.looper.hitExitDown());
-      } else if (hit(this.player, this.looper.loop.exitUpBox)) {
+      } else if (overlap(this.player, this.looper.loop.exitUpBox)) {
         this.handleHitExit(this.looper.hitExitUp());
       }
     }
@@ -263,7 +295,7 @@ class DataMgr {
     for (let i = 0; i < this.looper.vec.length; i++) {
       let loop = this.looper.vec[i];
       for (let j = loop.objs.length - 1; j >= 0; j--) {
-        if (hit(this.player, loop.objs[j])) {
+        if (overlap(this.player, loop.objs[j])) {
           loop.objs[j].hit(this.player);
           if (loop.objs[j].type === 'worm') {
             this.looper.vec[this.playerVec].hitBug = true;
@@ -291,41 +323,32 @@ class DataMgr {
     for (let i = 0; i < this.looper.vec.length; i++) {
       let loop = this.looper.vec[i];
       const pad = 100;
+      let items = loop.wallList;
+      let bug = {};
+      let bugArgs = {};
+      let detectlap = x => {
+        for (let e in items) {
+          if (overlap(items[e], x)) return true;
+        }
+        return false;
+      };
       if (i === this.playerVec && !loop.hasBug) {
-        let bugArgs = {
-          x: rnGen(-loop.border.width / 2 + pad, loop.border.width / 2 - pad),
-          y: rnGen(
-            loop.border.y + pad,
-            // -loop.border.height / 2 + loop.border.y + pad, // 蟲出生位置太高會吃不到，暫時弄低一點
-            loop.border.height / 2 + loop.border.y - pad
-          ),
-          width: 50,
-          height: 50,
-          idx: loop.idx,
-        };
+        do {
+          bugArgs = {
+            x: rnGen(-loop.border.width / 2 + pad, loop.border.width / 2 - pad),
+            y: rnGen(
+              loop.border.y + pad,
+              // -loop.border.height / 2 + loop.border.y + pad, // 蟲出生位置太高會吃不到，暫時弄低一點
+              loop.border.height / 2 + loop.border.y - pad
+            ),
+            width: 50,
+            height: 50,
+            idx: loop.idx,
+          };
+          bug = new Bug(bugArgs);
+        } while (detectlap(bug));
         loop.objs.push(new Bug(bugArgs));
         loop.hasBug = true;
-      }
-    }
-  }
-  randomGenWall() {
-    for (let i = 0; i < this.looper.vec.length; i++) {
-      let loop = this.looper.vec[i];
-      const pad = 100;
-      while (loop.wallList.length < (loop.idx + 1) * 2) {
-        let wallArgs = {
-          x: rnGen(-loop.border.width / 2 + pad, loop.border.width / 2 - pad),
-          y: rnGen(
-            -loop.border.height / 2 + loop.border.y + pad,
-            loop.border.height / 2 + loop.border.y - pad
-          ),
-          width: 100,
-          height: 20,
-          idx: loop.idx,
-        };
-        let wall = new Wall(wallArgs);
-        loop.wallList.push(new Wall(wall));
-        pixiMgr.addWall(wall);
       }
     }
   }
@@ -334,7 +357,6 @@ class DataMgr {
     this.looper.vec.forEach(loop => {
       arr = arr.concat(loop.objs);
     });
-    // console.log('get objs', arr);
     return arr;
   }
   // get the frame 'x' the player now stands on. this.looper.vec[x]
@@ -358,7 +380,6 @@ function animate() {
   if (!pixiMgr.isPaused) {
     dataMgr.playerMove();
     dataMgr.randomGenObjs();
-    dataMgr.randomGenWall();
     dataMgr.hitExit();
     dataMgr.hitObjs();
     dataMgr.hitLaser();

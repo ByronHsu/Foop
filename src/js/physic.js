@@ -1,24 +1,19 @@
 function overlap(box1, box2) {
-  console.log(box1, box2);
-  for (let i = 0; i < 4; i++) {
-    if (
-      box1.vtx[i].x < box2.edge.xR &&
-      box1.vtx[i].x > box2.edge.xL &&
-      box1.vtx[i].y > box2.edge.yT && //Top值比較小，最高為0
-      box1.vtx[i].y < box2.edge.yB
-    )
-      return true;
-  }
-  for (let i = 0; i < 4; i++) {
-    if (
-      box2.vtx[i].x < box1.edge.xR &&
-      box2.vtx[i].x > box1.edge.xL &&
-      box2.vtx[i].y > box1.edge.yT &&
-      box2.vtx[i].y < box1.edge.yB
-    )
-      return true;
-  }
-  return false;
+  if (box1 === undefined || box2 === undefined) return false;
+  let xlap = false;
+  let ylap = false;
+  if (box1.edge.xL > box2.edge.xL && box1.edge.xL < box2.edge.xR) xlap = true;
+  if (box1.edge.xR > box2.edge.xL && box1.edge.xR < box2.edge.xR) xlap = true;
+  if (box2.edge.xL > box1.edge.xL && box2.edge.xL < box1.edge.xR) xlap = true;
+  if (box2.edge.xR > box1.edge.xL && box2.edge.xR < box1.edge.xR) xlap = true;
+
+  if (box1.edge.yT > box2.edge.yT && box1.edge.yT < box2.edge.yB) ylap = true;
+  if (box1.edge.yB > box2.edge.yT && box1.edge.yB < box2.edge.yB) ylap = true;
+  if (box2.edge.yT > box1.edge.yT && box2.edge.yT < box1.edge.yB) ylap = true;
+  if (box2.edge.yB > box1.edge.yT && box2.edge.yB < box1.edge.yB) ylap = true;
+
+  if (xlap && ylap) return true;
+  else return false;
 }
 function inside(box1, box2) {
   // box1是否包含在box2
