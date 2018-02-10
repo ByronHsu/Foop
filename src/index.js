@@ -2,8 +2,8 @@ import PixiMgr from './pixiMgr';
 import './scss/index.scss';
 import 'pixi-sound';
 import key from 'keymaster';
-import { Box, Border, Door, Bug } from './js/entity';
-import { inside, outside, hit, hitLaser } from './js/physic';
+import { Box, Border, Door, Bug, Wall } from './js/entity';
+import { inside, outside, hit, hitLaser, overlap } from './js/physic';
 import { rnGen } from './js/utils';
 import dat from 'dat.gui';
 import * as config from './js/config';
@@ -14,14 +14,14 @@ if (process.env.NODE_ENV !== 'prod') {
 
 let gui = new dat.GUI();
 const SPEED = 10;
-const FALLSPEED = 5;
+const FALLSPEED = 3;
 const SPEEDUP = 0;
 
 const PLAYERBOX = {
   x: 0,
   y: 0,
-  width: 100,
-  height: 100,
+  width: 50,
+  height: 50,
 };
 const LASERBOX = {
   x: -1 * config.app.w / 2,
@@ -107,6 +107,7 @@ class Looper {
       this.vec.push({
         border: frameUp,
         objs: [],
+        wallList: [],
         idx: this.now,
         hasBug: false,
         hitBug: false,
@@ -115,6 +116,7 @@ class Looper {
       this.vec.unshift({
         border: frameUp,
         objs: [],
+        wallList: [],
         idx: this.now,
         hasBug: false,
         hitBug: false,
@@ -122,6 +124,7 @@ class Looper {
         this.vec.push({
           border: frameDown,
           objs: [],
+          wallList: [],
           idx: this.now,
           hasBug: false,
           hitBug: false,
@@ -191,17 +194,6 @@ class DataMgr {
     // this.objs = [];
   }
   playerMove() {
-    let tmp = new Box(this.player);
-    tmp.y += FALLSPEED;
-    if (
-      inside(tmp, this.looper.loop.border) &&
-      ((this.looper.prevLoop !== undefined &&
-        outside(tmp, this.looper.prevLoop.border)) ||
-        this.looper.prevLoop === undefined)
-    ) {
-      this.player.y += FALLSPEED;
-    } else this.hitFloor();
-    // let arr = [{ key: 'a', x: -1, y: 0 }, { key: 'd', x: 1, y: 0 }];
     let arr = [
       { key: 'w', x: 0, y: -1 },
       { key: 's', x: 0, y: 1 },
@@ -210,22 +202,36 @@ class DataMgr {
     ];
     arr.forEach(obj => {
       if (key.isPressed(obj.key)) {
-        let tmp = new Box(this.player);
-        tmp.x += this.player.speed * obj.x;
-        tmp.y += this.player.speed * obj.y;
-        if (
-          inside(tmp, this.looper.loop.border) &&
-          ((this.looper.prevLoop !== undefined &&
-            outside(tmp, this.looper.prevLoop.border)) ||
-            this.looper.prevLoop === undefined)
-        ) {
-          this.player.x +=
-            (this.player.speed + this.looper.arr.length * SPEEDUP) * obj.x;
-          this.player.y +=
-            (this.player.speed + this.looper.arr.length * SPEEDUP) * obj.y;
+        let vector = {
+          x: (this.player.speed + this.looper.arr.length * SPEEDUP) * obj.x,
+          y: (this.player.speed + this.looper.arr.length * SPEEDUP) * obj.y,
+        };
+        if (!this.collideDetect(this.player, vector)) {
+          this.player.x += vector.x;
+          this.player.y += vector.y;
         }
       }
     });
+  }
+  collideDetect(player, vector) {
+    let tmp = new Box(player);
+    (tmp.x += vector.x), (tmp.y += vector.y);
+    let loop = this.looper.vec[this.playerVec];
+    console.log(loop.wallList);
+    for (let i = 0; i < loop.wallList.length; i++) {
+      if (overlap(tmp, loop.wallList[i])) return true;
+    }
+    if (
+      !(
+        inside(tmp, this.looper.loop.border) &&
+        ((this.looper.prevLoop !== undefined &&
+          outside(tmp, this.looper.prevLoop.border)) ||
+          this.looper.prevLoop === undefined)
+      )
+    )
+      return true;
+
+    return false;
   }
   hitFloor() {
     if (!this.player.onFloor) {
@@ -284,27 +290,6 @@ class DataMgr {
   randomGenObjs() {
     for (let i = 0; i < this.looper.vec.length; i++) {
       let loop = this.looper.vec[i];
-      // while (loop.objs.length < 5) {
-      //   let args = {
-      //     x: rnGen(-loop.border.width / 2, loop.border.width / 2),
-      //     y: rnGen(
-      //       -loop.border.height / 2 + loop.border.y,
-      //       loop.border.height / 2 + loop.border.y
-      //     ),
-      //     width: 50,
-      //     height: 50,
-      //     idx: loop.idx,
-      //   };
-      //   let arr = [
-      //     new Coin(args),
-      //     new Shoe(args),
-      //     new Trap(args),
-      //     new Potion(args),
-      //   ];
-      //   loop.objs.push(arr[rnGenInt(0, 3)]);
-      // }
-      // 在這個vec才放蟲
-      // console.log(this.playerVec, i, loop.hasBug);
       const pad = 100;
       if (i === this.playerVec && !loop.hasBug) {
         let bugArgs = {
@@ -322,7 +307,27 @@ class DataMgr {
         loop.hasBug = true;
       }
     }
-    // console.log(this.looper.vec);
+  }
+  randomGenWall() {
+    for (let i = 0; i < this.looper.vec.length; i++) {
+      let loop = this.looper.vec[i];
+      const pad = 100;
+      while (loop.wallList.length < (loop.idx + 1) * 2) {
+        let wallArgs = {
+          x: rnGen(-loop.border.width / 2 + pad, loop.border.width / 2 - pad),
+          y: rnGen(
+            -loop.border.height / 2 + loop.border.y + pad,
+            loop.border.height / 2 + loop.border.y - pad
+          ),
+          width: 100,
+          height: 20,
+          idx: loop.idx,
+        };
+        let wall = new Wall(wallArgs);
+        loop.wallList.push(new Wall(wall));
+        pixiMgr.addWall(wall);
+      }
+    }
   }
   get objs() {
     let arr = [];
@@ -353,6 +358,7 @@ function animate() {
   if (!pixiMgr.isPaused) {
     dataMgr.playerMove();
     dataMgr.randomGenObjs();
+    dataMgr.randomGenWall();
     dataMgr.hitExit();
     dataMgr.hitObjs();
     dataMgr.hitLaser();

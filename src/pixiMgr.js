@@ -134,6 +134,18 @@ class PixiMgr {
       this.laserRef.y = laser.y;
     } else this.laserRef.y = laser.y += fallspeed;
   }
+  addWall(wall) {
+    const idx = wall.idx % 7;
+    console.log(idx);
+    let painter = new PIXI.Graphics();
+    painter.beginFill(config.tileColor, 1);
+    (painter.lineColor = config.lineColor[idx]), (painter.lineWidth = 2);
+    painter.drawRect(0, 0, wall.width, wall.height);
+    let sprite = new PIXI.Sprite(painter.generateCanvasTexture());
+    sprite.anchor.set(0.5, 0.5);
+    sprite.parentGroup = this.backGrp;
+    this.backCtn.addChild(Object.assign(sprite, wall));
+  }
   addTile(border) {
     const idx = Math.abs(border.z) % 7;
     let painter = new PIXI.Graphics();
@@ -144,23 +156,23 @@ class PixiMgr {
     sprite.anchor.set(0.5, 0.5);
     sprite.parentGroup = this.backGrp;
     this.backCtn.addChild(Object.assign(sprite, border));
-    // add thorn, for frameUp & fromDown respectively
-    for (let i = 0; i < 2; i++) {
-      let pad = 20;
-      let thorn = new PIXI.Sprite(
-        PIXI.utils.TextureCache['./assets/thorn.png']
-      );
-      thorn.anchor.set(0.5);
-      (thorn.width = config.app.w), (thorn.height = 100);
-      thorn.parentGroup = this.laserGrp;
-      thorn.position.set(
-        0,
-        i === 0
-          ? border.height / 2 - pad
-          : -1 * border.height / 2 + config.app.h - pad
-      );
-      this.laserCtn.addChild(thorn);
-    }
+    // // add thorn, for frameUp & fromDown respectively
+    // for (let i = 0; i < 2; i++) {
+    //   let pad = 20;
+    //   let thorn = new PIXI.Sprite(
+    //     PIXI.utils.TextureCache['./assets/thorn.png']
+    //   );
+    //   thorn.anchor.set(0.5);
+    //   (thorn.width = config.app.w), (thorn.height = 100);
+    //   thorn.parentGroup = this.laserGrp;
+    //   thorn.position.set(
+    //     0,
+    //     i === 0
+    //       ? border.height / 2 - pad
+    //       : -1 * border.height / 2 + config.app.h - pad
+    //   );
+    //   this.laserCtn.addChild(thorn);
+    // }
     // for map
     painter.lineWidth = 40;
     painter.drawRect(0, 0, border.width, border.height);
@@ -210,7 +222,7 @@ class PixiMgr {
     }
     let foop = new PIXI.extras.AnimatedSprite(foops);
     foop.anchor.set(0.5, 0.5);
-    (foop.width = 100), (foop.height = 100);
+    (foop.width = 50), (foop.height = 50);
     (foop.x = 0), (foop.y = 0);
     foop.parentGroup = this.playerGrp;
     this.player = foop;
@@ -253,13 +265,13 @@ class PixiMgr {
     this.mapCtn.addChild(this.pause);
   }
   setupThorn() {
-    let pad = 20,
-      thorn = new PIXI.Sprite(id['./assets/thorn.png'].texture);
-    thorn.anchor.set(0.5);
-    (thorn.width = config.app.w), (thorn.height = 100);
-    thorn.position.set(0, config.app.h / 2 - pad);
-    thorn.parentGroup = this.laserGrp;
-    this.laserCtn.addChild(thorn);
+    // let pad = 20,
+    //   thorn = new PIXI.Sprite(id['./assets/thorn.png'].texture);
+    // thorn.anchor.set(0.5);
+    // (thorn.width = config.app.w), (thorn.height = 100);
+    // thorn.position.set(0, config.app.h / 2 - pad);
+    // thorn.parentGroup = this.laserGrp;
+    // this.laserCtn.addChild(thorn);
   }
   setupSound() {
     const { soundsUrl } = config;

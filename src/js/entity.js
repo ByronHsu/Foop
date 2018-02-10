@@ -120,5 +120,13 @@ class Door extends Box {
     this.z = 1;
   }
 }
-
-export { Box, Coin, Shoe, Potion, Bug, Trap, Border, Door };
+class Wall extends Box {
+  constructor(args) {
+    super(args);
+    this.img = 'wall';
+    this.group = 'back';
+    this.idx = args.idx;
+    this.z = 1;
+  }
+}
+export { Box, Coin, Shoe, Potion, Bug, Trap, Border, Door, Wall };
