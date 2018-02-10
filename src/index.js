@@ -14,14 +14,14 @@ if (process.env.NODE_ENV !== 'prod') {
 
 let gui = new dat.GUI();
 const SPEED = 10;
-const FALLSPEED = 5;
+const FALLSPEED = 4;
 const SPEEDUP = 0;
 
 const PLAYERBOX = {
-  x: 0,
-  y: 0,
-  width: 50,
-  height: 50,
+  x: -100,
+  y: -150,
+  width: 32,
+  height: 19,
 };
 const LASERBOX = {
   x: -1 * config.app.w / 2,
@@ -110,7 +110,7 @@ class Looper {
         wallList: [],
         idx: this.now,
         hasBug: false,
-        hitBug: false,
+        hitBug: 0,
       });
     else
       this.vec.unshift({
@@ -119,7 +119,7 @@ class Looper {
         wallList: [],
         idx: this.now,
         hasBug: false,
-        hitBug: false,
+        hitBug: 0,
       }),
         this.vec.push({
           border: frameDown,
@@ -127,7 +127,7 @@ class Looper {
           wallList: [],
           idx: this.now,
           hasBug: false,
-          hitBug: false,
+          hitBug: 0,
         });
     obj.startUpBox = new Door({
       x: obj.border.vtx[0].x + pad,
@@ -273,7 +273,9 @@ class DataMgr {
     }
   }
   hitExit() {
-    if (this.looper.vec[this.playerVec].hitBug) {
+    if (
+      this.looper.vec[this.playerVec].hitBug === config.bugNum[this.looper.now]
+    ) {
       if (overlap(this.player, this.looper.loop.exitDownBox)) {
         this.handleHitExit(this.looper.hitExitDown());
       } else if (overlap(this.player, this.looper.loop.exitUpBox)) {
@@ -298,7 +300,7 @@ class DataMgr {
         if (overlap(this.player, loop.objs[j])) {
           loop.objs[j].hit(this.player);
           if (loop.objs[j].type === 'worm') {
-            this.looper.vec[this.playerVec].hitBug = true;
+            this.looper.vec[this.playerVec].hitBug++;
             pixiMgr.sounds[2].sound.play();
           } else pixiMgr.sounds[1].sound.play();
           loop.objs.splice(j, 1);
@@ -333,22 +335,28 @@ class DataMgr {
         return false;
       };
       if (i === this.playerVec && !loop.hasBug) {
-        do {
-          bugArgs = {
-            x: rnGen(-loop.border.width / 2 + pad, loop.border.width / 2 - pad),
-            y: rnGen(
-              loop.border.y + pad,
-              // -loop.border.height / 2 + loop.border.y + pad, // 蟲出生位置太高會吃不到，暫時弄低一點
-              loop.border.height / 2 + loop.border.y - pad
-            ),
-            width: 50,
-            height: 50,
-            idx: loop.idx,
-          };
-          bug = new Bug(bugArgs);
-        } while (detectlap(bug));
-        loop.objs.push(new Bug(bugArgs));
-        loop.hasBug = true;
+        let count = config.bugNum[loop.idx];
+        while (count--) {
+          do {
+            bugArgs = {
+              x: rnGen(
+                -loop.border.width / 2 + pad,
+                loop.border.width / 2 - pad
+              ),
+              y: rnGen(
+                loop.border.y + pad,
+                // -loop.border.height / 2 + loop.border.y + pad, // 蟲出生位置太高會吃不到，暫時弄低一點
+                loop.border.height / 2 + loop.border.y - pad
+              ),
+              width: 50,
+              height: 50,
+              idx: loop.idx,
+            };
+            bug = new Bug(bugArgs);
+          } while (detectlap(bug));
+          loop.objs.push(new Bug(bugArgs));
+          loop.hasBug = true;
+        }
       }
     }
   }

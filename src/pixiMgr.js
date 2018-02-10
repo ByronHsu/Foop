@@ -136,7 +136,6 @@ class PixiMgr {
   }
   addWall(wall) {
     const idx = wall.idx % 7;
-    console.log(idx);
     let painter = new PIXI.Graphics();
     painter.beginFill(config.tileColor, 1);
     (painter.lineColor = config.lineColor[idx]), (painter.lineWidth = 2);
@@ -222,7 +221,7 @@ class PixiMgr {
     }
     let foop = new PIXI.extras.AnimatedSprite(foops);
     foop.anchor.set(0.5, 0.5);
-    (foop.width = 50), (foop.height = 50);
+    (foop.width = 32), (foop.height = 19);
     (foop.x = 0), (foop.y = 0);
     foop.parentGroup = this.playerGrp;
     this.player = foop;

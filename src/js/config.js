@@ -33,10 +33,19 @@ const soundsUrl = [
   './assets/sounds/slime3.wav',
   './assets/sounds/hitFloor.wav',
 ];
-
 const app = {
   w: 600,
   h: window.innerHeight,
 };
+const bugNum = [1, 1, 2, 2, 2, 2, 3, 3, 3, 4, 4, 4, 5];
 
-export { lineColor, tileColor, bgColor, soundsUrl, jsonUrl, imgUrl, app };
+export {
+  lineColor,
+  tileColor,
+  bgColor,
+  soundsUrl,
+  jsonUrl,
+  imgUrl,
+  app,
+  bugNum,
+};
