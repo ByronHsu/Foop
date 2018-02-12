@@ -10,7 +10,7 @@ function showStartScene(that) {
   let startCtn = new Container();
   // startBtn
   let starts = [];
-  for (let i = 0; i < 14; i++) {
+  for (let i = 0; i < 20; i++) {
     // update resume.png when start.png is done
     let startTex = Texture.fromFrame(`resume${i}.png`);
     starts.push(startTex);
