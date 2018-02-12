@@ -391,8 +391,6 @@ document.addEventListener('visibilitychange', () => {
   }
 });
 
-// pixiMgr.onStartScene();
-
 function animate() {
   if (!pixiMgr.isPaused) {
     dataMgr.playerMove();
@@ -418,5 +416,6 @@ function animate() {
   }
 }
 pixiMgr.setup().then(() => {
+  pixiMgr.onStartScene();
   requestAnimationFrame(animate);
 });

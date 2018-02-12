@@ -1,5 +1,6 @@
 import { Container, Text } from 'pixi.js';
 import * as config from '../config';
+import { setupPlayer, setupLaser, setupPause } from '../setups';
 
 function showEndScene(player, that) {
   that.worldCtn.visible = false;
@@ -40,13 +41,13 @@ function showEndScene(player, that) {
   endCtn.addChild(text);
   that.app.stage.addChild(endCtn);
 
-  that.setupPause();
+  setupPause(that);
   that.pause.on('click', () => {
     that.isPaused = false;
     that.worldCtn.visible = true;
-    that.setupPlayer();
-    that.setupLaser();
-    that.setupPause();
+    setupPlayer(that);
+    setupLaser(that);
+    setupPause(that);
     that.app.stage.removeChild(endCtn);
   });
   that.shouldReset = false;

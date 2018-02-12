@@ -6,16 +6,14 @@ import { setupPlayer, setupLaser, setupPause, setupSound } from './js/setups';
 import { showEndScene } from './js/scenes/endScene';
 import { showStartScene } from './js/scenes/startScene';
 
-const WW = window.innerWidth;
-const WH = window.innerHeight;
 const id = PIXI.loader.resources;
 
 class PixiMgr {
   constructor() {
     // init app
     this.app = new PIXI.Application({
-      width: WW,
-      height: WH,
+      width: config.ww,
+      height: config.wh,
       antialias: true,
       backgroundColor: config.bgColor,
     });
@@ -25,11 +23,11 @@ class PixiMgr {
     this.app.renderer.view.style.position = 'absolute';
     this.app.renderer.view.style.display = 'block';
     this.app.renderer.autoResize = true;
-    this.app.renderer.resize(WW, WH);
+    this.app.renderer.resize(config.ww, config.wh);
 
     // init ctn: world, player, objs, back, laser
     this.worldCtn = new PIXI.Container();
-    (this.worldCtn.x = WW / 2), (this.worldCtn.y = WH / 2);
+    (this.worldCtn.x = config.ww / 2), (this.worldCtn.y = config.wh / 2);
     this.playerCtn = new PIXI.Container();
     this.objsCtn = new PIXI.Container();
     this.backCtn = new PIXI.Container();
@@ -40,7 +38,7 @@ class PixiMgr {
     this.worldCtn.addChild(this.backCtn);
     this.worldCtn.addChild(this.laserCtn);
     this.mapCtn = new PIXI.Container();
-    (this.mapCtn.x = WW - 200), (this.mapCtn.y = WH / 2);
+    (this.mapCtn.x = config.ww - 200), (this.mapCtn.y = config.wh / 2);
     this.app.stage.addChild(this.mapCtn);
 
     // init group: player, objs, back
@@ -81,6 +79,7 @@ class PixiMgr {
     this.sounds = []; // store all sound objects
   }
   setup() {
+    this.worldCtn.visible = false;
     // Load resources
     return new Promise(resolve => {
       PIXI.loader
