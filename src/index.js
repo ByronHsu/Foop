@@ -391,6 +391,8 @@ document.addEventListener('visibilitychange', () => {
   }
 });
 
+// pixiMgr.onStartScene();
+
 function animate() {
   if (!pixiMgr.isPaused) {
     dataMgr.playerMove();
@@ -402,13 +404,12 @@ function animate() {
     pixiMgr.updatePlayer(dataMgr.player);
     pixiMgr.updateObjs(dataMgr.objs);
     pixiMgr.updateLaser(dataMgr.laser, FALLSPEED);
-    // dataMgr.player.speed > 10 ? pixiMgr.shine() : pixiMgr.unShine();
     requestAnimationFrame(animate);
   } else {
     // stop pixi animations
     // ex. pixiMgr.animationsStop();
     if (pixiMgr.shouldReset) {
-      pixiMgr.reset(dataMgr.player);
+      pixiMgr.onEndScene(dataMgr.player);
       gui.destroy();
       gui = new dat.GUI();
       dataMgr = new DataMgr();
