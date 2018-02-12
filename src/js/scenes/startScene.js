@@ -3,10 +3,10 @@ const { AnimatedSprite } = extras;
 import 'pixi-sound';
 import * as config from '../config';
 
-function showStartScene(that) {
-  that.isPaused = true;
-  that.worldCtn.visible = false;
-  that.mapCtn.visible = false;
+function showStartScene() {
+  this.isPaused = true;
+  this.worldCtn.visible = false;
+  this.mapCtn.visible = false;
   let startCtn = new Container();
   // startBtn
   let starts = [];
@@ -20,16 +20,16 @@ function showStartScene(that) {
   (start.width = 150), (start.height = 150);
   (start.x = config.ww / 3), (start.y = config.app.h / 2);
   startCtn.addChild(start);
-  that.app.stage.addChild(startCtn);
+  this.app.stage.addChild(startCtn);
   start.animationSpeed = 0.1;
   start.play();
   start.interactive = true;
   start.buttonMode = true;
   start.on('click', () => {
     startCtn.visible = false;
-    that.isPaused = false;
-    that.worldCtn.visible = true;
-    that.mapCtn.visible = true;
+    this.isPaused = false;
+    this.worldCtn.visible = true;
+    this.mapCtn.visible = true;
   });
   // loginBtn
   let logins = [];
@@ -42,7 +42,7 @@ function showStartScene(that) {
   (login.width = 200), (login.height = 100);
   (login.x = config.ww * 2 / 3), (login.y = config.app.h / 2);
   startCtn.addChild(login);
-  that.app.stage.addChild(startCtn);
+  this.app.stage.addChild(startCtn);
   login.animationSpeed = 0.1;
   login.play();
   login.interactive = true;

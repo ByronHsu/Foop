@@ -87,11 +87,11 @@ class PixiMgr {
         .add(config.jsonUrl)
         .add(config.soundsUrl)
         .load(() => {
-          setupPlayer(this);
-          setupLaser(this);
-          setupPause(this);
+          setupPlayer.call(this);
+          setupLaser.call(this);
+          setupPause.call(this);
           // setupThorn();
-          setupSound(this);
+          setupSound.call(this);
           resolve();
         });
     });
@@ -228,10 +228,10 @@ class PixiMgr {
   //   this.laserCtn.addChild(thorn);
   // }
   onStartScene() {
-    showStartScene(this);
+    showStartScene.call(this);
   }
   onEndScene(player) {
-    showEndScene(player, this);
+    showEndScene.call(this, player);
   }
 }
 

@@ -2,13 +2,13 @@ import { Container, Text } from 'pixi.js';
 import * as config from '../config';
 import { setupPlayer, setupLaser, setupPause } from '../setups';
 
-function showEndScene(player, that) {
-  that.worldCtn.visible = false;
-  that.playerCtn.removeChildren();
-  that.objsCtn.removeChildren();
-  that.backCtn.removeChildren();
-  that.mapCtn.removeChildren();
-  that.laserCtn.removeChildren();
+function showEndScene(player) {
+  this.worldCtn.visible = false;
+  this.playerCtn.removeChildren();
+  this.objsCtn.removeChildren();
+  this.backCtn.removeChildren();
+  this.mapCtn.removeChildren();
+  this.laserCtn.removeChildren();
   // Save & show this game data
   let endCtn = new Container();
   let totalMoney = 0;
@@ -39,18 +39,18 @@ function showEndScene(player, that) {
   );
   text.position.set(0, config.app.h / 2);
   endCtn.addChild(text);
-  that.app.stage.addChild(endCtn);
+  this.app.stage.addChild(endCtn);
 
-  setupPause(that);
-  that.pause.on('click', () => {
-    that.isPaused = false;
-    that.worldCtn.visible = true;
-    setupPlayer(that);
-    setupLaser(that);
-    setupPause(that);
-    that.app.stage.removeChild(endCtn);
+  setupPause.call(this);
+  this.pause.on('click', () => {
+    this.isPaused = false;
+    this.worldCtn.visible = true;
+    setupPlayer.call(this);
+    setupLaser.call(this);
+    setupPause.call(this);
+    this.app.stage.removeChild(endCtn);
   });
-  that.shouldReset = false;
+  this.shouldReset = false;
 }
 
 export { showEndScene };
