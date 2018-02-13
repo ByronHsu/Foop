@@ -1,6 +1,6 @@
 import { Graphics, Container, Texture, extras } from 'pixi.js';
 const { AnimatedSprite } = extras;
-import 'pixi-sound';
+import { sound } from 'pixi-sound';
 import * as config from '../config';
 
 function showPauseScene() {
@@ -37,7 +37,36 @@ function showPauseScene() {
   resume.on('mouseover', () => resume.play());
   resume.on('mouseout', () => resume.stop());
   pauseRect.addChild(resume);
-  // toggle mute
+  // toggle muteBtn
+  let mutes = [];
+  for (let i = 0; i < 21; i++) {
+    let muteTex = Texture.fromFrame(`mute${i}.png`);
+    mutes.push(muteTex);
+  }
+  let mute = new AnimatedSprite(mutes);
+  mute.gotoAndStop(this.isMute ? 0 : 20);
+  mute.anchor.set(0.5, 0.5);
+  (mute.width = 150), (mute.height = 150);
+  (mute.x = config.ww * 2 / 3), (mute.y = config.app.h / 2);
+  mute.animationSpeed = 0.3;
+  mute.interactive = true;
+  mute.buttonMode = true;
+  mute.on('click', () => {
+    this.isMute = !this.isMute;
+    sound.toggleMuteAll();
+    mute.gotoAndStop(this.isMute ? 0 : 20);
+  });
+  mute.on('mouseover', () => {
+    // let isMuteAni = [8, 7, 6, 5, 4, 3, 2, 1, 0];
+    // mute.play();
+    // console.log(Number(mute.texture.textureCacheIds[0].replace(/[^!0-9]/g, u => '')));
+    // mute.onFrameChange = console.log('bro');
+    // mute.fromFrames(isMuteAni);
+  });
+  mute.on('mouseout', () => {
+    mute.gotoAndStop(this.isMute ? 0 : 20);
+  });
+  pauseRect.addChild(mute);
   pauseRect.parentGroup = this.laserGrp;
   this.app.stage.addChild(pauseRect);
 }

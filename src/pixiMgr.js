@@ -79,6 +79,7 @@ class PixiMgr {
     this.playerMap = {};
     this.now = 0;
     this.sounds = []; // store all sound objects
+    this.isMute = false;
   }
   setup() {
     this.worldCtn.visible = false;
