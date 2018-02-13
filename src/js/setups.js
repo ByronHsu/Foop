@@ -49,10 +49,7 @@ function setupPause() {
   this.pause.interactive = true;
   this.pause.buttonMode = true;
   this.pause.z = 2;
-  this.pause.on('click', () => {
-    this.isPaused = !this.isPaused;
-    this.worldCtn.alpha = this.isPaused ? 0.5 : 1;
-  });
+  this.pause.on('click', () => this.onPauseScene());
   this.pause.parentGroup = this.mapGrp;
   this.mapCtn.addChild(this.pause);
 }

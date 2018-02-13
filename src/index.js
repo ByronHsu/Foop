@@ -14,7 +14,7 @@ if (process.env.NODE_ENV !== 'prod') {
 
 let gui = new dat.GUI();
 const SPEED = 10;
-const FALLSPEED = 5;
+const FALLSPEED = 2;
 const SPEEDUP = 0.5;
 
 const PLAYERBOX = {
@@ -402,6 +402,8 @@ function animate() {
     pixiMgr.updatePlayer(dataMgr.player);
     pixiMgr.updateObjs(dataMgr.objs);
     pixiMgr.updateLaser(dataMgr.laser, FALLSPEED);
+    // for UI
+    pixiMgr.now = dataMgr.looper.now;
     requestAnimationFrame(animate);
   } else {
     // stop pixi animations

@@ -5,6 +5,7 @@ import * as config from './js/config';
 import { setupPlayer, setupLaser, setupPause, setupSound } from './js/setups';
 import { showEndScene } from './js/scenes/endScene';
 import { showStartScene } from './js/scenes/startScene';
+import { showPauseScene } from './js/scenes/pauseScene';
 
 const id = PIXI.loader.resources;
 
@@ -76,6 +77,7 @@ class PixiMgr {
     this.isPaused = false;
     this.shouldReset = false;
     this.playerMap = {};
+    this.now = 0;
     this.sounds = []; // store all sound objects
   }
   setup() {
@@ -229,6 +231,9 @@ class PixiMgr {
   // }
   onStartScene() {
     showStartScene.call(this);
+  }
+  onPauseScene() {
+    showPauseScene.call(this);
   }
   onEndScene(player) {
     showEndScene.call(this, player);
