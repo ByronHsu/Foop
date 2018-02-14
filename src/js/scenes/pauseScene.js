@@ -44,7 +44,7 @@ function showPauseScene() {
     mutes.push(muteTex);
   }
   let mute = new AnimatedSprite(mutes);
-  mute.gotoAndStop(this.isMute ? 0 : 20);
+  mute.gotoAndStop(this.isMute ? 20 : 0);
   mute.anchor.set(0.5, 0.5);
   (mute.width = 150), (mute.height = 150);
   (mute.x = config.ww * 2 / 3), (mute.y = config.app.h / 2);
@@ -54,9 +54,10 @@ function showPauseScene() {
   mute.on('click', () => {
     this.isMute = !this.isMute;
     sound.toggleMuteAll();
-    mute.gotoAndStop(this.isMute ? 0 : 20);
+    mute.gotoAndStop(this.isMute ? 20 : 0);
   });
   mute.on('mouseover', () => {
+    mute.alpha = 0.5;
     // let isMuteAni = [8, 7, 6, 5, 4, 3, 2, 1, 0];
     // mute.play();
     // console.log(Number(mute.texture.textureCacheIds[0].replace(/[^!0-9]/g, u => '')));
@@ -64,7 +65,8 @@ function showPauseScene() {
     // mute.fromFrames(isMuteAni);
   });
   mute.on('mouseout', () => {
-    mute.gotoAndStop(this.isMute ? 0 : 20);
+    mute.alpha = 1;
+    mute.gotoAndStop(this.isMute ? 20 : 0);
   });
   pauseRect.addChild(mute);
   pauseRect.parentGroup = this.laserGrp;
