@@ -1,4 +1,4 @@
-import { Container, Texture, extras } from 'pixi.js';
+import { Container, Texture, extras, Graphics, Sprite, utils } from 'pixi.js';
 const { AnimatedSprite } = extras;
 import 'pixi-sound';
 import * as config from '../config';
@@ -31,6 +31,31 @@ function showStartScene() {
     this.worldCtn.visible = true;
     this.mapCtn.visible = true;
   });
+  // loginContainer
+  let loginRect = new Container();
+  loginRect.position.set(config.ww / 4, config.wh / 4);
+  loginRect.width = config.ww / 2;
+  loginRect.height = config.wh / 2;
+  // loginRect background
+  let graphics = new Graphics();
+  graphics.lineStyle(2, config.lineColor[0], 1);
+  graphics.beginFill(config.tileColor, 1);
+  graphics.drawRect(0, 0, config.ww / 2, config.wh / 2);
+  loginRect.addChild(graphics);
+  // login Close btn
+  let loginClose = new Sprite(utils.TextureCache['./assets/close-browser.png']);
+  loginClose.scale.set(0.5, 0.5);
+  loginClose.anchor.set(1, 0); // anchor at top right corner
+  loginRect.addChild(loginClose);
+  let pad = 20;
+  loginClose.position.set(config.ww / 2 - pad, 0 + pad);
+  loginClose.interactive = true;
+  loginClose.buttonMode = true;
+  loginClose.on('click', () => {
+    startCtn.alpha = 1;
+    this.app.stage.removeChild(loginRect);
+    document.querySelector('#username').style.display = 'none';
+  });
   // loginBtn
   let logins = [];
   for (let i = 0; i < 14; i++) {
@@ -48,7 +73,14 @@ function showStartScene() {
   login.interactive = true;
   login.buttonMode = true;
   login.on('click', () => {
-    alert('please login');
+    startCtn.alpha = 0.5;
+    this.app.stage.addChild(loginRect);
+    let inputField = document.querySelector('#username');
+    inputField.setAttribute(
+      'style',
+      `display: inline; top: ${config.wh / 2}px; left: ${config.ww /
+        2}px; border: none;`
+    );
   });
 }
 
