@@ -1,9 +1,11 @@
 import { Container, Text } from 'pixi.js';
 import * as config from '../config';
-import { setupPlayer, setupLaser, setupPause } from '../setups';
+import { setupPlayer, setupLaser, setupPause, setupRestart } from '../setups';
 
 function showEndScene(player) {
+  this.shouldReset = false;
   this.worldCtn.visible = false;
+  this.mapCtn.visible = false;
   this.playerCtn.removeChildren();
   this.objsCtn.removeChildren();
   this.backCtn.removeChildren();
@@ -31,6 +33,7 @@ function showEndScene(player) {
       localStorage.setItem('record', player.exitTimes);
     }
   }
+  // show Texts
   let text = new Text(
     `This Game Money: ${player.money}\nThis Game Score: ${
       player.exitTimes
@@ -39,18 +42,19 @@ function showEndScene(player) {
   );
   text.position.set(0, config.app.h / 2);
   endCtn.addChild(text);
-  this.app.stage.addChild(endCtn);
-
-  setupPause.call(this);
-  this.pause.on('click', () => {
+  // setup restartBtn
+  setupRestart.call(this);
+  endCtn.addChild(this.restart);
+  this.restart.on('click', () => {
     this.isPaused = false;
     this.worldCtn.visible = true;
+    this.mapCtn.visible = true;
     setupPlayer.call(this);
     setupLaser.call(this);
     setupPause.call(this);
     this.app.stage.removeChild(endCtn);
   });
-  this.shouldReset = false;
+  this.app.stage.addChild(endCtn);
 }
 
 export { showEndScene };

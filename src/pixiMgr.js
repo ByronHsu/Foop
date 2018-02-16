@@ -72,7 +72,7 @@ class PixiMgr {
     this.loopRef = [];
     this.exitRef = [];
     this.laserRef = {};
-    this.laser, this.pause;
+    this.laser, this.pause, this.restart;
     this.laserEnd = 0;
     this.isPaused = false;
     this.shouldReset = false;

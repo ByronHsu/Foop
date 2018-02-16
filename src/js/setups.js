@@ -1,4 +1,5 @@
 import { Texture, extras, utils, Sprite, loader } from 'pixi.js';
+const { AnimatedSprite } = extras;
 import * as filters from 'pixi-filters';
 import * as config from './config';
 
@@ -10,7 +11,7 @@ function setupPlayer() {
     let foopTex = Texture.fromFrame(`foop${i}.png`);
     foops.push(foopTex);
   }
-  let foop = new extras.AnimatedSprite(foops);
+  let foop = new AnimatedSprite(foops);
   foop.anchor.set(0.5, 0.5);
   (foop.width = 64), (foop.height = 38);
   (foop.x = 0), (foop.y = 0);
@@ -42,6 +43,7 @@ function setupLaser() {
 }
 
 function setupPause() {
+  // replace pause.png img when it's done
   this.pause = new Sprite(id['./assets/pause.png'].texture);
   this.pause.anchor.set(0.5);
   (this.pause.width = 50), (this.pause.height = 50);
@@ -54,6 +56,23 @@ function setupPause() {
   this.mapCtn.addChild(this.pause);
 }
 
+function setupRestart() {
+  // replace resume.png with restart.png when it's done
+  // restartBtn
+  let restarts = [];
+  for (let i = 0; i < 20; i++) {
+    let restartTex = Texture.fromFrame(`resume${i}.png`);
+    restarts.push(restartTex);
+  }
+  this.restart = new AnimatedSprite(restarts);
+  this.restart.anchor.set(0.5, 0.5);
+  (this.restart.width = 150), (this.restart.height = 150);
+  (this.restart.x = config.ww / 3), (this.restart.y = config.app.h / 2);
+  this.restart.animationSpeed = 0.3;
+  this.restart.interactive = true;
+  this.restart.buttonMode = true;
+}
+
 function setupSound() {
   const { soundsUrl } = config;
   for (let i = 0; i < soundsUrl.length; i++) {
@@ -61,4 +80,4 @@ function setupSound() {
   }
 }
 
-export { setupPlayer, setupLaser, setupPause, setupSound };
+export { setupPlayer, setupLaser, setupPause, setupRestart, setupSound };
