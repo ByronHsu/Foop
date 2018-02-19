@@ -51,6 +51,7 @@ function showEndScene(player) {
     this.isPaused = false;
     this.worldCtn.visible = true;
     this.mapCtn.visible = true;
+    this.worldCtn.alpha = 1;
     setupPlayer.call(this);
     setupLaser.call(this);
     setupPause.call(this);
