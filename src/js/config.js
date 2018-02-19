@@ -15,10 +15,14 @@ const imgUrl = [
   './assets/pause.png',
   './assets/thorn.png',
   './assets/reddot.png',
+  './assets/close-browser.png',
 ];
 
 const jsonUrl = [
+  './assets/images/login.json',
+  './assets/images/resume.json',
   './assets/images/foop.json',
+  './assets/images/mute.json',
   './assets/images/potion.json',
   './assets/images/shoe.json',
   './assets/images/trap.json',
@@ -33,11 +37,19 @@ const soundsUrl = [
   './assets/sounds/slime3.wav',
   './assets/sounds/hitFloor.wav',
 ];
+
 const app = {
   w: 600,
   h: window.innerHeight,
 };
-const bugNum = [1, 1, 2, 2, 2, 2, 3, 3, 3, 4, 4, 4, 5];
+
+const loopConfig = {
+  bugCount: [1, 1, 2, 3, 4],
+  wallCount: [8, 8, 8, 8, 8],
+  wallWidth: [50, 100, 150, 150, 200],
+};
+const ww = window.innerWidth;
+const wh = window.innerHeight;
 
 export {
   lineColor,
@@ -47,5 +59,7 @@ export {
   jsonUrl,
   imgUrl,
   app,
-  bugNum,
+  loopConfig,
+  ww,
+  wh,
 };

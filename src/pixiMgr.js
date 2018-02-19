@@ -2,17 +2,19 @@ import * as PIXI from 'pixi.js';
 import './bin/pixi-display';
 import * as filters from 'pixi-filters';
 import * as config from './js/config';
+import { setupPlayer, setupLaser, setupPause, setupSound } from './js/setups';
+import { showEndScene } from './js/scenes/endScene';
+import { showStartScene } from './js/scenes/startScene';
+import { showPauseScene } from './js/scenes/pauseScene';
 
-const WW = window.innerWidth;
-const WH = window.innerHeight;
 const id = PIXI.loader.resources;
 
 class PixiMgr {
   constructor() {
     // init app
     this.app = new PIXI.Application({
-      width: WW,
-      height: WH,
+      width: config.ww,
+      height: config.wh,
       antialias: true,
       backgroundColor: config.bgColor,
     });
@@ -22,11 +24,11 @@ class PixiMgr {
     this.app.renderer.view.style.position = 'absolute';
     this.app.renderer.view.style.display = 'block';
     this.app.renderer.autoResize = true;
-    this.app.renderer.resize(WW, WH);
+    this.app.renderer.resize(config.ww, config.wh);
 
     // init ctn: world, player, objs, back, laser
     this.worldCtn = new PIXI.Container();
-    (this.worldCtn.x = WW / 2), (this.worldCtn.y = WH / 2);
+    (this.worldCtn.x = config.ww / 2), (this.worldCtn.y = config.wh / 2);
     this.playerCtn = new PIXI.Container();
     this.objsCtn = new PIXI.Container();
     this.backCtn = new PIXI.Container();
@@ -37,7 +39,7 @@ class PixiMgr {
     this.worldCtn.addChild(this.backCtn);
     this.worldCtn.addChild(this.laserCtn);
     this.mapCtn = new PIXI.Container();
-    (this.mapCtn.x = WW - 200), (this.mapCtn.y = WH / 2);
+    (this.mapCtn.x = config.ww - 200), (this.mapCtn.y = config.wh / 2);
     this.app.stage.addChild(this.mapCtn);
 
     // init group: player, objs, back
@@ -70,14 +72,17 @@ class PixiMgr {
     this.loopRef = [];
     this.exitRef = [];
     this.laserRef = {};
-    this.laser, this.pause;
+    this.laser, this.pause, this.restart;
     this.laserEnd = 0;
     this.isPaused = false;
     this.shouldReset = false;
     this.playerMap = {};
+    this.now = 0;
     this.sounds = []; // store all sound objects
+    this.isMute = false;
   }
   setup() {
+    this.worldCtn.visible = false;
     // Load resources
     return new Promise(resolve => {
       PIXI.loader
@@ -85,11 +90,11 @@ class PixiMgr {
         .add(config.jsonUrl)
         .add(config.soundsUrl)
         .load(() => {
-          this.setupPlayer();
-          this.setupLaser();
-          this.setupPause();
-          this.setupThorn();
-          this.setupSound();
+          setupPlayer.call(this);
+          setupLaser.call(this);
+          setupPause.call(this);
+          // setupThorn();
+          setupSound.call(this);
           resolve();
         });
     });
@@ -216,125 +221,23 @@ class PixiMgr {
     this.backCtn.addChild(Object.assign(sprite, obj));
     return sprite;
   }
-  // dummy function
-  setupPlayer() {
-    let foops = [];
-    for (let i = 0; i < 3; i++) {
-      let foopTex = PIXI.Texture.fromFrame(`foop${i}.png`);
-      foops.push(foopTex);
-    }
-    let foop = new PIXI.extras.AnimatedSprite(foops);
-    foop.anchor.set(0.5, 0.5);
-    (foop.width = 64), (foop.height = 38);
-    (foop.x = 0), (foop.y = 0);
-    foop.parentGroup = this.playerGrp;
-    this.player = foop;
-    console.log(filters);
-    this.player.filters = [new filters.GlowFilter(15, 2, 1, 0xffffff, 0.5)];
-    this.playerCtn.addChild(this.player);
-    foop.animationSpeed = 0.1;
-    foop.play();
-
-    this.playerMap = new PIXI.Sprite(
-      PIXI.utils.TextureCache['./assets/reddot.png']
-    );
-    this.playerMap.anchor.set(0.5, 0.5);
-    (this.playerMap.width = this.player.width / 5),
-      (this.playerMap.height = this.player.height / 5);
-    this.playerMap.z = 1;
-    this.playerMap.parentGroup = this.mapGrp;
-    this.mapCtn.addChild(this.playerMap);
+  // setupThorn() {
+  //   let pad = 20,
+  //     thorn = new PIXI.Sprite(id['./assets/thorn.png'].texture);
+  //   thorn.anchor.set(0.5);
+  //   (thorn.width = config.app.w), (thorn.height = 100);
+  //   thorn.position.set(0, config.app.h / 2 - pad);
+  //   thorn.parentGroup = this.laserGrp;
+  //   this.laserCtn.addChild(thorn);
+  // }
+  onStartScene() {
+    showStartScene.call(this);
   }
-  setupLaser() {
-    this.laser = new PIXI.Sprite(id['./assets/laser.png'].texture);
-    this.laser.anchor.set(0, 0.5);
-    (this.laser.width = 0), (this.laser.height = 100);
-    this.laser.position.set(-1 * config.app.w / 2, -1 * config.app.h);
-    this.laser.parentGroup = this.laserGrp;
-    this.laserRef = this.laser;
-    this.laserCtn.addChild(this.laser);
+  onPauseScene() {
+    showPauseScene.call(this);
   }
-  setupPause() {
-    this.pause = new PIXI.Sprite(id['./assets/pause.png'].texture);
-    this.pause.anchor.set(0.5);
-    (this.pause.width = 50), (this.pause.height = 50);
-    this.pause.position.set(100, 0);
-    this.pause.interactive = true;
-    this.pause.buttonMode = true;
-    this.pause.z = 2;
-    this.pause.on('click', () => {
-      this.isPaused = !this.isPaused;
-      this.worldCtn.alpha = this.isPaused ? 0.5 : 1;
-    });
-    this.pause.parentGroup = this.mapGrp;
-    this.mapCtn.addChild(this.pause);
-  }
-  setupThorn() {
-    // let pad = 20,
-    //   thorn = new PIXI.Sprite(id['./assets/thorn.png'].texture);
-    // thorn.anchor.set(0.5);
-    // (thorn.width = config.app.w), (thorn.height = 100);
-    // thorn.position.set(0, config.app.h / 2 - pad);
-    // thorn.parentGroup = this.laserGrp;
-    // this.laserCtn.addChild(thorn);
-  }
-  setupSound() {
-    const { soundsUrl } = config;
-    for (let i = 0; i < soundsUrl.length; i++) {
-      this.sounds.push(id[soundsUrl[i]]);
-    }
-  }
-  reset(player) {
-    // temporary function
-    this.playerCtn.removeChildren();
-    this.objsCtn.removeChildren();
-    this.backCtn.removeChildren();
-    this.mapCtn.removeChildren();
-    this.laserCtn.removeChildren();
-    // Save & show game data
-    let gameCtn = new PIXI.Container();
-    // gameCtn.addChild(new PIXI.Sprite.fromImage('./assets/gameover.png'));
-    let totalMoney = 0;
-    let recordScore = 0;
-    if (!(typeof Storage !== 'undefined')) {
-      console.log('No LocalStorage Support');
-    } else {
-      if (localStorage.getItem('money') && localStorage.getItem('record')) {
-        totalMoney = Number(localStorage.getItem('money')) + player.money;
-        localStorage.setItem('money', totalMoney);
-        recordScore = Math.max(
-          Number(localStorage.getItem('record')),
-          player.exitTimes
-        );
-        localStorage.setItem('record', recordScore);
-      } else {
-        totalMoney = player.money;
-        recordScore = player.exitTimes;
-        localStorage.setItem('money', player.money);
-        localStorage.setItem('record', player.exitTimes);
-      }
-    }
-    let text = new PIXI.Text(
-      `This Game Money: ${player.money}\nThis Game Score: ${
-        player.exitTimes
-      }\nTotal Money: ${totalMoney}\nHighest Score: ${recordScore}`,
-      { fontFamily: 'Orbitron-Medium, sans-serif' }
-    );
-    text.position.set(0, WH / 2);
-    gameCtn.addChild(text);
-    this.app.stage.addChild(gameCtn);
-
-    this.setupPause();
-    this.pause.on('click', () => {
-      this.isPaused = false;
-      this.worldCtn.visible = true;
-      this.setupPlayer();
-      this.setupLaser();
-      this.setupPause();
-      this.app.stage.removeChild(gameCtn);
-    });
-    this.shouldReset = false;
-    this.worldCtn.visible = false;
+  onEndScene(player) {
+    showEndScene.call(this, player);
   }
 }
 

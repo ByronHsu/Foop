@@ -5,14 +5,14 @@ import key from 'keymaster';
 import { Box, Border, Door, Bug, Wall } from './js/entity';
 import { inside, outside, hitLaser, overlap } from './js/physic';
 import { rnGen } from './js/utils';
-import dat from 'dat.gui';
+// import dat from 'dat.gui';
 import * as config from './js/config';
 
 if (process.env.NODE_ENV !== 'prod') {
   require('./template.html');
 }
 
-let gui = new dat.GUI();
+// let gui = new dat.GUI();
 const SPEED = 10;
 const FALLSPEED = 5;
 const SPEEDUP = 0.5;
@@ -39,11 +39,11 @@ class Looper {
     this.now = 0;
     this.stack = [2];
     this.skip = 0;
-    gui.add(this, 'now').listen();
-    gui
-      .add(this, 'skip', 0, 5)
-      .step(1)
-      .listen();
+    //  gui.add(this, 'now').listen();
+    //  gui
+    //    .add(this, 'skip', 0, 5)
+    //    .step(1)
+    //    .listen();
   }
   hitExitUp() {
     let vecIdx = -this.now + this.arr.length - 1;
@@ -172,7 +172,7 @@ class Looper {
       return false;
     };
     const pad = 100;
-    while (loop.wallList.length < (loop.idx + 1) * 2) {
+    while (loop.wallList.length < config.loopConfig.wallCount[loop.idx]) {
       let wallArgs = {};
       let wallMarArgs = {};
       let wall = {};
@@ -184,7 +184,7 @@ class Looper {
             -loop.border.height / 2 + loop.border.y + pad,
             loop.border.height / 2 + loop.border.y - pad
           ),
-          width: 150,
+          width: config.loopConfig.wallWidth[loop.idx],
           height: 15,
           idx: loop.idx,
         };
@@ -219,14 +219,14 @@ class DataMgr {
     this.player.speed = SPEED;
     this.player.money = 0;
     this.player.exitTimes = 0; // increase every time player exits a door.
-    gui
-      .add(this.player, 'hp', 0, 200)
-      .step(1)
-      .listen();
-    gui
-      .add(this.player, 'speed', 0, 50)
-      .step(1)
-      .listen();
+    //  gui
+    //    .add(this.player, 'hp', 0, 200)
+    //    .step(1)
+    //    .listen();
+    //  gui
+    //    .add(this.player, 'speed', 0, 50)
+    //    .step(1)
+    //    .listen();
     this.looper = new Looper();
     this.looper.createLoop(config.app.h);
     this.laser = new Box(LASERBOX);
@@ -281,7 +281,7 @@ class DataMgr {
   }
   hitExit() {
     if (
-      this.looper.vec[this.playerVec].hitBug === config.bugNum[this.looper.now]
+      this.looper.vec[this.playerVec].hitBug === config.loopConfig.bugCount[this.looper.now]
     ) {
       if (overlap(this.player, this.looper.loop.exitDownBox)) {
         this.handleHitExit(this.looper.hitExitDown());
@@ -342,7 +342,7 @@ class DataMgr {
         return false;
       };
       if (i === this.playerVec && !loop.hasBug) {
-        let count = config.bugNum[loop.idx];
+        let count = config.loopConfig.bugCount[loop.idx];
         while (count--) {
           do {
             bugArgs = {
@@ -351,8 +351,8 @@ class DataMgr {
                 loop.border.width / 2 - pad
               ),
               y: rnGen(
-                loop.border.y + pad,
-                // -loop.border.height / 2 + loop.border.y + pad, // 蟲出生位置太高會吃不到，暫時弄低一點
+               //  loop.border.y + pad,
+                -loop.border.height / 2 + 100 + loop.border.y + pad, // 蟲出生位置太高會吃不到，暫時弄低一點
                 loop.border.height / 2 + loop.border.y - pad
               ),
               width: 50,
@@ -402,20 +402,22 @@ function animate() {
     pixiMgr.updatePlayer(dataMgr.player);
     pixiMgr.updateObjs(dataMgr.objs);
     pixiMgr.updateLaser(dataMgr.laser, FALLSPEED);
-    // dataMgr.player.speed > 10 ? pixiMgr.shine() : pixiMgr.unShine();
+    // for UI
+    pixiMgr.now = dataMgr.looper.now;
     requestAnimationFrame(animate);
   } else {
     // stop pixi animations
     // ex. pixiMgr.animationsStop();
     if (pixiMgr.shouldReset) {
-      pixiMgr.reset(dataMgr.player);
-      gui.destroy();
-      gui = new dat.GUI();
+      pixiMgr.onEndScene(dataMgr.player);
+      // gui.destroy();
+      // gui = new dat.GUI();
       dataMgr = new DataMgr();
     }
     requestAnimationFrame(animate);
   }
 }
 pixiMgr.setup().then(() => {
+  pixiMgr.onStartScene();
   requestAnimationFrame(animate);
 });
