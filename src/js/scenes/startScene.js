@@ -2,6 +2,28 @@ import { Container, Texture, extras, Graphics, Sprite, utils } from 'pixi.js';
 const { AnimatedSprite } = extras;
 import 'pixi-sound';
 import * as config from '../config';
+var name;
+
+window.fbAsyncInit = function() {
+  FB.init({
+    appId: '560212231013497',
+    cookie: true, // enable cookies to allow the server to access
+    // the session
+    xfbml: true, // parse social plugins on this page
+    version: 'v2.8', // use graph api version 2.8
+  });
+};
+
+// Load the SDK asynchronously
+(function(d, s, id) {
+  var js,
+    fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) return;
+  js = d.createElement(s);
+  js.id = id;
+  js.src = 'https://connect.facebook.net/en_US/sdk.js';
+  fjs.parentNode.insertBefore(js, fjs);
+})(document, 'script', 'facebook-jssdk');
 
 function showStartScene() {
   this.isPaused = true;
@@ -26,6 +48,9 @@ function showStartScene() {
   start.interactive = true;
   start.buttonMode = true;
   start.on('click', () => {
+    if (!localStorage.getItem('name'))
+      localStorage.setItem('name', document.querySelector('#username').value);
+    document.querySelector('#username').setAttribute('style', 'display:none');
     startCtn.visible = false;
     this.isPaused = false;
     this.worldCtn.visible = true;
@@ -54,7 +79,6 @@ function showStartScene() {
   loginClose.on('click', () => {
     startCtn.alpha = 1;
     this.app.stage.removeChild(loginRect);
-    document.querySelector('#username').style.display = 'none';
   });
   // loginBtn
   let logins = [];
@@ -73,15 +97,32 @@ function showStartScene() {
   login.interactive = true;
   login.buttonMode = true;
   login.on('click', () => {
-    startCtn.alpha = 0.5;
-    this.app.stage.addChild(loginRect);
-    let inputField = document.querySelector('#username');
-    inputField.setAttribute(
-      'style',
-      `display: inline; top: ${config.wh / 2}px; left: ${config.ww /
-        2}px; border: none;`
-    );
+    FB.getLoginStatus(response => {
+      if (response.status !== 'connected') {
+        FB.login(() => {
+          FB.api('/me', response => {
+            console.log('Successful login for: ' + response.name);
+            localStorage.setItem('name', response.name);
+            document
+              .querySelector('#username')
+              .setAttribute('placeholder', response.name);
+            document.querySelector('#username').setAttribute('disabled', true);
+          });
+        });
+      } else {
+        alert(`${localStorage.getItem('name')} you have already logined!`);
+      }
+    });
   });
 }
-
-export { showStartScene };
+(function() {
+  if (!localStorage.getItem('name')) return;
+  document
+    .querySelector('#username')
+    .setAttribute('placeholder', localStorage.getItem('name'));
+  document.querySelector('#username').setAttribute('disabled', true);
+})();
+function getName() {
+  return name;
+}
+export { showStartScene, getName };

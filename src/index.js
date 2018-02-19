@@ -5,14 +5,14 @@ import key from 'keymaster';
 import { Box, Border, Door, Bug, Wall } from './js/entity';
 import { inside, outside, hitLaser, overlap } from './js/physic';
 import { rnGen } from './js/utils';
-import dat from 'dat.gui';
+// import dat from 'dat.gui';
 import * as config from './js/config';
 
 if (process.env.NODE_ENV !== 'prod') {
   require('./template.html');
 }
 
-let gui = new dat.GUI();
+// let gui = new dat.GUI();
 const SPEED = 10;
 const FALLSPEED = 2;
 const SPEEDUP = 0.5;
@@ -39,11 +39,11 @@ class Looper {
     this.now = 0;
     this.stack = [2];
     this.skip = 0;
-    gui.add(this, 'now').listen();
-    gui
-      .add(this, 'skip', 0, 5)
-      .step(1)
-      .listen();
+    //  gui.add(this, 'now').listen();
+    //  gui
+    //    .add(this, 'skip', 0, 5)
+    //    .step(1)
+    //    .listen();
   }
   hitExitUp() {
     let vecIdx = -this.now + this.arr.length - 1;
@@ -219,14 +219,14 @@ class DataMgr {
     this.player.speed = SPEED;
     this.player.money = 0;
     this.player.exitTimes = 0; // increase every time player exits a door.
-    gui
-      .add(this.player, 'hp', 0, 200)
-      .step(1)
-      .listen();
-    gui
-      .add(this.player, 'speed', 0, 50)
-      .step(1)
-      .listen();
+    //  gui
+    //    .add(this.player, 'hp', 0, 200)
+    //    .step(1)
+    //    .listen();
+    //  gui
+    //    .add(this.player, 'speed', 0, 50)
+    //    .step(1)
+    //    .listen();
     this.looper = new Looper();
     this.looper.createLoop(config.app.h);
     this.laser = new Box(LASERBOX);
@@ -410,8 +410,8 @@ function animate() {
     // ex. pixiMgr.animationsStop();
     if (pixiMgr.shouldReset) {
       pixiMgr.onEndScene(dataMgr.player);
-      gui.destroy();
-      gui = new dat.GUI();
+      // gui.destroy();
+      // gui = new dat.GUI();
       dataMgr = new DataMgr();
     }
     requestAnimationFrame(animate);

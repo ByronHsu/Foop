@@ -4,9 +4,8 @@
   margin: 0;
   font-family: 'Orbitron-Medium';
 }
-
 #username {
-  position: fixed;
+  position: absolute;
   z-index: 1;
-  display: none;
+  margin: auto 400px;
 }

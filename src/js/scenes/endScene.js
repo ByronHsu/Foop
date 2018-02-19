@@ -35,7 +35,9 @@ function showEndScene(player) {
   }
   // show Texts
   let text = new Text(
-    `This Game Money: ${player.money}\nThis Game Score: ${
+    `${localStorage.getItem('name')}\nThis Game Money: ${
+      player.money
+    }\nThis Game Score: ${
       player.exitTimes
     }\nTotal Money: ${totalMoney}\nHighest Score: ${recordScore}`,
     { fontFamily: 'Orbitron-Medium, sans-serif' }
