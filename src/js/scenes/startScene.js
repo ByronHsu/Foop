@@ -12,6 +12,21 @@ window.fbAsyncInit = function() {
     xfbml: true, // parse social plugins on this page
     version: 'v2.8', // use graph api version 2.8
   });
+  FB.getLoginStatus(response => {
+    if (response.status === 'connected') {
+      FB.api('/me', response => {
+        console.log('Successful login for: ' + response.name);
+        localStorage.setItem(
+          'user',
+          JSON.stringify({ name: response.name, fb: true })
+        );
+        document
+          .querySelector('#username')
+          .setAttribute('placeholder', response.name);
+        document.querySelector('#username').setAttribute('disabled', true);
+      });
+    }
+  });
 };
 
 // Load the SDK asynchronously
@@ -52,7 +67,9 @@ function showStartScene() {
       localStorage.setItem(
         'user',
         JSON.stringify({
-          name: document.querySelector('#username').value,
+          name:
+            document.querySelector('#username').value ||
+            document.querySelector('#username').placeHolder,
           fb: false,
         })
       );
@@ -119,19 +136,15 @@ function showStartScene() {
           });
         });
       } else {
-        alert(`${localStorage.getItem('name')} you have already logined!`);
+        alert(
+          `${
+            JSON.parse(localStorage.getItem('user')).name
+          } you have already logined!`
+        );
       }
     });
   });
 }
-(function() {
-  let obj = JSON.parse(localStorage.getItem('user'));
-  console.log('obj', obj);
-  if (!obj) return;
-  document.querySelector('#username').setAttribute('placeholder', obj.name);
-  if (obj.fb)
-    document.querySelector('#username').setAttribute('disabled', true);
-})();
 function getName() {
   return name;
 }
