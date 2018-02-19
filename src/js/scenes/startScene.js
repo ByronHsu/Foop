@@ -48,8 +48,14 @@ function showStartScene() {
   start.interactive = true;
   start.buttonMode = true;
   start.on('click', () => {
-    if (!localStorage.getItem('name'))
-      localStorage.setItem('name', document.querySelector('#username').value);
+    if (!localStorage.getItem('user'))
+      localStorage.setItem(
+        'user',
+        JSON.stringify({
+          name: document.querySelector('#username').value,
+          fb: false,
+        })
+      );
     document.querySelector('#username').setAttribute('style', 'display:none');
     startCtn.visible = false;
     this.isPaused = false;
@@ -102,7 +108,10 @@ function showStartScene() {
         FB.login(() => {
           FB.api('/me', response => {
             console.log('Successful login for: ' + response.name);
-            localStorage.setItem('name', response.name);
+            localStorage.setItem(
+              'user',
+              JSON.stringify({ name: response.name, fb: true })
+            );
             document
               .querySelector('#username')
               .setAttribute('placeholder', response.name);
@@ -116,11 +125,12 @@ function showStartScene() {
   });
 }
 (function() {
-  if (!localStorage.getItem('name')) return;
-  document
-    .querySelector('#username')
-    .setAttribute('placeholder', localStorage.getItem('name'));
-  document.querySelector('#username').setAttribute('disabled', true);
+  let obj = JSON.parse(localStorage.getItem('user'));
+  console.log('obj', obj);
+  if (!obj) return;
+  document.querySelector('#username').setAttribute('placeholder', obj.name);
+  if (obj.fb)
+    document.querySelector('#username').setAttribute('disabled', true);
 })();
 function getName() {
   return name;

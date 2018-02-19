@@ -35,7 +35,7 @@ function showEndScene(player) {
   }
   // show Texts
   let text = new Text(
-    `${localStorage.getItem('name')}\nThis Game Money: ${
+    `${JSON.parse(localStorage.getItem('user')).name}\nThis Game Money: ${
       player.money
     }\nThis Game Score: ${
       player.exitTimes
