@@ -14,9 +14,13 @@
   "author": "Byron Hsu",
   "license": "MIT",
   "dependencies": {
+    "axios": "^0.17.1",
+    "body-parser": "^1.18.2",
     "eventemitter3": "^3.0.0",
     "express": "^4.16.2",
     "keymaster": "^1.6.2",
+    "mongodb": "^3.0.2",
+    "mongoose": "^5.0.6",
     "pixi-filters": "^2.5.1",
     "pixi-sound": "^2.0.1",
     "pixi.js": "^4.7.0",

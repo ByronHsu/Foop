@@ -6,6 +6,9 @@ const server = express();
 const WebpackDevMiddleware = require('webpack-dev-middleware');
 const WebpackHotMiddleware = require('webpack-hot-middleware');
 const webpackDevConfig = require('../webpack.config.dev');
+const apiRouter = require('./api/routes');
+const mongoose = require('mongoose');
+const bodyParser = require('body-parser');
 
 const compiler = webpack(webpackDevConfig);
 
@@ -31,6 +34,13 @@ if (process.env.NODE_ENV === 'dev') {
     res.sendFile(path.join(__dirname, '../public/index.html'));
   });
 }
+
+mongoose.Promise = global.Promise;
+mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost/foop');
+
+server.use(bodyParser.json());
+
+apiRouter(server);
 
 server.use(express.static('public'));
 

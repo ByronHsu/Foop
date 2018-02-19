@@ -1,4 +1,5 @@
 import { Container, Text } from 'pixi.js';
+import axios from 'axios';
 import * as config from '../config';
 import { setupPlayer, setupLaser, setupPause, setupRestart } from '../setups';
 
@@ -44,6 +45,14 @@ function showEndScene(player) {
   );
   text.position.set(0, config.app.h / 2);
   endCtn.addChild(text);
+  // post player name and game data to api
+  axios
+    .post('/api/data', {
+      name: JSON.parse(localStorage.getItem('user')).name,
+      score: player.exitTimes,
+    })
+    .then(axios.get('/api/data').then(res => console.log(res.data))) // see all stored data
+    .catch(err => console.error(err));
   // setup restartBtn
   setupRestart.call(this);
   endCtn.addChild(this.restart);
