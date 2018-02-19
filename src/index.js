@@ -14,7 +14,7 @@ if (process.env.NODE_ENV !== 'prod') {
 
 // let gui = new dat.GUI();
 const SPEED = 10;
-const FALLSPEED = 2;
+const FALLSPEED = 5;
 const SPEEDUP = 0.5;
 
 const PLAYERBOX = {
@@ -172,7 +172,7 @@ class Looper {
       return false;
     };
     const pad = 100;
-    while (loop.wallList.length < (loop.idx + 1) * 2) {
+    while (loop.wallList.length < config.loopConfig.wallCount[loop.idx]) {
       let wallArgs = {};
       let wallMarArgs = {};
       let wall = {};
@@ -184,7 +184,7 @@ class Looper {
             -loop.border.height / 2 + loop.border.y + pad,
             loop.border.height / 2 + loop.border.y - pad
           ),
-          width: 150,
+          width: config.loopConfig.wallWidth[loop.idx],
           height: 15,
           idx: loop.idx,
         };
@@ -281,7 +281,7 @@ class DataMgr {
   }
   hitExit() {
     if (
-      this.looper.vec[this.playerVec].hitBug === config.bugNum[this.looper.now]
+      this.looper.vec[this.playerVec].hitBug === config.loopConfig.bugCount[this.looper.now]
     ) {
       if (overlap(this.player, this.looper.loop.exitDownBox)) {
         this.handleHitExit(this.looper.hitExitDown());
@@ -342,7 +342,7 @@ class DataMgr {
         return false;
       };
       if (i === this.playerVec && !loop.hasBug) {
-        let count = config.bugNum[loop.idx];
+        let count = config.loopConfig.bugCount[loop.idx];
         while (count--) {
           do {
             bugArgs = {
@@ -351,8 +351,8 @@ class DataMgr {
                 loop.border.width / 2 - pad
               ),
               y: rnGen(
-                loop.border.y + pad,
-                // -loop.border.height / 2 + loop.border.y + pad, // 蟲出生位置太高會吃不到，暫時弄低一點
+               //  loop.border.y + pad,
+                -loop.border.height / 2 + 100 + loop.border.y + pad, // 蟲出生位置太高會吃不到，暫時弄低一點
                 loop.border.height / 2 + loop.border.y - pad
               ),
               width: 50,
