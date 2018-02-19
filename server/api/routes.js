@@ -9,7 +9,16 @@ module.exports = server => {
   });
   server.get('/api/data', (req, res, next) => {
     Record.find({})
-      .then(record => res.send(record))
+      .then(() =>
+        Record.find({})
+          .sort({ score: -1 }) // sort by Descending
+          .limit(10)
+          .then(record => res.send(record))
+          .catch(next)
+      )
       .catch(next);
+  });
+  server.post('/api/reset', (req, res) => {
+    Record.remove({}).then(record => res.send(record)); // to clear database
   });
 };
