@@ -26,7 +26,6 @@ function showEndScene(player) {
       if (parsedRank.length > 10) parsedRank.pop(); // remove if score not in 10th
       selfRank = parsedRank;
     } else selfRank.push(player.exitTimes); // if selfRank doesn't exist in localStorage
-    console.log(JSON.stringify(selfRank));
     localStorage.setItem('selfRank', JSON.stringify(selfRank));
   }
   // Show Self Rank:
