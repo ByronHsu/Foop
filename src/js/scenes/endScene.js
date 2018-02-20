@@ -12,41 +12,41 @@ function showEndScene(player) {
   this.backCtn.removeChildren();
   this.mapCtn.removeChildren();
   this.laserCtn.removeChildren();
-  // Save & show this game data
+  // Save & show this game data & rank in endScene container
   let endCtn = new Container();
-  let totalMoney = 0;
-  let recordScore = 0;
+  // Save Self Rank:
+  let selfRank = [];
   if (!(typeof Storage !== 'undefined')) {
     console.log('No LocalStorage Support');
   } else {
-    if (localStorage.getItem('money') && localStorage.getItem('record')) {
-      totalMoney = Number(localStorage.getItem('money')) + player.money;
-      localStorage.setItem('money', totalMoney);
-      recordScore = Math.max(
-        Number(localStorage.getItem('record')),
-        player.exitTimes
-      );
-      localStorage.setItem('record', recordScore);
-    } else {
-      totalMoney = player.money;
-      recordScore = player.exitTimes;
-      localStorage.setItem('money', player.money);
-      localStorage.setItem('record', player.exitTimes);
-    }
+    if (localStorage.getItem('selfRank')) {
+      let parsedRank = JSON.parse(localStorage.getItem('selfRank'));
+      parsedRank.push(player.exitTimes);
+      parsedRank.sort((a, b) => b - a); // sort array in Descending
+      if (parsedRank.length > 10) parsedRank.pop(); // remove if score not in 10th
+      selfRank = parsedRank;
+    } else selfRank.push(player.exitTimes); // if selfRank doesn't exist in localStorage
+    console.log(JSON.stringify(selfRank));
+    localStorage.setItem('selfRank', JSON.stringify(selfRank));
   }
-  // show Texts
-  // let text = new Text(
-  //   `${JSON.parse(localStorage.getItem('user')).name}\nThis Game Money: ${
-  //     player.money
-  //   }\nThis Game Score: ${
-  //     player.exitTimes
-  //   }\nTotal Money: ${totalMoney}\nHighest Score: ${recordScore}`,
-  //   { fontFamily: 'Orbitron-Medium, sans-serif' }
-  // );
-  // text.position.set(0, config.app.h / 2);
-  // endCtn.addChild(text);
+  // Show Self Rank:
+  let text = new Text('Self Rank', {
+    fontFamily: 'Orbitron-Medium, sans-serif',
+  });
+  text.position.set(0, 0);
+  endCtn.addChild(text);
+  for (let i = 0; i < 10; i++) {
+    console.log(selfRank[i]);
+    let score = selfRank[i] !== undefined ? selfRank[i] : '-';
+    console.log(score);
+    let text = new Text(`${i + 1}. ${score}`, {
+      fontFamily: 'Orbitron-Medium, sans-serif',
+    });
+    text.position.set(0, i * 50 + 50);
+    endCtn.addChild(text);
+  }
 
-  // Show World Rank:
+  // Save & Show World Rank:
   axios
     .post('/api/data', {
       name: JSON.parse(localStorage.getItem('user')).name,
@@ -61,9 +61,12 @@ function showEndScene(player) {
         text.position.set(config.ww / 2, 0);
         endCtn.addChild(text);
         for (let i = 0; i < rankData.length; i++) {
-          let text = new Text(`${rankData[i].name}: ${rankData[i].score}`, {
-            fontFamily: 'Orbitron-Medium, sans-serif',
-          });
+          let text = new Text(
+            `${i + 1}. ${rankData[i].name}: ${rankData[i].score}`,
+            {
+              fontFamily: 'Orbitron-Medium, sans-serif',
+            }
+          );
           text.position.set(config.ww / 2, i * 50 + 50);
           endCtn.addChild(text);
         }
