@@ -30,18 +30,12 @@ function showEndScene(player) {
     localStorage.setItem('selfRank', JSON.stringify(selfRank));
   }
   // Show Self Rank:
-  let text = new Text('Self Rank', {
-    fontFamily: 'Orbitron-Medium, sans-serif',
-  });
+  let text = new Text('Self Rank', config.fontFamily);
   text.position.set(0, 0);
   endCtn.addChild(text);
   for (let i = 0; i < 10; i++) {
-    console.log(selfRank[i]);
     let score = selfRank[i] !== undefined ? selfRank[i] : '-';
-    console.log(score);
-    let text = new Text(`${i + 1}. ${score}`, {
-      fontFamily: 'Orbitron-Medium, sans-serif',
-    });
+    let text = new Text(`${i + 1}. ${score}`, config.fontFamily);
     text.position.set(0, i * 50 + 50);
     endCtn.addChild(text);
   }
@@ -55,17 +49,13 @@ function showEndScene(player) {
     .then(
       axios.get('/api/data').then(res => {
         let rankData = res.data;
-        let text = new Text('World Rank', {
-          fontFamily: 'Orbitron-Medium, sans-serif',
-        });
+        let text = new Text('World Rank', config.fontFamily);
         text.position.set(config.ww / 2, 0);
         endCtn.addChild(text);
         for (let i = 0; i < rankData.length; i++) {
           let text = new Text(
             `${i + 1}. ${rankData[i].name}: ${rankData[i].score}`,
-            {
-              fontFamily: 'Orbitron-Medium, sans-serif',
-            }
+            config.fontFamily
           );
           text.position.set(config.ww / 2, i * 50 + 50);
           endCtn.addChild(text);

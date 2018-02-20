@@ -51,6 +51,10 @@ const loopConfig = {
 const ww = window.innerWidth;
 const wh = window.innerHeight;
 
+const fontFamily = {
+  fontFamily: 'Orbitron-Medium, sans-serif',
+};
+
 export {
   lineColor,
   tileColor,
@@ -62,4 +66,5 @@ export {
   loopConfig,
   ww,
   wh,
+  fontFamily,
 };
