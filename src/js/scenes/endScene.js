@@ -64,6 +64,11 @@ function showEndScene(player) {
     )
     .catch(err => console.error(err));
 
+  // This game data & decorations
+  text = new Text(`Game Score: ${player.exitTimes}`, config.fontFamily);
+  text.position.set(100, config.wh - 100);
+  endCtn.addChild(text);
+
   // setup restartBtn
   setupRestart.call(this);
   endCtn.addChild(this.restart);
