@@ -120,12 +120,12 @@ class Looper {
         y: prevLoop.border.vtx[3].y + pad,
       });
       obj.exitUpBox = new Door({
-        x: prevLoop.border.vtx[1].x - pad,
+        x: prevLoop.border.vtx[1].x - pad - (config.app.w - 2 * pad) * Math.random(),
         y: prevLoop.border.vtx[1].y - pad,
       });
     }
     obj.exitDownBox = new Door({
-      x: obj.border.vtx[2].x - pad,
+      x: obj.border.vtx[2].x - pad - (config.app.w - 2 * pad) * Math.random(),
       y: obj.border.vtx[2].y - pad,
     });
     let arr = [
