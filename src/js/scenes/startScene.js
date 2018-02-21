@@ -1,12 +1,4 @@
-import {
-  Container,
-  Texture,
-  extras,
-  Graphics,
-  Sprite,
-  utils,
-  Text,
-} from 'pixi.js';
+import { Container, Texture, extras, Text } from 'pixi.js';
 const { AnimatedSprite } = extras;
 import 'pixi-sound';
 import * as config from '../config';
@@ -23,7 +15,7 @@ import key from 'keymaster';
 })(document, 'script', 'facebook-jssdk');
 // sdk callback
 window.fbAsyncInit = function() {
-  FB.init({
+  FB.init({ // eslint-disable-line
     appId: '560212231013497',
     cookie: true, // enable cookies to allow the server to access
     // the session
@@ -33,12 +25,12 @@ window.fbAsyncInit = function() {
 };
 function checkLogin() {
   return new Promise(resolve => {
-    FB.getLoginStatus(response => resolve(response));
+    FB.getLoginStatus(response => resolve(response)); // eslint-disable-line
   });
 }
 function getFBName() {
   return new Promise(resolve => {
-    FB.api('/me', response => {
+    FB.api('/me', response => { // eslint-disable-line
       resolve(response.name);
     });
   });
@@ -64,6 +56,7 @@ async function showStartScene() {
     startCtn.visible = false;
     this.isPaused = false;
     this.worldCtn.visible = true;
+    this.worldCtn.alpha = 1;
     this.mapCtn.visible = true;
     this.app.stage.removeChild(startCtn);
     key.unbind('enter');
@@ -95,7 +88,7 @@ async function showStartScene() {
     login.interactive = true;
     login.buttonMode = true;
     login.on('click', () => {
-      FB.login(async () => {
+      FB.login(async () => { // eslint-disable-line
         let fbName = await getFBName();
         let name = new Text(`Hello, ${fbName}`);
         name.anchor.set(0.5, 0.5);
