@@ -4,6 +4,7 @@ import 'pixi-sound';
 import * as config from '../config';
 import key from 'keymaster';
 // Load the SDK asynchronously
+let FB;
 (function(d, s, id) {
   var js,
     fjs = d.getElementsByTagName(s)[0];
@@ -15,7 +16,7 @@ import key from 'keymaster';
 })(document, 'script', 'facebook-jssdk');
 // sdk callback
 window.fbAsyncInit = function() {
-  FB.init({ // eslint-disable-line
+  FB.init({
     appId: '560212231013497',
     cookie: true, // enable cookies to allow the server to access
     // the session
@@ -25,12 +26,12 @@ window.fbAsyncInit = function() {
 };
 function checkLogin() {
   return new Promise(resolve => {
-    FB.getLoginStatus(response => resolve(response)); // eslint-disable-line
+    FB.getLoginStatus(response => resolve(response));
   });
 }
 function getFBName() {
   return new Promise(resolve => {
-    FB.api('/me', response => { // eslint-disable-line
+    FB.api('/me', response => {
       resolve(response.name);
     });
   });
@@ -88,7 +89,7 @@ async function showStartScene() {
     login.interactive = true;
     login.buttonMode = true;
     login.on('click', () => {
-      FB.login(async () => { // eslint-disable-line
+      FB.login(async () => {
         let fbName = await getFBName();
         let name = new Text(`Hello, ${fbName}`);
         name.anchor.set(0.5, 0.5);
