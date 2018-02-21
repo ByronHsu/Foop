@@ -82,7 +82,6 @@ class PixiMgr {
     this.isMute = false;
   }
   setup() {
-    this.worldCtn.visible = false;
     // Load resources
     return new Promise(resolve => {
       PIXI.loader
@@ -102,7 +101,6 @@ class PixiMgr {
   updatePlayer({ x, y }) {
     this.player.x = x;
     this.player.y = y;
-    this.worldCtn.pivot.set(0, y);
     this.playerMap.x = x / 10;
     this.playerMap.y = y / 10;
   }
@@ -164,23 +162,6 @@ class PixiMgr {
     sprite.anchor.set(0.5, 0.5);
     sprite.parentGroup = this.backGrp;
     this.backCtn.addChild(Object.assign(sprite, border));
-    // // add thorn, for frameUp & fromDown respectively
-    // for (let i = 0; i < 2; i++) {
-    //   let pad = 20;
-    //   let thorn = new PIXI.Sprite(
-    //     PIXI.utils.TextureCache['./assets/thorn.png']
-    //   );
-    //   thorn.anchor.set(0.5);
-    //   (thorn.width = config.app.w), (thorn.height = 100);
-    //   thorn.parentGroup = this.laserGrp;
-    //   thorn.position.set(
-    //     0,
-    //     i === 0
-    //       ? border.height / 2 - pad
-    //       : -1 * border.height / 2 + config.app.h - pad
-    //   );
-    //   this.laserCtn.addChild(thorn);
-    // }
     // for map
     painter.lineWidth = 40;
     painter.drawRect(0, 0, border.width, border.height);
@@ -221,15 +202,6 @@ class PixiMgr {
     this.backCtn.addChild(Object.assign(sprite, obj));
     return sprite;
   }
-  // setupThorn() {
-  //   let pad = 20,
-  //     thorn = new PIXI.Sprite(id['./assets/thorn.png'].texture);
-  //   thorn.anchor.set(0.5);
-  //   (thorn.width = config.app.w), (thorn.height = 100);
-  //   thorn.position.set(0, config.app.h / 2 - pad);
-  //   thorn.parentGroup = this.laserGrp;
-  //   this.laserCtn.addChild(thorn);
-  // }
   onStartScene() {
     showStartScene.call(this);
   }

@@ -72,14 +72,11 @@ function showEndScene(player) {
   setupRestart.call(this);
   endCtn.addChild(this.restart);
   this.restart.on('click', () => {
-    this.isPaused = false;
-    this.worldCtn.visible = true;
-    this.mapCtn.visible = true;
-    this.worldCtn.alpha = 1;
     setupPlayer.call(this);
     setupLaser.call(this);
     setupPause.call(this);
     this.app.stage.removeChild(endCtn);
+    this.onStartScene();
   });
   this.app.stage.addChild(endCtn);
 }

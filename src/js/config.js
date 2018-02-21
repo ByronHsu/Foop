@@ -55,6 +55,20 @@ const fontFamily = {
   fontFamily: 'Orbitron-Medium, sans-serif',
 };
 
+const playerStart = {
+  x: -200,
+  y: -300,
+  width: 64,
+  height: 38,
+};
+
+const laserStart = {
+  x: -1 * app.w / 2,
+  y: -1 * app.h / 2 + 10,
+  width: 0,
+  height: 100,
+};
+
 export {
   lineColor,
   tileColor,
@@ -67,4 +81,6 @@ export {
   ww,
   wh,
   fontFamily,
+  playerStart,
+  laserStart,
 };

@@ -14,7 +14,7 @@ function setupPlayer() {
   let foop = new AnimatedSprite(foops);
   foop.anchor.set(0.5, 0.5);
   (foop.width = 64), (foop.height = 38);
-  (foop.x = 0), (foop.y = 0);
+  (foop.x = config.playerStart.x), (foop.y = config.playerStart.y);
   foop.parentGroup = this.playerGrp;
   this.player = foop;
   // console.log(filters);
