@@ -152,20 +152,26 @@ class Looper {
       }
       return false;
     };
-    const pad = 100;
+
     while (loop.wallList.length < config.loopConfig.wallCount[loop.idx]) {
       let wallArgs = {};
       let wallMarArgs = {};
       let wall = {};
       let wallMar = {}; //設定一個假想margin, 讓牆壁不要疊太近
+      const wallWidth =
+        config.loopConfig.wallWidth[loop.idx] * rnGen(0.75, 1.25);
+      const wallHeight = 15;
       do {
         wallArgs = {
-          x: rnGen(-loop.border.width / 2 + pad, loop.border.width / 2 - pad),
-          y: rnGen(
-            -loop.border.height / 2 + loop.border.y + pad,
-            loop.border.height / 2 + loop.border.y - pad
+          x: rnGen(
+            -loop.border.width / 2 + wallWidth / 2,
+            loop.border.width / 2 - wallWidth / 2
           ),
-          width: config.loopConfig.wallWidth[loop.idx],
+          y: rnGen(
+            -loop.border.height / 2 + loop.border.y + wallHeight / 2 + 60,
+            loop.border.height / 2 + loop.border.y - wallHeight / 2 - 10
+          ),
+          width: wallWidth,
           height: 15,
           idx: loop.idx,
         };

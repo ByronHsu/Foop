@@ -46,7 +46,11 @@ const app = {
 const loopConfig = {
   bugCount: [1, 1, 2, 3, 4],
   wallCount: [8, 8, 8, 8, 8],
-  wallWidth: [50, 100, 150, 150, 200],
+  wallWidth: [75, 100, 150, 150, 200],
+  // super hard setting
+  //   bugCount: [1, 1, 2, 3, 4],
+  //   wallCount: [8, 8, 8, 8, 8],
+  //   wallWidth: [200, 200, 200, 200, 200],
 };
 const ww = window.innerWidth;
 const wh = window.innerHeight;
