@@ -1,4 +1,12 @@
-import { Texture, extras, utils, Sprite, loader, Graphics } from 'pixi.js';
+import {
+  Texture,
+  extras,
+  utils,
+  Sprite,
+  loader,
+  Graphics,
+  Text,
+} from 'pixi.js';
 const { AnimatedSprite } = extras;
 import * as filters from 'pixi-filters';
 import * as config from './config';
@@ -80,7 +88,29 @@ function setupSound() {
   }
 }
 function setupHeader() {
-  const painter = Graphics();
-  painter.drawRect(50, 250, 120, 120);
+  const painter = new Graphics();
+  painter.pivot.set(0.5, 0.5);
+  const width = config.app.w,
+    height = 75;
+  painter.beginFill(0xffffff);
+  painter.drawRect(-width / 2, -config.app.h / 2, width, height);
+  // painter.drawRect(0, 0, width, height);
+  painter.parentGroup = this.mapGrp;
+  this.headerCtn.x = config.ww / 2;
+  this.headerCtn.y = config.wh / 2;
+  this.headerCtn.alpha = 0.5;
+  this.score = new Text('Score: 0');
+  this.score.y = -config.app.h / 2 + 25;
+  this.score.x = -config.app.w / 2 + 25;
+  this.score.parentGroup = this.mapGrp;
+  this.headerCtn.addChild(painter);
+  this.headerCtn.addChild(this.score);
 }
-export { setupPlayer, setupLaser, setupPause, setupRestart, setupSound };
+export {
+  setupPlayer,
+  setupLaser,
+  setupPause,
+  setupRestart,
+  setupSound,
+  setupHeader,
+};

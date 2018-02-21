@@ -393,6 +393,7 @@ function animate() {
     pixiMgr.updatePlayer(dataMgr.player);
     pixiMgr.updateObjs(dataMgr.objs);
     pixiMgr.updateLaser(dataMgr.laser, FALLSPEED);
+    pixiMgr.updateScore(dataMgr.player.money);
     // for UI
     pixiMgr.now = dataMgr.looper.now;
     requestAnimationFrame(animate);

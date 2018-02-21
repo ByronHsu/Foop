@@ -6,10 +6,7 @@
   "scripts": {
     "start": "node server/server.js",
     "dev": "NODE_ENV=dev webpack-dashboard -- node server/server.js",
-    "build": "webpack --config webpack.config.prod.js",
-    "lint": "eslint .",
-    "lint:fix": "npm run lint -- --fix",
-    "precommit": "lint-staged"
+    "build": "webpack --config webpack.config.prod.js"
   },
   "author": "Byron Hsu",
   "license": "MIT",

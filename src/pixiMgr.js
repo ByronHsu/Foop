@@ -2,7 +2,13 @@ import * as PIXI from 'pixi.js';
 import './bin/pixi-display';
 import * as filters from 'pixi-filters';
 import * as config from './js/config';
-import { setupPlayer, setupLaser, setupPause, setupSound } from './js/setups';
+import {
+  setupPlayer,
+  setupLaser,
+  setupPause,
+  setupSound,
+  setupHeader,
+} from './js/setups';
 import { showEndScene } from './js/scenes/endScene';
 import { showStartScene } from './js/scenes/startScene';
 import { showPauseScene } from './js/scenes/pauseScene';
@@ -34,6 +40,7 @@ class PixiMgr {
     this.objsCtn = new PIXI.Container();
     this.backCtn = new PIXI.Container();
     this.laserCtn = new PIXI.Container();
+    this.headerCtn = new PIXI.Container();
     this.app.stage.addChild(this.worldCtn);
     this.worldCtn.addChild(this.playerCtn);
     this.worldCtn.addChild(this.objsCtn);
@@ -42,6 +49,7 @@ class PixiMgr {
     this.mapCtn = new PIXI.Container();
     (this.mapCtn.x = config.ww - 200), (this.mapCtn.y = config.wh / 2);
     this.app.stage.addChild(this.mapCtn);
+    this.app.stage.addChild(this.headerCtn);
 
     // init group: player, objs, back
     this.backGrp = new PIXI.display.Group(0, true);
@@ -55,6 +63,7 @@ class PixiMgr {
       this.playerGrp,
       this.laserGrp,
       this.mapGrp,
+      this.headerCtn,
     ];
     // sprite.z 越大在越上面
     arr.forEach(g => {
@@ -94,6 +103,7 @@ class PixiMgr {
           setupLaser.call(this);
           setupPause.call(this);
           setupSound.call(this);
+          setupHeader.call(this);
           resolve();
         });
     });
@@ -137,6 +147,9 @@ class PixiMgr {
       this.laserRef.width = laser.width += 20;
       this.laserRef.y = laser.y;
     } else this.laserRef.y = laser.y += fallspeed;
+  }
+  updateScore(score) {
+    this.score.text = 'Score: ' + score;
   }
   addWall(wall) {
     const idx = wall.idx % 7;

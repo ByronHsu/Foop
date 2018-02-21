@@ -1,7 +1,13 @@
 import { Container, Text } from 'pixi.js';
 import axios from 'axios';
 import * as config from '../config';
-import { setupPlayer, setupLaser, setupPause, setupRestart } from '../setups';
+import {
+  setupPlayer,
+  setupLaser,
+  setupPause,
+  setupRestart,
+  setupHeader,
+} from '../setups';
 
 function showEndScene(player) {
   this.shouldReset = false;
@@ -12,6 +18,7 @@ function showEndScene(player) {
   this.backCtn.removeChildren();
   this.mapCtn.removeChildren();
   this.laserCtn.removeChildren();
+  this.headerCtn.removeChildren();
   // Save & show this game data & rank in endScene container
   let endCtn = new Container();
   //   // Save Self Rank:
@@ -75,6 +82,7 @@ function showEndScene(player) {
     setupPlayer.call(this);
     setupLaser.call(this);
     setupPause.call(this);
+    setupHeader.call(this);
     this.app.stage.removeChild(endCtn);
     this.onResumeScene();
   });

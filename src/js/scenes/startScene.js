@@ -1,9 +1,8 @@
 import { Container, Text } from 'pixi.js';
 import 'pixi-sound';
 import * as config from '../config';
-import key from 'keymaster';
-// Load the SDK asynchronously
 
+// Load the SDK asynchronously
 (function(d, s, id) {
   var js,
     fjs = d.getElementsByTagName(s)[0];
@@ -23,18 +22,7 @@ window.fbAsyncInit = function() {
     version: 'v2.8', // use graph api version 2.8
   });
 };
-// function checkLogin() {
-//   return new Promise(resolve => {
-//     FB.getLoginStatus(response => resolve(response)); // eslint-disable-line
-//   });
-// }
-// function getFBName() {
-//   return new Promise(resolve => {
-//     FB.api('/me', response => { // eslint-disable-line
-//       resolve(response.name);
-//     });
-//   });
-// }
+
 function showStartScene() {
   this.isPaused = true;
   this.worldCtn.visible = true;
