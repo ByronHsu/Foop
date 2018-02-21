@@ -375,12 +375,12 @@ class DataMgr {
 }
 
 var dataMgr = new DataMgr();
-document.addEventListener('visibilitychange', () => {
-  if (document.hidden) {
-    pixiMgr.isPaused = true;
-    pixiMgr.worldCtn.alpha = 0.5;
-  }
-});
+// document.addEventListener('visibilitychange', () => {
+//   if (document.hidden) {
+//     pixiMgr.isPaused = true;
+//     pixiMgr.worldCtn.alpha = 0.5;
+//   }
+// });
 
 function animate() {
   if (!pixiMgr.isPaused) {

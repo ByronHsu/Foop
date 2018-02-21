@@ -93,7 +93,6 @@ class PixiMgr {
           setupPlayer.call(this);
           setupLaser.call(this);
           setupPause.call(this);
-          // setupThorn();
           setupSound.call(this);
           resolve();
         });

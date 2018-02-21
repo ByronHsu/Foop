@@ -1,4 +1,4 @@
-import { Texture, extras, utils, Sprite, loader } from 'pixi.js';
+import { Texture, extras, utils, Sprite, loader, Graphics } from 'pixi.js';
 const { AnimatedSprite } = extras;
 import * as filters from 'pixi-filters';
 import * as config from './config';
@@ -79,5 +79,8 @@ function setupSound() {
     this.sounds.push(id[soundsUrl[i]]);
   }
 }
-
+function setupHeader() {
+  const painter = Graphics();
+  painter.drawRect(50, 250, 120, 120);
+}
 export { setupPlayer, setupLaser, setupPause, setupRestart, setupSound };
