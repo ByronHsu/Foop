@@ -6,6 +6,7 @@ import { setupPlayer, setupLaser, setupPause, setupSound } from './js/setups';
 import { showEndScene } from './js/scenes/endScene';
 import { showStartScene } from './js/scenes/startScene';
 import { showPauseScene } from './js/scenes/pauseScene';
+import { showResumeScene } from './js/scenes/resumeScene';
 
 const id = PIXI.loader.resources;
 
@@ -210,6 +211,9 @@ class PixiMgr {
   }
   onEndScene(player) {
     showEndScene.call(this, player);
+  }
+  onResumeScene() {
+    showResumeScene.call(this);
   }
 }
 
