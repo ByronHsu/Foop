@@ -9,13 +9,13 @@ function showResumeScene() {
   this.worldCtn.alpha = 0.5;
   this.mapCtn.visible = false;
   let resumeCtn = new Container();
-  let text = new Text('--PRESS SPACE TO START--');
+  let text = new Text('-- PRESS SPACE TO START --', { fill: 0xffffff });
   text.anchor.set(0.5, 0.5);
   text.x = config.ww / 2;
   text.y = config.wh / 2;
   resumeCtn.addChild(text);
   this.app.stage.addChild(resumeCtn);
-  console.log('fuck');
+  console.log('快完成了...一起加油');
   key('space', () => {
     this.isPaused = false;
     this.worldCtn.visible = true;

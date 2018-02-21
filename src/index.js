@@ -289,6 +289,7 @@ class DataMgr {
       this.looper.vec[this.playerVec].border.x / 10,
       this.looper.vec[this.playerVec].border.y / 10
     );
+    pixiMgr.setPlayerColor(this.looper.now);
   }
   hitObjs() {
     // 要從後面刪回來，不然如果直接刪掉，i++，會跳過一個obj
@@ -297,7 +298,7 @@ class DataMgr {
       for (let j = loop.objs.length - 1; j >= 0; j--) {
         if (overlap(this.player, loop.objs[j])) {
           loop.objs[j].hit(this.player);
-          if (loop.objs[j].type === 'worm') {
+          if (loop.objs[j].type === 'bug') {
             this.looper.vec[this.playerVec].hitBug++;
             pixiMgr.sounds[2].sound.play();
           } else pixiMgr.sounds[1].sound.play();

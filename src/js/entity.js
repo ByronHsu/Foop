@@ -84,13 +84,13 @@ class Potion extends Box {
 class Bug extends Box {
   constructor(args) {
     super(args);
-    this.type = 'worm';
-    this.img = 'worm';
+    this.type = 'bug';
+    this.img = 'bug';
     this.group = 'objs';
     this.idx = args.idx;
   }
   hit(player) {
-    player.money += this.idx + 1;
+    player.money += (this.idx + 1) * 100;
   }
 }
 

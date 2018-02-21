@@ -151,6 +151,12 @@ class PixiMgr {
   updateScore(score) {
     this.score.text = 'Score: ' + score;
   }
+  setPlayerColor(idx) {
+    this.player.filters = [
+      new filters.GlowFilter(15, 2, 1, config.lineColor[idx], 0.5),
+    ];
+    this.player.tint = config.lineColor[idx];
+  }
   addWall(wall) {
     const idx = wall.idx % 7;
     let painter = new PIXI.Graphics();
@@ -198,10 +204,10 @@ class PixiMgr {
     sprite = new PIXI.extras.AnimatedSprite(texs);
     sprite.animationSpeed = 0.3;
     sprite.play();
-    sprite.tint =
-      obj.type === 'worm'
-        ? config.lineColor[obj.idx + 1]
-        : config.lineColor[obj.idx];
+    sprite.tint = config.lineColor[obj.idx];
+    sprite.filters = [
+      new filters.GlowFilter(15, 2, 1, config.lineColor[obj.idx], 0.5),
+    ];
     sprite.anchor.set(0.5, 0.5);
     sprite.parentGroup = this.objsGrp;
     this.objsCtn.addChild(Object.assign(sprite, obj));
