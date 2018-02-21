@@ -8,6 +8,7 @@ function showResumeScene() {
   this.worldCtn.visible = true;
   this.worldCtn.alpha = 0.5;
   this.mapCtn.visible = false;
+  this.pause.visible = false;
   let resumeCtn = new Container();
   let text = new Text('-- PRESS SPACE TO START --', { fill: 0xffffff });
   text.anchor.set(0.5, 0.5);
@@ -21,6 +22,7 @@ function showResumeScene() {
     this.worldCtn.visible = true;
     this.worldCtn.alpha = 1;
     this.mapCtn.visible = true;
+    this.pause.visible = true;
     this.app.stage.removeChild(resumeCtn);
     key.unbind('space');
   });

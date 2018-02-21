@@ -54,14 +54,15 @@ function setupPause() {
   // replace pause.png img when it's done
   this.pause = new Sprite(id['./assets/pause.png'].texture);
   this.pause.anchor.set(0.5);
-  (this.pause.width = 50), (this.pause.height = 50);
+  (this.pause.width = 40), (this.pause.height = 40);
   this.pause.position.set(100, 0);
   this.pause.interactive = true;
   this.pause.buttonMode = true;
-  this.pause.z = 2;
   this.pause.on('click', () => this.onPauseScene());
   this.pause.parentGroup = this.mapGrp;
-  this.mapCtn.addChild(this.pause);
+  this.pause.y = -config.app.h / 2 + 40;
+  this.pause.x = config.app.w / 2 - 50;
+  this.headerCtn.addChild(this.pause);
 }
 
 function setupRestart() {

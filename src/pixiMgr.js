@@ -63,7 +63,6 @@ class PixiMgr {
       this.playerGrp,
       this.laserGrp,
       this.mapGrp,
-      this.headerCtn,
     ];
     // sprite.z 越大在越上面
     arr.forEach(g => {
@@ -101,9 +100,9 @@ class PixiMgr {
         .load(() => {
           setupPlayer.call(this);
           setupLaser.call(this);
-          setupPause.call(this);
           setupSound.call(this);
           setupHeader.call(this);
+          setupPause.call(this);
           resolve();
         });
     });

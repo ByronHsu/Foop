@@ -1,19 +1,27 @@
-import { Graphics, Container, Texture, extras } from 'pixi.js';
+import { Graphics, Container, Texture, extras, loader, Sprite } from 'pixi.js';
 const { AnimatedSprite } = extras;
 import { sound } from 'pixi-sound';
 import * as config from '../config';
+const id = loader.resources;
 
 function showPauseScene() {
   this.isPaused = true;
   this.worldCtn.alpha = 0.5;
-  this.mapCtn.visible = false;
   let pauseRect = new Container();
+  pauseRect.x = config.ww / 2;
+  pauseRect.y = config.wh / 2;
+  pauseRect.alpha = 0.5;
   // pauseRect background
   let graphics = new Graphics();
   graphics.lineStyle(2, config.lineColor[this.now], 1);
-  graphics.beginFill(config.tileColor, 1);
-  let rectHeight = 200;
-  graphics.drawRect(0, (config.wh - rectHeight) / 2, config.ww, rectHeight);
+  graphics.beginFill(0xffffff, 1);
+  let rectHeight = 150;
+  graphics.drawRect(
+    -config.app.w / 2,
+    -rectHeight / 2,
+    config.app.w,
+    rectHeight
+  );
   pauseRect.addChild(graphics);
   // resumeBtn
   let resumes = [];
@@ -23,8 +31,8 @@ function showPauseScene() {
   }
   let resume = new AnimatedSprite(resumes);
   resume.anchor.set(0.5, 0.5);
-  (resume.width = 150), (resume.height = 150);
-  (resume.x = config.ww / 3), (resume.y = config.app.h / 2);
+  (resume.width = 100), (resume.height = 100);
+  resume.x = -config.app.w / 3;
   resume.animationSpeed = 0.3;
   resume.interactive = true;
   resume.buttonMode = true;
@@ -32,7 +40,6 @@ function showPauseScene() {
     this.isPaused = false;
     this.worldCtn.alpha = 1;
     this.app.stage.removeChild(pauseRect);
-    this.mapCtn.visible = true;
   });
   resume.on('mouseover', () => resume.play());
   resume.on('mouseout', () => resume.stop());
@@ -46,8 +53,8 @@ function showPauseScene() {
   let mute = new AnimatedSprite(mutes);
   mute.gotoAndStop(this.isMute ? 20 : 0);
   mute.anchor.set(0.5, 0.5);
-  (mute.width = 150), (mute.height = 150);
-  (mute.x = config.ww * 2 / 3), (mute.y = config.app.h / 2);
+  (mute.width = 100), (mute.height = 100);
+  mute.x = 0;
   mute.animationSpeed = 0.3;
   mute.interactive = true;
   mute.buttonMode = true;
@@ -69,6 +76,17 @@ function showPauseScene() {
     mute.gotoAndStop(this.isMute ? 20 : 0);
   });
   pauseRect.addChild(mute);
+  let map = new Sprite(id['./assets/map.png'].texture);
+  map.anchor.set(0.5, 0.5);
+  (map.width = 100), (map.height = 100);
+  map.x = config.app.w / 3;
+  map.interactive = true;
+  map.buttonMode = true;
+  map.on('click', () => {
+    this.mapCtn.visible = !this.mapCtn.visible;
+  });
+  pauseRect.addChild(map);
+
   pauseRect.parentGroup = this.laserGrp;
   this.app.stage.addChild(pauseRect);
 }

@@ -28,6 +28,7 @@ function showStartScene() {
   this.worldCtn.visible = true;
   this.worldCtn.alpha = 0.5;
   this.mapCtn.visible = false;
+  this.pause.visible = false;
   let startCtn = new Container();
   let text1 = new Text('Anonymous', { fill: 0xffffff });
   text1.anchor.set(0.5, 0.5);

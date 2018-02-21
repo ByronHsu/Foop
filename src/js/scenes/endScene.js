@@ -81,8 +81,8 @@ function showEndScene(player) {
   this.restart.on('click', () => {
     setupPlayer.call(this);
     setupLaser.call(this);
-    setupPause.call(this);
     setupHeader.call(this);
+    setupPause.call(this);
     this.app.stage.removeChild(endCtn);
     this.onResumeScene();
   });
