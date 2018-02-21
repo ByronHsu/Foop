@@ -13,21 +13,19 @@ const bgColor = 0x000000;
 const imgUrl = [
   './assets/laser.png',
   './assets/pause.png',
-  './assets/thorn.png',
   './assets/reddot.png',
-  './assets/close-browser.png',
   './assets/map.png',
 ];
 
 const jsonUrl = [
-  './assets/images/login.json',
+  // './assets/images/login.json',
   './assets/images/resume.json',
   './assets/images/foop.json',
   './assets/images/mute.json',
-  './assets/images/potion.json',
-  './assets/images/shoe.json',
-  './assets/images/trap.json',
-  './assets/images/coin.json',
+  // './assets/images/potion.json',
+  // './assets/images/shoe.json',
+  // './assets/images/trap.json',
+  // './assets/images/coin.json',
   './assets/images/bug.json',
 ];
 
