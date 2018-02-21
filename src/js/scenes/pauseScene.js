@@ -7,6 +7,7 @@ const id = loader.resources;
 function showPauseScene() {
   this.isPaused = true;
   this.worldCtn.alpha = 0.5;
+  this.pause.visible = false;
   let pauseRect = new Container();
   pauseRect.x = config.ww / 2;
   pauseRect.y = config.wh / 2;
@@ -39,6 +40,7 @@ function showPauseScene() {
   resume.on('click', () => {
     this.isPaused = false;
     this.worldCtn.alpha = 1;
+    this.pause.visible = true;
     this.app.stage.removeChild(pauseRect);
   });
   resume.on('mouseover', () => resume.play());
