@@ -7,7 +7,9 @@
     "prebuild": "rimraf public",
     "start": "node server/server.js",
     "dev": "NODE_ENV=dev webpack-dashboard -- node server/server.js",
-    "build": "webpack --config webpack.config.prod.js"
+    "build": "webpack --config webpack.config.prod.js",
+    "predeploy": "npm run build",
+    "deploy": "./deploy.sh"
   },
   "author": "Byron Hsu",
   "license": "MIT",
