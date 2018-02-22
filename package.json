@@ -4,6 +4,7 @@
   "description": "An endless game based on the concept of 'for-loop'...",
   "main": "index.js",
   "scripts": {
+    "prebuild": "rimraf public",
     "start": "node server/server.js",
     "dev": "NODE_ENV=dev webpack-dashboard -- node server/server.js",
     "build": "webpack --config webpack.config.prod.js"
