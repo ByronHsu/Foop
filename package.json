@@ -1,13 +1,12 @@
 {
   "name": "Foop",
   "version": "1.0.0",
-  "description": "A crazy game",
+  "description": "An endless game based on the concept of 'for-loop'...",
   "main": "index.js",
   "scripts": {
     "start": "node server/server.js",
     "dev": "NODE_ENV=dev webpack-dashboard -- node server/server.js",
-    "build": "webpack --config webpack.config.prod.js",
-    "heroku-postbuild": "webpack -p --config webpack.prod.config.js --progress"
+    "build": "webpack --config webpack.config.prod.js"
   },
   "author": "Byron Hsu",
   "license": "MIT",
