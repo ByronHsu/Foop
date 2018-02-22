@@ -1,18 +1,17 @@
 const express = require('express');
 const config = require('./config');
-const webpack = require('webpack');
 const path = require('path');
 const server = express();
-const WebpackDevMiddleware = require('webpack-dev-middleware');
-const WebpackHotMiddleware = require('webpack-hot-middleware');
-const webpackDevConfig = require('../webpack.config.dev');
 const apiRouter = require('./api/routes');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 
-const compiler = webpack(webpackDevConfig);
-
 if (process.env.NODE_ENV === 'dev') {
+  const webpack = require('webpack');
+  const WebpackDevMiddleware = require('webpack-dev-middleware');
+  const WebpackHotMiddleware = require('webpack-hot-middleware');
+  const webpackDevConfig = require('../webpack.config.dev');
+  const compiler = webpack(webpackDevConfig);
   server.use(
     WebpackDevMiddleware(compiler, {
       publicPath: webpackDevConfig.output.publicPath,
