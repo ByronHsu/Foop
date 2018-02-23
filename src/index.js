@@ -373,15 +373,12 @@ class DataMgr {
     // 距離(y - (-len / 2* config.app.h) )/邊長
     return Math.floor((y + len / 2 * config.app.h) / config.app.h);
   }
+  get nowYTop() {
+    return this.looper.vec[this.playerVec].border.edge.yT;
+  }
 }
 
 var dataMgr = new DataMgr();
-// document.addEventListener('visibilitychange', () => {
-//   if (document.hidden) {
-//     pixiMgr.isPaused = true;
-//     pixiMgr.worldCtn.alpha = 0.5;
-//   }
-// });
 
 function animate() {
   if (!pixiMgr.isPaused) {
@@ -393,7 +390,7 @@ function animate() {
     dataMgr.noHp();
     pixiMgr.updatePlayer(dataMgr.player);
     pixiMgr.updateObjs(dataMgr.objs);
-    pixiMgr.updateLaser(dataMgr.laser, FALLSPEED);
+    pixiMgr.updateLaser(dataMgr.laser, dataMgr.nowYTop, FALLSPEED);
     pixiMgr.updateScore(dataMgr.player.money);
     // for UI
     pixiMgr.now = dataMgr.looper.now;

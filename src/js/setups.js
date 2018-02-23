@@ -47,6 +47,11 @@ function setupLaser() {
   this.laser.parentGroup = this.laserGrp;
   this.laserRef = this.laser;
   this.laserCtn.addChild(this.laser);
+  this.blackPainter = new Graphics();
+  this.blackPainter.parentGroup = this.mapGrp;
+  this.blackPainter.x = -config.app.w / 2;
+  //  this.blackPainter.y = -config.app.h / 2;
+  this.playerCtn.addChild(this.blackPainter);
 }
 
 function setupPause() {

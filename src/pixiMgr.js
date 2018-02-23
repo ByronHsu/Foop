@@ -141,18 +141,23 @@ class PixiMgr {
     }
     // console.log('out', objs);
   }
-  updateLaser(laser, fallspeed) {
+  updateLaser(laser, ytop, fallspeed) {
     if (laser.width < config.app.w) {
       this.laserRef.width = laser.width += 20;
       this.laserRef.y = laser.y;
     } else this.laserRef.y = laser.y += fallspeed;
+    this.blackPainter.clear();
+    this.blackPainter.beginFill(0x000000, 1);
+    this.blackPainter.drawRect(0, ytop, laser.width, laser.y - ytop);
+    this.blackPainter.beginFill(0xff0000, 1);
+    this.blackPainter.drawRect(0, laser.y - 3, laser.width, 3);
   }
   updateScore(score) {
     this.score.text = 'Score: ' + score;
   }
   setPlayerColor(idx) {
     this.player.filters = [
-      // new filters.GlowFilter(15, 2, 1, config.lineColor[idx], 0.5),
+      new filters.GlowFilter(15, 2, 1, config.lineColor[idx], 0.5),
     ];
     this.player.tint = config.lineColor[idx];
   }
@@ -166,7 +171,7 @@ class PixiMgr {
     sprite.anchor.set(0.5, 0.5);
     sprite.parentGroup = this.backGrp;
     sprite.filters = [
-      // new filters.GlowFilter(10, 2, 1, config.lineColor[idx], 1),
+      new filters.GlowFilter(10, 2, 1, config.lineColor[idx], 1),
     ];
     this.backCtn.addChild(Object.assign(sprite, wall));
   }
@@ -205,7 +210,7 @@ class PixiMgr {
     sprite.play();
     sprite.tint = config.lineColor[obj.idx];
     sprite.filters = [
-      // new filters.GlowFilter(15, 2, 1, config.lineColor[obj.idx], 0.5),
+      new filters.GlowFilter(15, 2, 1, config.lineColor[obj.idx], 0.5),
     ];
     sprite.anchor.set(0.5, 0.5);
     sprite.parentGroup = this.objsGrp;
