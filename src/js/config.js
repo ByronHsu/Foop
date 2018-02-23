@@ -56,6 +56,7 @@ const wh = window.innerHeight;
 
 const fontFamily = {
   fontFamily: 'Orbitron-Medium, sans-serif',
+  fill: '#ffffff',
 };
 
 const playerStart = {

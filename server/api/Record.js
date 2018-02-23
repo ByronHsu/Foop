@@ -3,6 +3,7 @@ const { Schema } = mongoose;
 
 const RecordSchema = new Schema({
   name: String,
+  id: String,
   score: Number,
 });
 

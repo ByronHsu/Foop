@@ -46,34 +46,35 @@ function showEndScene(player) {
   //     endCtn.addChild(text);
   //   }
 
-  //   // Save & Show World Rank:
-  //   axios
-  //     .post('/api/data', {
-  //       name: JSON.parse(localStorage.getItem('user')).name,
-  //       score: player.exitTimes,
-  //     })
-  //     .then(
-  //       axios.get('/api/data').then(res => {
-  //         let rankData = res.data;
-  //         let text = new Text('World Rank', config.fontFamily);
-  //         text.position.set(config.ww / 2, 0);
-  //         endCtn.addChild(text);
-  //         for (let i = 0; i < rankData.length; i++) {
-  //           let text = new Text(
-  //             `${i + 1}. ${rankData[i].name}: ${rankData[i].score}`,
-  //             config.fontFamily
-  //           );
-  //           text.position.set(config.ww / 2, i * 50 + 50);
-  //           endCtn.addChild(text);
-  //         }
-  //       })
-  //     )
-  //     .catch(err => console.error(err));
+  // Save & Show World Rank:
+  axios
+    .post('/api/data', {
+      name: localStorage.getItem('username'),
+      id: localStorage.getItem('userid'),
+      score: player.money,
+    })
+    .then(
+      axios.get('/api/data').then(res => {
+        let rankData = res.data;
+        let text = new Text('World Rank', config.fontFamily);
+        text.position.set(config.ww / 2, 0);
+        endCtn.addChild(text);
+        for (let i = 0; i < rankData.length; i++) {
+          let text = new Text(
+            `${i + 1}. ${rankData[i].name}: ${rankData[i].score}`,
+            config.fontFamily
+          );
+          text.position.set(config.ww / 2, i * 50 + 50);
+          endCtn.addChild(text);
+        }
+      })
+    )
+    .catch(err => console.error(err));
 
-  //   // This game data & decorations
-  //   text = new Text(`Game Score: ${player.exitTimes}`, config.fontFamily);
-  //   text.position.set(100, config.wh - 100);
-  //   endCtn.addChild(text);
+  // This game data & decorations
+  let text = new Text(`Game Score: ${player.money}`, config.fontFamily);
+  text.position.set(100, config.wh - 100);
+  endCtn.addChild(text);
 
   // setup restartBtn
   setupRestart.call(this);

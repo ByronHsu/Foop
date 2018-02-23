@@ -56,6 +56,10 @@ function showStartScene() {
       press: () => {
         FB.login(response => { // eslint-disable-line
           if (response.status === 'connected') {
+            FB.api('/me', res => { // eslint-disable-line
+              localStorage.setItem('username', res.name);
+              localStorage.setItem('userid', res.id);
+            });
             this.app.stage.removeChild(startCtn);
             this.onResumeScene();
           } else {
