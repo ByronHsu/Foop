@@ -21,6 +21,7 @@ function showEndScene(player) {
   this.headerCtn.removeChildren();
   // Save & show this game data & rank in endScene container
   let endCtn = new Container();
+  let text;
   //   // Save Self Rank:
   //   let selfRank = [];
   //   if (!(typeof Storage !== 'undefined')) {
@@ -71,8 +72,23 @@ function showEndScene(player) {
     )
     .catch(err => console.error(err));
 
+  // Show Self High Score
+  axios
+    .post('/api/getbest', {
+      id: localStorage.getItem('userid'),
+    })
+    .then(bestRecord => {
+      if (bestRecord) {
+        let nowBest = Math.max(bestRecord.data[0].score, player.money);
+        text = new Text(`Your Best: ${nowBest}`, config.fontFamily);
+        text.position.set(config.ww / 2, config.wh - 100);
+        endCtn.addChild(text);
+      }
+    })
+    .catch(err => console.error(err));
+
   // This game data & decorations
-  let text = new Text(`Game Score: ${player.money}`, config.fontFamily);
+  text = new Text(`Game Score: ${player.money}`, config.fontFamily);
   text.position.set(100, config.wh - 100);
   endCtn.addChild(text);
 

@@ -18,6 +18,13 @@ module.exports = server => {
       )
       .catch(next);
   });
+  server.post('/api/getbest', (req, res, next) => {
+    Record.find({ id: req.body.id })
+      .sort({ score: -1 })
+      .limit(1)
+      .then(record => res.send(record))
+      .catch(next);
+  });
   server.post('/api/reset', (req, res) => {
     Record.remove({}).then(record => res.send(record)); // to clear database
   });
