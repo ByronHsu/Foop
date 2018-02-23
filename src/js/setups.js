@@ -25,8 +25,7 @@ function setupPlayer() {
   (foop.x = config.playerStart.x), (foop.y = config.playerStart.y);
   foop.parentGroup = this.playerGrp;
   this.player = foop;
-  // console.log(filters);
-  this.player.filters = [new filters.GlowFilter(15, 2, 1, 0xffffff, 0.5)];
+  //   this.player.filters = [new filters.GlowFilter(15, 2, 1, 0xffffff, 0.5)];
   this.playerCtn.addChild(this.player);
   foop.animationSpeed = 0.1;
   foop.play();

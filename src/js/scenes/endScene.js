@@ -56,6 +56,7 @@ function showEndScene(player) {
     })
     .then(
       axios.get('/api/data').then(res => {
+        console.log(res);
         let rankData = res.data;
         let text = new Text('World Rank', config.fontFamily);
         text.position.set(config.ww / 2, 0);

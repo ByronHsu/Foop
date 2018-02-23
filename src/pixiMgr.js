@@ -152,7 +152,7 @@ class PixiMgr {
   }
   setPlayerColor(idx) {
     this.player.filters = [
-      new filters.GlowFilter(15, 2, 1, config.lineColor[idx], 0.5),
+      // new filters.GlowFilter(15, 2, 1, config.lineColor[idx], 0.5),
     ];
     this.player.tint = config.lineColor[idx];
   }
@@ -166,7 +166,7 @@ class PixiMgr {
     sprite.anchor.set(0.5, 0.5);
     sprite.parentGroup = this.backGrp;
     sprite.filters = [
-      new filters.GlowFilter(10, 2, 1, config.lineColor[idx], 1),
+      // new filters.GlowFilter(10, 2, 1, config.lineColor[idx], 1),
     ];
     this.backCtn.addChild(Object.assign(sprite, wall));
   }
@@ -205,7 +205,7 @@ class PixiMgr {
     sprite.play();
     sprite.tint = config.lineColor[obj.idx];
     sprite.filters = [
-      new filters.GlowFilter(15, 2, 1, config.lineColor[obj.idx], 0.5),
+      // new filters.GlowFilter(15, 2, 1, config.lineColor[obj.idx], 0.5),
     ];
     sprite.anchor.set(0.5, 0.5);
     sprite.parentGroup = this.objsGrp;
