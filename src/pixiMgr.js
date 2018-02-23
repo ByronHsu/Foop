@@ -147,7 +147,7 @@ class PixiMgr {
       this.laserRef.y = laser.y;
     } else this.laserRef.y = laser.y += fallspeed;
     this.blackPainter.clear();
-    this.blackPainter.beginFill(0x000000, 1);
+    this.blackPainter.beginFill(0x000000, 0.8);
     this.blackPainter.drawRect(0, ytop, laser.width, laser.y - ytop);
     this.blackPainter.beginFill(0xff0000, 1);
     this.blackPainter.drawRect(0, laser.y - 3, laser.width, 3);
