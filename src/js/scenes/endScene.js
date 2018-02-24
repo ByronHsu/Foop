@@ -48,29 +48,28 @@ function showEndScene(player) {
   //   }
 
   // Save & Show World Rank:
+  let postData = {
+    name: localStorage.getItem('username'),
+    id: localStorage.getItem('userid'),
+    score: player.money,
+  };
   axios
-    .post('/api/data', {
-      name: localStorage.getItem('username'),
-      id: localStorage.getItem('userid'),
-      score: player.money,
-    })
-    .then(
-      axios.get('/api/data').then(res => {
-        console.log(res);
-        let rankData = res.data;
-        let text = new Text('World Rank', config.fontFamily);
-        text.position.set(config.ww / 2, 0);
+    .post('/api/bestten', postData)
+    .then(records => {
+      let rankData = records.data;
+      let text = new Text('World Rank', config.fontFamily);
+      text.position.set(config.ww / 2, 0);
+      endCtn.addChild(text);
+      for (let i = 0; i < rankData.length; i++) {
+        let text = new Text(
+          `${i + 1}. ${rankData[i].name}: ${rankData[i].score}`,
+          config.fontFamily
+        );
+        text.position.set(config.ww / 2, i * 50 + 50);
         endCtn.addChild(text);
-        for (let i = 0; i < rankData.length; i++) {
-          let text = new Text(
-            `${i + 1}. ${rankData[i].name}: ${rankData[i].score}`,
-            config.fontFamily
-          );
-          text.position.set(config.ww / 2, i * 50 + 50);
-          endCtn.addChild(text);
-        }
-      })
-    )
+      }
+    })
+    .then(axios.post('/api/data', postData).catch(err => console.error(err)))
     .catch(err => console.error(err));
 
   // Show Self High Score

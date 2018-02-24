@@ -8,5 +8,6 @@ const RecordSchema = new Schema({
 });
 
 const Record = mongoose.model('records', RecordSchema);
+const BestTen = mongoose.model('bestten', RecordSchema);
 
-module.exports = { Record };
+module.exports = { Record, BestTen };

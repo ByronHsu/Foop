@@ -1,4 +1,4 @@
-const { Record } = require('./Record');
+const { Record, BestTen } = require('./Record');
 
 module.exports = server => {
   server.post('/api/data', (req, res, next) => {
@@ -7,13 +7,38 @@ module.exports = server => {
       .then(record => res.send(record))
       .catch(next);
   });
+  server.post('/api/bestten', (req, res, next) => {
+    let recordData = req.body;
+    BestTen.create(recordData)
+      .then(record => {
+        BestTen.find({}).then(records => {
+          if (records.length > 10) {
+            BestTen.find({})
+              .sort({ score: -1 })
+              .then(sortedRecords => {
+                BestTen.remove({ _id: sortedRecords[10]._id }, err => {
+                  if (err) return err;
+                });
+                sortedRecords.pop();
+                res.send(sortedRecords);
+              })
+              .catch(next);
+          } else res.send(record);
+        });
+      })
+      .catch(next);
+  });
+  server.get('/api/bestten', (req, res, next) => {
+    BestTen.find({})
+      .sort({ score: -1 })
+      .then(records => res.send(records))
+      .catch(next);
+  });
   server.get('/api/data', (req, res, next) => {
     Record.find({})
       .then(() =>
         Record.find({})
-          .sort({ score: -1 }) // sort by Descending
-          .limit(10)
-          .then(record => res.send(record))
+          .then(records => res.send(records))
           .catch(next)
       )
       .catch(next);
