@@ -1,13 +1,8 @@
 import { Container, Text } from 'pixi.js';
 import axios from 'axios';
+import key from 'keymaster';
 import * as config from '../config';
-import {
-  setupPlayer,
-  setupLaser,
-  setupPause,
-  setupRestart,
-  setupHeader,
-} from '../setups';
+import { setupPlayer, setupLaser, setupPause, setupHeader } from '../setups';
 
 function showEndScene(player) {
   this.shouldReset = false;
@@ -92,16 +87,19 @@ function showEndScene(player) {
   text.position.set(100, config.wh - 100);
   endCtn.addChild(text);
 
-  // setup restartBtn
-  setupRestart.call(this);
-  endCtn.addChild(this.restart);
-  this.restart.on('click', () => {
+  // Restart key control
+  key('space', () => {
     setupPlayer.call(this);
     setupLaser.call(this);
     setupHeader.call(this);
     setupPause.call(this);
     this.app.stage.removeChild(endCtn);
-    this.onResumeScene();
+    this.isPaused = false;
+    this.worldCtn.visible = true;
+    this.worldCtn.alpha = 1;
+    this.mapCtn.visible = true;
+    this.pause.visible = true;
+    key.unbind('space');
   });
   this.app.stage.addChild(endCtn);
 }
