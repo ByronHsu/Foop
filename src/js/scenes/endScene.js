@@ -1,4 +1,4 @@
-import { Container, Text } from 'pixi.js';
+import { Container, Text, Graphics, Sprite } from 'pixi.js';
 import axios from 'axios';
 import key from 'keymaster';
 import * as config from '../config';
@@ -17,6 +17,18 @@ function showEndScene(player) {
   // Save & show this game data & rank in endScene container
   let endCtn = new Container();
   let text;
+  // Border for data
+  const idx = Math.abs(this.now) % 7;
+  let painter = new Graphics();
+  painter.beginFill(config.tileColor, 1);
+  (painter.lineColor = config.lineColor[idx]), (painter.lineWidth = 10);
+  let pad = 10;
+  painter.drawRect(0, 0, config.app.w - pad, config.app.h - pad);
+  let sprite = new Sprite(painter.generateCanvasTexture());
+  sprite.anchor.set(0.5, 0.5);
+  sprite.position.set(config.ww / 2, config.wh / 2);
+  sprite.parentGroup = this.backGrp;
+  endCtn.addChild(sprite);
   //   // Save Self Rank:
   //   let selfRank = [];
   //   if (!(typeof Storage !== 'undefined')) {
