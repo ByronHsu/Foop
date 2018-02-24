@@ -9,7 +9,8 @@
     "dev": "NODE_ENV=dev webpack-dashboard -- node server/server.js",
     "build": "webpack --config webpack.config.prod.js",
     "predeploy": "npm run build",
-    "deploy": "./deploy.sh"
+    "deploy": "./deploy.sh",
+    "precommit": "lint-staged"
   },
   "author": "Byron Hsu",
   "license": "MIT",
