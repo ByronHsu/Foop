@@ -1,4 +1,5 @@
-import { Container, Text, Graphics, Sprite } from 'pixi.js';
+import { Container, Text, Graphics, Sprite, extras, Texture } from 'pixi.js';
+const { AnimatedSprite } = extras;
 import axios from 'axios';
 import key from 'keymaster';
 import * as config from '../config';
@@ -29,30 +30,6 @@ function showEndScene(player) {
   sprite.position.set(config.ww / 2, config.wh / 2);
   sprite.parentGroup = this.backGrp;
   endCtn.addChild(sprite);
-  //   // Save Self Rank:
-  //   let selfRank = [];
-  //   if (!(typeof Storage !== 'undefined')) {
-  //     console.log('No LocalStorage Support');
-  //   } else {
-  //     if (localStorage.getItem('selfRank')) {
-  //       let parsedRank = JSON.parse(localStorage.getItem('selfRank'));
-  //       parsedRank.push(player.exitTimes);
-  //       parsedRank.sort((a, b) => b - a); // sort array in Descending
-  //       if (parsedRank.length > 10) parsedRank.pop(); // remove if score not in 10th
-  //       selfRank = parsedRank;
-  //     } else selfRank.push(player.exitTimes); // if selfRank doesn't exist in localStorage
-  //     localStorage.setItem('selfRank', JSON.stringify(selfRank));
-  //   }
-  //   // Show Self Rank:
-  //   let text = new Text('Self Rank', config.fontFamily);
-  //   text.position.set(0, 0);
-  //   endCtn.addChild(text);
-  //   for (let i = 0; i < 10; i++) {
-  //     let score = selfRank[i] !== undefined ? selfRank[i] : '-';
-  //     let text = new Text(`${i + 1}. ${score}`, config.fontFamily);
-  //     text.position.set(0, i * 50 + 50);
-  //     endCtn.addChild(text);
-  //   }
 
   // Save & Show World Rank:
   let postData = {
@@ -65,15 +42,16 @@ function showEndScene(player) {
     .then(records => {
       let rankData = records.data;
       let text = new Text('World Rank', config.fontFamily);
-      text.position.set(config.ww / 2, 0);
+      text.position.set(config.ww / 2 - 200, config.wh / 2 - 100);
       endCtn.addChild(text);
       for (let i = 0; i < rankData.length; i++) {
-        let text = new Text(
-          `${i + 1}. ${rankData[i].name}: ${rankData[i].score}`,
-          config.fontFamily
-        );
-        text.position.set(config.ww / 2, i * 50 + 50);
-        endCtn.addChild(text);
+        let text = new Text(`${i + 1}.`, config.fontFamily);
+        text.position.set(config.ww / 2 - 200, config.wh / 2 - 50 + i * 30);
+        let text2 = new Text(rankData[i].name, config.fontFamily);
+        text2.position.set(config.ww / 2 - 140, config.wh / 2 - 50 + i * 30);
+        let text3 = new Text(rankData[i].score, config.fontFamily);
+        text3.position.set(config.ww / 2 + 50, config.wh / 2 - 50 + i * 30);
+        endCtn.addChild(text, text2, text3);
       }
     })
     .then(axios.post('/api/data', postData).catch(err => console.error(err)))
@@ -87,17 +65,59 @@ function showEndScene(player) {
     .then(bestRecord => {
       if (bestRecord) {
         let nowBest = Math.max(bestRecord.data[0].score, player.money);
-        text = new Text(`Your Best: ${nowBest}`, config.fontFamily);
-        text.position.set(config.ww / 2, config.wh - 100);
+        text = new Text(`YOUR BEST`, config.fontFamily);
+        text.position.set(config.ww / 2 - 200, 100);
+        endCtn.addChild(text);
+        text = new Text(nowBest, config.fontFamily);
+        text.position.set(config.ww / 2 - 200, 150);
         endCtn.addChild(text);
       }
     })
     .catch(err => console.error(err));
 
   // This game data & decorations
-  text = new Text(`Game Score: ${player.money}`, config.fontFamily);
-  text.position.set(100, config.wh - 100);
+  text = new Text(
+    `NAME: ${localStorage.getItem('username')}`,
+    config.fontFamily
+  );
+  text.position.set(config.ww / 2 - 200, 50);
   endCtn.addChild(text);
+  text = new Text(`YOUR SCORE`, config.fontFamily);
+  text.position.set(config.ww / 2, 50);
+  endCtn.addChild(text);
+  text = new Text(player.money, config.fontFamily);
+  text.position.set(config.ww / 2, 100);
+  endCtn.addChild(text);
+  // Foop Animation
+  let foops = [];
+  for (let i = 0; i < 16; i++) {
+    let foopTex = Texture.fromFrame(`foop${i}.png`);
+    foops.push(foopTex);
+  }
+  let foop = new AnimatedSprite(foops);
+  foop.position.set(config.ww / 2, config.wh / 2 - 100);
+  foop.scale.set(2);
+  foop.animationSpeed = 0.1;
+  foop.play();
+  // Restart Hint
+  let painter2 = new Graphics();
+  painter2.beginFill(config.tileColor, 1);
+  (painter2.lineColor = config.lineColor[0]), (painter2.lineWidth = 5);
+  painter2.drawRect(0, 0, config.app.w - 100, 60);
+  sprite = new Sprite(painter2.generateCanvasTexture());
+  sprite.anchor.set(0.5, 0.5);
+  sprite.position.set(config.ww / 2, config.wh - 80);
+  text = new Text(`press 'space' to START AGAIN`, config.fontFamily);
+  text.anchor.set(0.5, 0.5);
+  sprite.addChild(text);
+  endCtn.addChild(sprite, foop);
+  let fadeOut = true;
+  this.app.ticker.add(() => {
+    sprite.alpha += (fadeOut === true ? -1 : 1) * 0.01;
+    foop.x += (fadeOut === true ? 1 : -1) * 0.01 * 200;
+    if (sprite.alpha <= 0) fadeOut = false;
+    else if (sprite.alpha >= 1) fadeOut = true;
+  });
 
   // Restart key control
   key('space', () => {

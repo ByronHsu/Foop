@@ -396,8 +396,6 @@ function animate() {
     pixiMgr.now = dataMgr.looper.now;
     requestAnimationFrame(animate);
   } else {
-    // stop pixi animations
-    // ex. pixiMgr.animationsStop();
     if (pixiMgr.shouldReset) {
       pixiMgr.onEndScene(dataMgr.player);
       dataMgr = new DataMgr();
