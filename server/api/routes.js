@@ -36,11 +36,7 @@ module.exports = server => {
   });
   server.get('/api/data', (req, res, next) => {
     Record.find({})
-      .then(() =>
-        Record.find({})
-          .then(records => res.send(records))
-          .catch(next)
-      )
+      .then(records => res.send(records))
       .catch(next);
   });
   server.post('/api/getbest', (req, res, next) => {
