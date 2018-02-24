@@ -10,7 +10,7 @@ module.exports = server => {
   server.post('/api/bestten', (req, res, next) => {
     let recordData = req.body;
     BestTen.create(recordData)
-      .then(record => {
+      .then(() => {
         BestTen.find({}).then(records => {
           if (records.length > 10) {
             BestTen.find({})
@@ -23,7 +23,7 @@ module.exports = server => {
                 res.send(sortedRecords);
               })
               .catch(next);
-          } else res.send(record);
+          } else res.send(records);
         });
       })
       .catch(next);
