@@ -1,6 +1,6 @@
 import * as PIXI from 'pixi.js';
 import './bin/pixi-display';
-import * as filters from 'pixi-filters';
+// import * as filters from 'pixi-filters';
 import * as config from './js/config';
 import {
   setupPlayer,

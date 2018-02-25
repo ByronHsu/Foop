@@ -17,6 +17,8 @@ function showEndScene(player) {
   this.headerCtn.removeChildren();
   // Save & show this game data & rank in endScene container
   let endCtn = new Container();
+  let username = localStorage.getItem('username');
+  let userid = localStorage.getItem('userid');
   let text;
   // Border for data
   const idx = Math.abs(this.now) % 7;
@@ -33,8 +35,8 @@ function showEndScene(player) {
 
   // Save & Show World Rank:
   let postData = {
-    name: localStorage.getItem('username'),
-    id: localStorage.getItem('userid'),
+    name: username,
+    id: userid,
     score: player.money,
   };
   axios
@@ -57,29 +59,58 @@ function showEndScene(player) {
     .then(axios.post('/api/data', postData).catch(err => console.error(err)))
     .catch(err => console.error(err));
 
-  // Show Self High Score
-  axios
-    .post('/api/getbest', {
-      id: localStorage.getItem('userid'),
-    })
-    .then(bestRecord => {
-      if (bestRecord) {
-        let nowBest = Math.max(bestRecord.data[0].score, player.money);
-        text = new Text(`YOUR BEST`, config.fontFamily);
-        text.position.set(config.ww / 2 - 200, 100);
-        endCtn.addChild(text);
-        text = new Text(nowBest, config.fontFamily);
-        text.position.set(config.ww / 2 - 200, 150);
-        endCtn.addChild(text);
-      }
-    })
-    .catch(err => console.error(err));
+  // Show Self High Score if logged in
+  if (username !== 'Anonymous' && userid)
+    axios
+      .post('/api/getbest', {
+        id: userid,
+      })
+      .then(bestRecord => {
+        if (bestRecord) {
+          let nowBest = Math.max(bestRecord.data[0].score, player.money);
+          text = new Text(`YOUR BEST`, config.fontFamily);
+          text.position.set(config.ww / 2 - 200, 100);
+          endCtn.addChild(text);
+          text = new Text(nowBest, config.fontFamily);
+          text.position.set(config.ww / 2 - 200, 150);
+          endCtn.addChild(text);
+        }
+      })
+      .catch(err => console.error(err));
+  else {
+    let logins = [];
+    for (let i = 0; i < 14; i++) {
+      let loginTex = Texture.fromFrame(`login${i}.png`);
+      logins.push(loginTex);
+    }
+    let login = new AnimatedSprite(logins);
+    // login.anchor.set(0.5, 0.5);
+    (login.width = 200), (login.height = 100);
+    (login.x = config.ww / 2 - 200), (login.y = 100);
+    endCtn.addChild(login);
+    login.animationSpeed = 0.1;
+    login.play();
+    login.interactive = true;
+    login.buttonMode = true;
+    login.on('click', () => {
+      FB.login(response => { // eslint-disable-line
+        if (response.status === 'connected') {
+          FB.api('/me', res => { // eslint-disable-line
+            localStorage.setItem('username', res.name);
+            localStorage.setItem('userid', res.id);
+          });
+          endCtn.removeChild(login);
+          this.onResumeScene();
+        } else {
+          console.log('login fail');
+        }
+      });
+    });
+  }
 
   // This game data & decorations
-  text = new Text(
-    `NAME: ${localStorage.getItem('username')}`,
-    config.fontFamily
-  );
+
+  text = new Text(username, config.fontFamily);
   text.position.set(config.ww / 2 - 200, 50);
   endCtn.addChild(text);
   text = new Text(`YOUR SCORE`, config.fontFamily);

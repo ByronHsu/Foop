@@ -48,6 +48,8 @@ function showStartScene() {
       text: text1,
       press: () => {
         this.app.stage.removeChild(startCtn);
+        localStorage.setItem('username', 'Anonymous');
+        localStorage.setItem('userid', '');
         this.onResumeScene();
       },
     },
