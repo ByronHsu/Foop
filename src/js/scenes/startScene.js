@@ -30,14 +30,14 @@ function showStartScene() {
   this.mapCtn.visible = false;
   this.pause.visible = false;
   let startCtn = new Container();
-  let text1 = new Text('Anonymous', { fill: 0xffffff });
+  let text1 = new Text('Anonymous', config.fallbackFont);
   text1.anchor.set(0.5, 0.5);
   text1.x = config.ww / 2;
   text1.y = config.wh / 2 - 50;
   text1.interactive = true;
   text1.buttonMode = true;
 
-  let text2 = new Text('Facebook Login', { fill: 0xffffff });
+  let text2 = new Text('Facebook Login', config.fallbackFont);
   text2.anchor.set(0.5, 0.5);
   text2.x = config.ww / 2;
   text2.y = config.wh / 2;

@@ -55,8 +55,12 @@ const ww = window.innerWidth;
 const wh = window.innerHeight;
 
 const fontFamily = {
-  fontFamily: 'Orbitron-Medium, sans-serif',
+  fontFamily: 'Orbitron-Medium, sans-serif, Arial',
   fill: '#ffffff',
+};
+
+const fallbackFont = {
+  fill: '0xffffff',
 };
 
 const playerStart = {
@@ -87,4 +91,5 @@ export {
   fontFamily,
   playerStart,
   laserStart,
+  fallbackFont,
 };
