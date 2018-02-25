@@ -100,7 +100,7 @@ function showEndScene(player) {
             localStorage.setItem('userid', res.id);
           });
           endCtn.removeChild(login);
-          this.onResumeScene();
+          //  this.onResumeScene();
         } else {
           console.log('login fail');
         }
