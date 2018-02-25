@@ -11,20 +11,18 @@ module.exports = server => {
     let recordData = req.body;
     BestTen.create(recordData)
       .then(() => {
-        BestTen.find({}).then(records => {
-          if (records.length > 10) {
-            BestTen.find({})
-              .sort({ score: -1 })
-              .then(sortedRecords => {
-                BestTen.remove({ _id: sortedRecords[10]._id }, err => {
-                  if (err) return err;
-                });
-                sortedRecords.pop();
-                res.send(sortedRecords);
-              })
-              .catch(next);
-          } else res.send(records);
-        });
+        BestTen.find({})
+          .sort({ score: -1 })
+          .then(sortedRecords => {
+            if (sortedRecords.length > 10) {
+              BestTen.remove({ _id: sortedRecords[10]._id }, err => {
+                if (err) return err;
+              });
+              sortedRecords.pop();
+            }
+            res.send(sortedRecords);
+          })
+          .catch(next);
       })
       .catch(next);
   });
