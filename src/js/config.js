@@ -15,6 +15,8 @@ const imgUrl = [
   './assets/pause.png',
   './assets/reddot.png',
   './assets/map.png',
+  './assets/keyboard.png',
+  './assets/ok.png',
 ];
 
 const jsonUrl = [
