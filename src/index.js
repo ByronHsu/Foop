@@ -204,7 +204,7 @@ class DataMgr {
     this.player = new Box(config.playerStart);
     this.player.hp = 3;
     this.player.speed = SPEED;
-    this.player.money = 0;
+    this.player.score = 0;
     this.player.exitTimes = 0; // increase every time player exits a door.
     this.looper = new Looper();
     this.looper.createLoop(config.app.h);
@@ -391,7 +391,7 @@ function animate() {
     pixiMgr.updatePlayer(dataMgr.player);
     pixiMgr.updateObjs(dataMgr.objs);
     pixiMgr.updateLaser(dataMgr.laser, dataMgr.nowYTop, FALLSPEED);
-    pixiMgr.updateScore(dataMgr.player.money);
+    pixiMgr.updateScore(dataMgr.player.score);
     // for UI
     pixiMgr.now = dataMgr.looper.now;
     requestAnimationFrame(animate);

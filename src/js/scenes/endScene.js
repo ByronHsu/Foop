@@ -34,7 +34,7 @@ function showEndScene(player) {
   let postData = {
     name: username,
     id: userid,
-    score: player.money,
+    score: player.score,
   };
   axios
     .post('/api/bestten', postData)
@@ -67,7 +67,7 @@ function showEndScene(player) {
       })
       .then(bestRecord => {
         if (bestRecord) {
-          let nowBest = Math.max(bestRecord.data[0].score, player.money);
+          let nowBest = Math.max(bestRecord.data[0].score, player.score);
           let bestTitle = new Text(`YOUR BEST`, config.fontFamily);
           bestTitle.anchor.set(0.5, 0);
           bestTitle.position.set(config.app.w / 4, 100);
@@ -116,7 +116,7 @@ function showEndScene(player) {
   let scoreTitle = new Text(`YOUR SCORE`, config.fontFamily);
   scoreTitle.anchor.set(0.5, 0);
   scoreTitle.position.set(config.app.w * 3 / 4, 50);
-  let score = new Text(player.money, config.scoreFont);
+  let score = new Text(player.score, config.scoreFont);
   score.anchor.set(0.5, 0);
   score.position.set(config.app.w * 3 / 4, 100);
   // Foop Animation

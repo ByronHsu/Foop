@@ -37,7 +37,7 @@ class Coin extends Box {
     this.idx = args.idx;
   }
   hit(player) {
-    player.money += 1;
+    player.score += 1;
   }
 }
 
@@ -90,7 +90,7 @@ class Bug extends Box {
     this.idx = args.idx;
   }
   hit(player) {
-    player.money += (this.idx + 1) * 100;
+    player.score += (this.idx + 1) * 100;
   }
 }
 
