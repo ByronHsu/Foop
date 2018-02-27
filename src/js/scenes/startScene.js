@@ -31,24 +31,24 @@ function showStartScene() {
   this.pause.visible = false;
   let startCtn = new Container();
 
-  let text1 = new Text('Anonymous', config.fallbackFont);
-  text1.anchor.set(0.5, 0.5);
-  text1.x = config.ww / 2;
-  text1.y = config.wh / 2 - 50;
-  text1.interactive = true;
-  text1.buttonMode = true;
-  text1.visible = false;
+  let anonyText = new Text('Anonymous', config.fallbackFont);
+  anonyText.anchor.set(0.5, 0.5);
+  anonyText.x = config.ww / 2;
+  anonyText.y = config.wh / 2 - 50;
+  anonyText.interactive = true;
+  anonyText.buttonMode = true;
+  anonyText.visible = false;
 
-  let text2 = new Text('Facebook Login', config.fallbackFont);
-  text2.anchor.set(0.5, 0.5);
-  text2.x = config.ww / 2;
-  text2.y = config.wh / 2;
-  text2.interactive = true;
-  text2.buttonMode = true;
-  text2.visible = false;
+  let FBText = new Text('Facebook Login', config.fallbackFont);
+  FBText.anchor.set(0.5, 0.5);
+  FBText.x = config.ww / 2;
+  FBText.y = config.wh / 2;
+  FBText.interactive = true;
+  FBText.buttonMode = true;
+  FBText.visible = false;
   let buttons = [
     {
-      text: text1,
+      text: anonyText,
       press: () => {
         this.app.stage.removeChild(startCtn);
         localStorage.setItem('username', 'Anonymous');
@@ -57,7 +57,7 @@ function showStartScene() {
       },
     },
     {
-      text: text2,
+      text: FBText,
       press: () => {
         FB.login(response => { // eslint-disable-line
           if (response.status === 'connected') {
@@ -86,46 +86,40 @@ function showStartScene() {
   });
   // Hint
   if (!localStorage.getItem('hint')) {
+    let hintModal = new Container();
+    const { rectWidth, rectHeight, pad } = config.hintModal;
     let graphics = new Graphics();
     graphics.lineStyle(5, config.lineColor[0], 1);
     graphics.beginFill(config.bgColor, 1);
-    let rectHeight = 300,
-      rectWidth = 500,
-      pad = 20;
-    graphics.drawRect(
-      config.ww / 2 - rectWidth / 2,
-      config.wh / 2 - rectHeight / 2,
-      rectWidth,
-      rectHeight
-    );
-    let text3 = new Text(
+    graphics.drawRect(0, 0, rectWidth, rectHeight);
+    let hintText = new Text(
       '1. Eat the bug. \n2. Avoid laser. \n3. Exit',
       config.fallbackFont
     );
-    text3.position.set(
-      config.ww / 2 - rectWidth / 2 + pad,
-      config.wh / 2 - rectHeight / 2 + pad
-    );
+    hintText.position.set(pad, pad);
     let keyboard = new Sprite(utils.TextureCache['./assets/keyboard.png']);
-    keyboard.position.set(
-      config.ww / 2 + rectWidth / 4,
-      config.wh / 2 - rectHeight / 2 + pad
-    );
+    keyboard.anchor.set(1, 0);
+    keyboard.position.set(rectWidth - pad, pad);
     let ok = new Sprite(utils.TextureCache['./assets/ok.png']);
-    ok.position.set(config.ww / 2, config.wh / 2 + rectHeight / 2 - pad * 3);
-    ok.anchor.set(0.5, 0.5);
+    ok.position.set(rectWidth / 2, rectHeight - pad);
+    ok.anchor.set(0.5, 1);
     ok.buttonMode = true;
     ok.interactive = true;
     ok.on('click', () => {
-      startCtn.removeChild(graphics, text3, ok);
-      text1.visible = true;
-      text2.visible = true;
+      hintModal.removeChild(graphics, hintText, ok);
+      anonyText.visible = true;
+      FBText.visible = true;
       localStorage.setItem('hint', 'read');
     });
-    startCtn.addChild(graphics, text3, keyboard, ok);
+    hintModal.addChild(graphics, hintText, keyboard, ok);
+    hintModal.position.set(
+      config.ww / 2 - rectWidth / 2,
+      config.wh / 2 - rectHeight / 2
+    ); // Center the container
+    startCtn.addChild(hintModal);
   } else {
-    text1.visible = true;
-    text2.visible = true;
+    anonyText.visible = true;
+    FBText.visible = true;
   }
   this.app.stage.addChild(startCtn);
 }

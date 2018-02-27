@@ -79,6 +79,12 @@ const laserStart = {
   height: 100,
 };
 
+const hintModal = {
+  rectWidth: 500,
+  rectHeight: 300,
+  pad: 20,
+};
+
 export {
   lineColor,
   tileColor,
@@ -94,4 +100,5 @@ export {
   playerStart,
   laserStart,
   fallbackFont,
+  hintModal,
 };
