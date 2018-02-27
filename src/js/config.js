@@ -85,6 +85,14 @@ const hintModal = {
   pad: 20,
 };
 
+const pauseModal = {
+  rectWidth: app.w,
+  rectHeight: 150,
+  btnWidth: 100,
+  btnHeight: 100,
+  btnAniSpeed: 0.3,
+};
+
 export {
   lineColor,
   tileColor,
@@ -101,4 +109,5 @@ export {
   laserStart,
   fallbackFont,
   hintModal,
+  pauseModal,
 };
