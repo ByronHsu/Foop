@@ -65,6 +65,13 @@ const fallbackFont = {
   fill: '0xffffff',
 };
 
+const scoreFont = {
+  fontFamily: 'Orbitron-Medium, sans-serif, Arial',
+  fontSize: 50,
+  align: 'center',
+  fill: '#ffffff',
+};
+
 const playerStart = {
   x: -200,
   y: -300,
@@ -93,6 +100,12 @@ const pauseModal = {
   btnAniSpeed: 0.3,
 };
 
+const restartHint = {
+  rectWidth: app.w - 100,
+  rectHeight: 60,
+  rectPad: 80,
+};
+
 export {
   lineColor,
   tileColor,
@@ -110,4 +123,6 @@ export {
   fallbackFont,
   hintModal,
   pauseModal,
+  restartHint,
+  scoreFont,
 };
