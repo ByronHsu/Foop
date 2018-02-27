@@ -20,7 +20,6 @@ function showPauseScene() {
   let graphics = new Graphics();
   graphics.lineStyle(2, config.lineColor[this.now], 1);
   graphics.beginFill(0xffffff, 1);
-  graphics.alpha = 0.5;
   graphics.drawRect(0, 0, rectWidth, rectHeight);
   // resumeBtn
   let resumes = [];
