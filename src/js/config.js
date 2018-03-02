@@ -73,8 +73,8 @@ const scoreFont = {
 };
 
 const playerStart = {
-  x: -200,
-  y: -300,
+  x: -app.w / 2 + 100,
+  y: -app.h / 2 + 100,
   width: 64,
   height: 38,
 };
