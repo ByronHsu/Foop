@@ -15,10 +15,13 @@ module.exports = server => {
           .sort({ score: -1 })
           .then(sortedRecords => {
             if (sortedRecords.length > 10) {
-              BestTen.remove({ _id: sortedRecords[10]._id }, err => {
-                if (err) return err;
-              });
-              sortedRecords.pop();
+              // remove all records out of 10th
+              for (let i = 0; i < sortedRecords.length - 10; i++) {
+                BestTen.remove({ _id: sortedRecords[10 + i]._id }, err => {
+                  if (err) return err;
+                });
+                sortedRecords.pop();
+              }
             }
             res.send(sortedRecords);
           })
@@ -44,7 +47,10 @@ module.exports = server => {
       .then(record => res.send(record))
       .catch(next);
   });
-  server.post('/api/reset', (req, res) => {
+  server.get('/api/resetbestten', (req, res) => {
+    BestTen.remove({}).then(record => res.send(record));
+  });
+  server.get('/api/reset/reallyneedtoreset', (req, res) => {
     Record.remove({}).then(record => res.send(record)); // to clear database
   });
 };
