@@ -47,6 +47,20 @@ module.exports = server => {
       .then(record => res.send(record))
       .catch(next);
   });
+  server.get('/api/cleanexceedten', (req, res) => {
+    BestTen.find({})
+      .sort({ score: -1 })
+      .then(sortedRecords => {
+        for (let i = 0; i < sortedRecords.length - 10; i++) {
+          BestTen.remove({ _id: sortedRecords[10 + i]._id }, err => {
+            if (err) return err;
+          });
+          sortedRecords.pop();
+        }
+        res.send(sortedRecords);
+      })
+      .catch(err => console.error(err));
+  });
   server.get('/api/resetbestten', (req, res) => {
     BestTen.remove({}).then(record => res.send(record));
   });
