@@ -31,33 +31,42 @@ function showEndScene(player) {
   rankModal.parentGroup = this.backGrp;
 
   // Save & Show World Rank:
+  function showRank(records) {
+    let rankData = records.data;
+    let rankCont = new Container();
+    let text = new Text('World Rank', config.fontFamily);
+    text.position.set(0, -50);
+    rankCont.addChild(text);
+    for (let i = 0; i < rankData.length; i++) {
+      let rank = new Text(`${i + 1}.`, config.fontFamily);
+      rank.position.set(0, i * 30);
+      let name = new Text(rankData[i].name, config.fontFamily);
+      name.position.set(config.app.w / 8, i * 30);
+      let score = new Text(rankData[i].score, config.fontFamily);
+      score.position.set(config.app.w / 2, i * 30);
+      rankCont.addChild(rank, name, score);
+    }
+    rankCont.position.set(config.app.w / 8, config.app.h / 2 - 50);
+    endCtn.addChild(rankCont);
+  }
   let postData = {
     name: username,
     id: userid,
     score: player.score,
   };
-  axios
-    .post('/api/bestten', postData)
-    .then(records => {
-      let rankData = records.data;
-      let rankCont = new Container();
-      let text = new Text('World Rank', config.fontFamily);
-      text.position.set(0, -50);
-      rankCont.addChild(text);
-      for (let i = 0; i < rankData.length; i++) {
-        let rank = new Text(`${i + 1}.`, config.fontFamily);
-        rank.position.set(0, i * 30);
-        let name = new Text(rankData[i].name, config.fontFamily);
-        name.position.set(config.app.w / 8, i * 30);
-        let score = new Text(rankData[i].score, config.fontFamily);
-        score.position.set(config.app.w / 2, i * 30);
-        rankCont.addChild(rank, name, score);
-      }
-      rankCont.position.set(config.app.w / 8, config.app.h / 2 - 50);
-      endCtn.addChild(rankCont);
-    })
-    .then(axios.post('/api/data', postData).catch(err => console.error(err)))
-    .catch(err => console.error(err));
+  // don't save the record if user haven't login
+  if (username !== 'Anonymous' && userid) {
+    axios
+      .post('/api/bestten', postData)
+      .then(records => showRank(records))
+      .then(axios.post('/api/data', postData).catch(err => console.error(err)))
+      .catch(err => console.error(err));
+  } else {
+    axios
+      .get('/api/bestten')
+      .then(records => showRank(records))
+      .catch(err => console.error(err));
+  }
 
   // Show Self High Score if logged in
   if (username !== 'Anonymous' && userid)
