@@ -404,7 +404,13 @@ function animate() {
     requestAnimationFrame(animate);
   }
 }
-pixiMgr.setup().then(() => {
-  pixiMgr.onStartScene();
-  requestAnimationFrame(animate);
-});
+
+// Make sure user plays in 100% Browser Zoom Level (Firefox, Chrome, Safari ok)
+if (window.devicePixelRatio !== 2 || window.innerWidth !== window.outerWidth)
+  alert('Please Use 100% Browser Zoom Level.');
+else {
+  pixiMgr.setup().then(() => {
+    pixiMgr.onStartScene();
+    requestAnimationFrame(animate);
+  });
+}
