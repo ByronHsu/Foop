@@ -60,15 +60,30 @@ const loopConfig = {
 const ww = window.innerWidth;
 const wh = window.innerHeight;
 
-const fontFamily = {
-  fill: '#ffffff',
-};
-
 const fallbackFont = {
   fontFamily: 'Futura',
   letterSpacing: 1,
   fontWeight: '100',
   fill: '0xffffff',
+};
+
+const nameFont = {
+  fontFamily: 'Futura',
+  letterSpacing: 1,
+  fontWeight: '100',
+  fill: '0xffffff',
+  fontSize: 35,
+  wordWrap: true,
+  wordWrapWidth: 200,
+  breakWords: true,
+};
+
+const titleFont = {
+  fontFamily: 'Futura',
+  letterSpacing: 1,
+  fontWeight: '100',
+  fill: '0xffffff',
+  fontSize: 35,
 };
 
 const scoreFont = {
@@ -123,7 +138,6 @@ export {
   loopConfig,
   ww,
   wh,
-  fontFamily,
   playerStart,
   laserStart,
   fallbackFont,
@@ -131,4 +145,6 @@ export {
   pauseModal,
   restartHint,
   scoreFont,
+  titleFont,
+  nameFont,
 };

@@ -19,6 +19,7 @@ function showEndScene(player) {
   let endCtn = new Container();
   let username = localStorage.getItem('username');
   let userid = localStorage.getItem('userid');
+  let textPad = 50;
   // Border for data
   const idx = Math.abs(this.now) % 7;
   let painter = new Graphics();
@@ -78,11 +79,11 @@ function showEndScene(player) {
         if (bestRecord) {
           let nowBest = Math.max(bestRecord.data[0].score, player.score);
           let bestTitle = new Text(`YOUR BEST`, config.fallbackFont);
-          bestTitle.anchor.set(0.5, 0);
-          bestTitle.position.set(config.app.w / 4, 100);
+          bestTitle.anchor.set(0, 0);
+          bestTitle.position.set(textPad + 20, 140);
           let best = new Text(nowBest, config.fallbackFont);
-          best.anchor.set(0.5, 0);
-          best.position.set(config.app.w / 4, 150);
+          best.anchor.set(0, 0);
+          best.position.set(textPad + 20, 190);
           endCtn.addChild(bestTitle, best);
         }
       })
@@ -94,9 +95,9 @@ function showEndScene(player) {
       logins.push(loginTex);
     }
     let login = new AnimatedSprite(logins);
-    login.anchor.set(0.5, 0);
+    login.anchor.set(0, 0);
     (login.width = 200), (login.height = 100);
-    login.position.set(config.app.w / 4, 100);
+    login.position.set(textPad + 10, 135);
     endCtn.addChild(login);
     login.animationSpeed = 0.1;
     login.play();
@@ -119,15 +120,15 @@ function showEndScene(player) {
   }
 
   // This game data & decorations
-  let name = new Text(username, config.fallbackFont);
-  name.anchor.set(0.5, 0);
-  name.position.set(config.app.w / 4, 50);
-  let scoreTitle = new Text(`YOUR SCORE`, config.fallbackFont);
-  scoreTitle.anchor.set(0.5, 0);
-  scoreTitle.position.set(config.app.w * 3 / 4, 50);
+  let name = new Text(username, config.nameFont);
+  name.anchor.set(0, 0);
+  name.position.set(textPad + 20, textPad);
+  let scoreTitle = new Text(`YOUR SCORE`, config.titleFont);
+  scoreTitle.anchor.set(1, 0);
+  scoreTitle.position.set(config.app.w - textPad - 10, textPad);
   let score = new Text(player.score, config.scoreFont);
-  score.anchor.set(0.5, 0);
-  score.position.set(config.app.w * 3 / 4, 100);
+  score.anchor.set(1, 0);
+  score.position.set(config.app.w - textPad - 10, 100);
   // Foop Animation
   let foops = [];
   for (let i = 0; i < 16; i++) {
@@ -135,7 +136,7 @@ function showEndScene(player) {
     foops.push(foopTex);
   }
   let foop = new AnimatedSprite(foops);
-  foop.position.set(config.app.w / 2, config.wh / 2 - 100);
+  foop.position.set(config.app.w / 2, config.wh / 2 - 150);
   foop.scale.set(2);
   foop.animationSpeed = 0.1;
   foop.play();
