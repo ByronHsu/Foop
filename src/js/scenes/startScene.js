@@ -113,6 +113,8 @@ function showStartScene() {
       FBText.visible = true;
       localStorage.setItem('hint', 'read');
     });
+    ok.on('mouseover', () => (ok.alpha = 0.5));
+    ok.on('mouseout', () => (ok.alpha = 1));
     hintModal.addChild(graphics, hintText, keyboard, ok);
     hintModal.position.set(
       config.ww / 2 - rectWidth / 2,
