@@ -34,15 +34,15 @@ function showEndScene(player) {
   function showRank(records) {
     let rankData = records.data;
     let rankCont = new Container();
-    let text = new Text('World Rank', config.fontFamily);
+    let text = new Text('World Rank', config.fallbackFont);
     text.position.set(0, -50);
     rankCont.addChild(text);
     for (let i = 0; i < rankData.length; i++) {
-      let rank = new Text(`${i + 1}.`, config.fontFamily);
+      let rank = new Text(`${i + 1}.`, config.fallbackFont);
       rank.position.set(0, i * 30);
-      let name = new Text(rankData[i].name, config.fontFamily);
+      let name = new Text(rankData[i].name, config.fallbackFont);
       name.position.set(config.app.w / 8, i * 30);
-      let score = new Text(rankData[i].score, config.fontFamily);
+      let score = new Text(rankData[i].score, config.fallbackFont);
       score.position.set(config.app.w / 2, i * 30);
       rankCont.addChild(rank, name, score);
     }
@@ -77,10 +77,10 @@ function showEndScene(player) {
       .then(bestRecord => {
         if (bestRecord) {
           let nowBest = Math.max(bestRecord.data[0].score, player.score);
-          let bestTitle = new Text(`YOUR BEST`, config.fontFamily);
+          let bestTitle = new Text(`YOUR BEST`, config.fallbackFont);
           bestTitle.anchor.set(0.5, 0);
           bestTitle.position.set(config.app.w / 4, 100);
-          let best = new Text(nowBest, config.fontFamily);
+          let best = new Text(nowBest, config.fallbackFont);
           best.anchor.set(0.5, 0);
           best.position.set(config.app.w / 4, 150);
           endCtn.addChild(bestTitle, best);
@@ -119,10 +119,10 @@ function showEndScene(player) {
   }
 
   // This game data & decorations
-  let name = new Text(username, config.fontFamily);
+  let name = new Text(username, config.fallbackFont);
   name.anchor.set(0.5, 0);
   name.position.set(config.app.w / 4, 50);
-  let scoreTitle = new Text(`YOUR SCORE`, config.fontFamily);
+  let scoreTitle = new Text(`YOUR SCORE`, config.fallbackFont);
   scoreTitle.anchor.set(0.5, 0);
   scoreTitle.position.set(config.app.w * 3 / 4, 50);
   let score = new Text(player.score, config.scoreFont);
@@ -148,7 +148,7 @@ function showEndScene(player) {
   let hintBox = new Sprite(painter2.generateCanvasTexture());
   hintBox.anchor.set(0.5, 0.5);
   hintBox.position.set(config.app.w / 2, config.wh - rectPad);
-  let hintText = new Text(`press 'space' to START AGAIN`, config.fontFamily);
+  let hintText = new Text(`Press 'SPACE' to START AGAIN`, config.fallbackFont);
   hintText.anchor.set(0.5, 0.5);
   hintBox.addChild(hintText);
   let fadeOut = true;

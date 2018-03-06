@@ -69,7 +69,8 @@ const fallbackFont = {
 };
 
 const scoreFont = {
-  fontFamily: 'Orbitron-Medium, sans-serif, Arial',
+  // fontFamily: 'Orbitron-Medium, sans-serif, Arial',
+  fontFamily: 'Futura',
   fontSize: 50,
   align: 'center',
   fill: '#ffffff',

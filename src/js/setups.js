@@ -104,7 +104,7 @@ function setupHeader() {
   this.headerCtn.x = config.ww / 2;
   this.headerCtn.y = config.wh / 2;
   this.headerCtn.alpha = 0.5;
-  this.score = new Text('Score: 0');
+  this.score = new Text('Score: 0', config.fallbackFont);
   this.score.y = -config.app.h / 2 + 25;
   this.score.x = -config.app.w / 2 + 25;
   this.score.parentGroup = this.mapGrp;
