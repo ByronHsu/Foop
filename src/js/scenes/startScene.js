@@ -108,7 +108,7 @@ function showStartScene() {
     ok.buttonMode = true;
     ok.interactive = true;
     ok.on('click', () => {
-      hintModal.removeChild(graphics, hintText, ok);
+      hintModal.removeChild(graphics, hintText, ok, keyboard);
       anonyText.visible = true;
       FBText.visible = true;
       localStorage.setItem('hint', 'read');
