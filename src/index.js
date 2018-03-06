@@ -301,7 +301,7 @@ class DataMgr {
           loop.objs[j].hit(this.player);
           if (loop.objs[j].type === 'bug') {
             this.looper.vec[this.playerVec].hitBug++;
-            pixiMgr.sounds[2].sound.play();
+            pixiMgr.sounds[5].sound.play();
           } else pixiMgr.sounds[1].sound.play();
           loop.objs.splice(j, 1);
         }

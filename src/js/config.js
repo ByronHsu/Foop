@@ -40,6 +40,7 @@ const soundsUrl = [
   './assets/sounds/coin3.wav',
   './assets/sounds/slime3.wav',
   './assets/sounds/hitFloor.wav',
+  './assets/sounds/eatBug.mp3',
 ];
 
 const app = {
