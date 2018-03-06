@@ -30,7 +30,6 @@ function showStartScene() {
   this.mapCtn.visible = false;
   this.pause.visible = false;
   let startCtn = new Container();
-
   let anonyText = new Text('Anonymous', config.fallbackFont);
   anonyText.anchor.set(0.5, 0.5);
   anonyText.x = config.ww / 2;

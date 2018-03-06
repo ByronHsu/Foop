@@ -17,6 +17,9 @@ const imgUrl = [
   './assets/map.png',
   './assets/keyboard.png',
   './assets/ok.png',
+  './assets/LOGO.png',
+  './assets/Anonymous.png',
+  './assets/Facebook-Login.png',
 ];
 
 const jsonUrl = [
@@ -57,7 +60,7 @@ const ww = window.innerWidth;
 const wh = window.innerHeight;
 
 const fontFamily = {
-  fontFamily: 'Orbitron-Medium, sans-serif, Arial',
+  //   fontFamily: 'Orbitron-Medium, sans-serif, Arial',
   fill: '#ffffff',
 };
 
@@ -69,7 +72,6 @@ const fallbackFont = {
 };
 
 const scoreFont = {
-  // fontFamily: 'Orbitron-Medium, sans-serif, Arial',
   fontFamily: 'Futura',
   fontSize: 50,
   align: 'center',
