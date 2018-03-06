@@ -44,7 +44,8 @@ function showEndScene(player) {
       let name = new Text(rankData[i].name, config.fallbackFont);
       name.position.set(config.app.w / 8, i * 30);
       let score = new Text(rankData[i].score, config.fallbackFont);
-      score.position.set(config.app.w / 2, i * 30);
+      score.anchor.set(1, 0);
+      score.position.set(config.app.w - 3 * textPad, i * 30);
       rankCont.addChild(rank, name, score);
     }
     rankCont.position.set(config.app.w / 8, config.app.h / 2 - 50);
