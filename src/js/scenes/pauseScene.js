@@ -79,7 +79,7 @@ function showPauseScene() {
   map.on('mouseover', () => (map.alpha = 0.5));
   map.on('mouseout', () => (map.alpha = 1));
   pauseModal.addChild(graphics, mute, resume, map);
-  pauseModal.parentGroup = this.laserGrp;
+  pauseModal.parentGroup = this.mapGrp;
   pauseModal.position.set(
     config.ww / 2 - rectWidth / 2,
     config.wh / 2 - rectHeight / 2
