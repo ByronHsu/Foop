@@ -13,7 +13,6 @@ if (process.env.NODE_ENV !== 'prod') {
 
 // let gui = new dat.GUI();
 const SPEED = 8;
-const FALLSPEED = 5;
 const SPEEDUP = 0.5;
 
 var pixiMgr = new PixiMgr();
@@ -391,7 +390,7 @@ function animate() {
     dataMgr.noHp();
     pixiMgr.updatePlayer(dataMgr.player);
     pixiMgr.updateObjs(dataMgr.objs);
-    pixiMgr.updateLaser(dataMgr.laser, dataMgr.nowYTop, FALLSPEED);
+    pixiMgr.updateLaser(dataMgr.laser, dataMgr.nowYTop, config.fallspeed);
     pixiMgr.updateScore(dataMgr.player.score);
     // for UI
     pixiMgr.now = dataMgr.looper.now;

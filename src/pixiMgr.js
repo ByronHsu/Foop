@@ -140,11 +140,13 @@ class PixiMgr {
     }
     // console.log('out', objs);
   }
-  updateLaser(laser, ytop, fallspeed) {
+  updateLaser(laser, ytop) {
     if (laser.width < config.app.w) {
       this.laserRef.width = laser.width += 20;
       this.laserRef.y = laser.y;
-    } else this.laserRef.y = laser.y += fallspeed;
+    } else
+      this.laserRef.y = laser.y +=
+        3 + this.now > config.fallspeed ? config.fallspeed : 3 + this.now;
     this.blackPainter.clear();
     this.blackPainter.beginFill(0x000000, 1);
     this.blackPainter.drawRect(0, ytop, laser.width, laser.y - ytop);

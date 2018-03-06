@@ -1,3 +1,4 @@
+const fallspeed = 5;
 const lineColor = [
   0xffffff,
   0xeae087,
@@ -128,6 +129,7 @@ const restartHint = {
 };
 
 export {
+  fallspeed,
   lineColor,
   tileColor,
   bgColor,
