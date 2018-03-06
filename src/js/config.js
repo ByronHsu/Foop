@@ -62,6 +62,9 @@ const fontFamily = {
 };
 
 const fallbackFont = {
+  fontFamily: 'Futura',
+  letterSpacing: 1,
+  fontWeight: '100',
   fill: '0xffffff',
 };
 
@@ -88,8 +91,8 @@ const laserStart = {
 
 const hintModal = {
   rectWidth: 500,
-  rectHeight: 300,
-  pad: 20,
+  rectHeight: 250,
+  pad: 40,
 };
 
 const pauseModal = {

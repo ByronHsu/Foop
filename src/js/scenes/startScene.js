@@ -93,15 +93,17 @@ function showStartScene() {
     graphics.beginFill(config.bgColor, 1);
     graphics.drawRect(0, 0, rectWidth, rectHeight);
     let hintText = new Text(
-      '1. Eat the bug. \n2. Avoid laser. \n3. Exit',
+      '1. Eat the bug and exit. \n2. Avoid laser from top.',
       config.fallbackFont
     );
     hintText.position.set(pad, pad);
     let keyboard = new Sprite(utils.TextureCache['./assets/keyboard.png']);
     keyboard.anchor.set(1, 0);
+    keyboard.scale.set(1.2);
     keyboard.position.set(rectWidth - pad, pad);
     let ok = new Sprite(utils.TextureCache['./assets/ok.png']);
     ok.position.set(rectWidth / 2, rectHeight - pad);
+    ok.scale.set(0.8);
     ok.anchor.set(0.5, 1);
     ok.buttonMode = true;
     ok.interactive = true;
