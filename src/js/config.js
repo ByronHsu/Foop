@@ -60,7 +60,6 @@ const ww = window.innerWidth;
 const wh = window.innerHeight;
 
 const fontFamily = {
-  //   fontFamily: 'Orbitron-Medium, sans-serif, Arial',
   fill: '#ffffff',
 };
 

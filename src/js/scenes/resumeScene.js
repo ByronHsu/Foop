@@ -10,7 +10,7 @@ function showResumeScene() {
   this.mapCtn.visible = false;
   this.pause.visible = false;
   let resumeCtn = new Container();
-  let text = new Text('-- PRESS SPACE TO START --', { fill: 0xffffff });
+  let text = new Text('-- PRESS SPACE TO START --', config.fallbackFont);
   text.anchor.set(0.5, 0.5);
   text.x = config.ww / 2;
   text.y = config.wh / 2;

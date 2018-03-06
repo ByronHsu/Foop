@@ -8,7 +8,6 @@ import {
   Text,
 } from 'pixi.js';
 const { AnimatedSprite } = extras;
-// import * as filters from 'pixi-filters';
 import * as config from './config';
 
 const id = loader.resources;
