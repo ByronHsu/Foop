@@ -12,8 +12,6 @@ if (process.env.NODE_ENV !== 'prod') {
 }
 
 // let gui = new dat.GUI();
-const SPEED = 8;
-const SPEEDUP = 0.5;
 
 var pixiMgr = new PixiMgr();
 
@@ -202,7 +200,7 @@ class DataMgr {
     this.isPaused = false;
     this.player = new Box(config.playerStart);
     this.player.hp = 3;
-    this.player.speed = SPEED;
+    this.player.speed = config.speed;
     this.player.score = 0;
     this.player.exitTimes = 0; // increase every time player exits a door.
     this.looper = new Looper();
@@ -225,8 +223,12 @@ class DataMgr {
     arr.forEach(obj => {
       if (key.isPressed(obj.key[0]) || key.isPressed(obj.key[1])) {
         let vector = {
-          x: (this.player.speed + this.looper.arr.length * SPEEDUP) * obj.x,
-          y: (this.player.speed + this.looper.arr.length * SPEEDUP) * obj.y,
+          x:
+            (this.player.speed + this.looper.arr.length * config.speedup) *
+            obj.x,
+          y:
+            (this.player.speed + this.looper.arr.length * config.speedup) *
+            obj.y,
         };
         if (!this.collideDetect(this.player, vector)) {
           this.player.x += vector.x;
@@ -390,7 +392,7 @@ function animate() {
     dataMgr.noHp();
     pixiMgr.updatePlayer(dataMgr.player);
     pixiMgr.updateObjs(dataMgr.objs);
-    pixiMgr.updateLaser(dataMgr.laser, dataMgr.nowYTop, config.fallspeed);
+    pixiMgr.updateLaser(dataMgr.laser, dataMgr.nowYTop);
     pixiMgr.updateScore(dataMgr.player.score);
     // for UI
     pixiMgr.now = dataMgr.looper.now;
