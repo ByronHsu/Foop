@@ -113,7 +113,6 @@ class PixiMgr {
     this.playerMap.y = y / 10;
   }
   updateObjs(objs) {
-    // console.log('in', objs);
     // remove deleted obj from container
     // 1. iterate this.objsCtn
     // 2. 看傳進來的objs有無這個item
