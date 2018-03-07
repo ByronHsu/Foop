@@ -16,7 +16,6 @@ function showResumeScene() {
   text.y = config.wh / 2;
   resumeCtn.addChild(text);
   this.app.stage.addChild(resumeCtn);
-  console.log('快完成了...一起加油');
   key('space', () => {
     this.isPaused = false;
     this.worldCtn.visible = true;

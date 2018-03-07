@@ -207,7 +207,6 @@ class DataMgr {
     this.looper.createLoop(config.app.h);
     this.laser = new Box(config.laserStart);
     this.player.onFloor = false;
-    console.log(this.playerVec);
     pixiMgr.worldCtn.pivot.set(
       this.looper.vec[this.playerVec].border.x,
       this.looper.vec[this.playerVec].border.y
