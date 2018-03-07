@@ -256,13 +256,6 @@ class DataMgr {
 
     return false;
   }
-  hitFloor() {
-    if (!this.player.onFloor) {
-      this.player.hp -= 1;
-      this.player.onFloor = true;
-      pixiMgr.sounds[4].sound.play();
-    }
-  }
   hitExit() {
     if (
       this.looper.vec[this.playerVec].hitBug ===
@@ -278,7 +271,7 @@ class DataMgr {
   handleHitExit(ret) {
     this.looper.vec[this.playerVec].hitBug = false;
     this.player.exitTimes += 1;
-    pixiMgr.sounds[3].sound.play();
+    pixiMgr.sounds[0].sound.play();
     (this.player.x = ret.x), (this.player.y = ret.y);
     (this.laser.x = -250), (this.laser.y = ret.y - 100);
     this.laser.width = 0;
@@ -302,8 +295,8 @@ class DataMgr {
           loop.objs[j].hit(this.player);
           if (loop.objs[j].type === 'bug') {
             this.looper.vec[this.playerVec].hitBug++;
-            pixiMgr.sounds[5].sound.play();
-          } else pixiMgr.sounds[1].sound.play();
+            pixiMgr.sounds[1].sound.play();
+          }
           loop.objs.splice(j, 1);
         }
       }
@@ -311,7 +304,7 @@ class DataMgr {
   }
   hitLaser() {
     if (hitLaser(this.player, this.laser)) {
-      pixiMgr.sounds[0].sound.play();
+      pixiMgr.sounds[2].sound.play();
       pixiMgr.isPaused = true;
       pixiMgr.shouldReset = true;
     }

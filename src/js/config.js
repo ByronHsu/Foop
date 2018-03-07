@@ -38,12 +38,9 @@ const jsonUrl = [
 ];
 
 const soundsUrl = [
-  './assets/sounds/interface6.wav',
-  './assets/sounds/beads.wav',
-  './assets/sounds/coin3.wav',
-  './assets/sounds/slime3.wav',
-  './assets/sounds/hitFloor.wav',
+  './assets/sounds/door.mp3',
   './assets/sounds/eatBug.mp3',
+  './assets/sounds/gameover.mp3',
 ];
 
 const app = {
