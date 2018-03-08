@@ -61,10 +61,10 @@ module.exports = server => {
       })
       .catch(err => console.error(err));
   });
-  server.get('/api/resetbestten', (req, res) => {
-    BestTen.remove({}).then(record => res.send(record));
-  });
-  server.get('/api/reset/reallyneedtoreset', (req, res) => {
-    Record.remove({}).then(record => res.send(record)); // to clear database
-  });
+  // server.get('/api/resetbestten', (req, res) => {
+  //   BestTen.remove({}).then(record => res.send(record));
+  // });
+  // server.get('/api/reset/reallyneedtoreset', (req, res) => {
+  //   Record.remove({}).then(record => res.send(record)); // to clear database
+  // });
 };
