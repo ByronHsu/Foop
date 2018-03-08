@@ -2,8 +2,8 @@
 <h2 align='center'>Introduction</h2>  
 
 <h3 align='center'>Foop is a for-loop-like debugging GAME.</h3>  
-<p align='center'>You will be roughly experiencing debugger's struggle in this simple browser-based game.  
-Use 100% browser zoom level & <a target='_blank' href='http://foop.tw'>PLAY NOW!</a></p>  
+<p align='center'>You will be roughly experiencing debugger's struggle in this simple browser-based game.</p>  
+<p align='center'><a target='_blank' href='http://foop.tw'>PLAY NOW!</a></p>  
 <p align=center>
 <a target="_blank" href="https://opensource.org/licenses/MIT" title="License: MIT"><img src="https://img.shields.io/badge/License-MIT-blue.svg"></a>
 <a target="_blank" href="http://makeapullrequest.com" title="PRs Welcome"><img src="https://img.shields.io/badge/PRs-welcome-brightgreen.svg"></a>
@@ -19,12 +19,12 @@ Use 100% browser zoom level & <a target='_blank' href='http://foop.tw'>PLAY NOW!
 
 <img src="media/rule.png" width="600">
 
-1. Use 'w','a','s','d' or '↑','←','↓','→' to move
-2. To escape, eat all bugs before you reach the exit.
+1. Press 'w','a','s','d' or '↑','←','↓','→' to move.
+2. Eat all bugs before you reach the exit.
 3. Be aware of the fatal laser.
 <h2 align='center'>Development</h2>  
 
-0. Clone it from the remote.
+0. Clone from remote.
 ```
 git clone git@github.com:ByronHsu/Foop.git
 npm install
@@ -50,4 +50,4 @@ npm run start
 | :---: | :---: |
 <!-- ALL-CONTRIBUTORS-LIST:END -->
 
-This project follows the [all-contributors](https://github.com/kentcdodds/all-contributors) specification. Contributions of any kind welcome!
+This project follows the [all-contributors](https://github.com/kentcdodds/all-contributors) specification. Contributions of any kind are welcome!
