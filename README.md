@@ -13,7 +13,7 @@
 ## 1. Introduction
 <h3 align='center'>Foop is a for-loop-like debugging GAME.</h3>  
 <p align='center'>You will be roughly experiencing debugger's struggle in this simple browser-based game.  
-Use 100% browser zoom level & [play now!](http://foop.tw)</p>  
+Use 100% browser zoom level & <a target='_blank' href='http://foop.tw'>PLAY NOW!</a></p>  
 
 ## 2. Rule
 <img src="media/rule.png" width="600">
