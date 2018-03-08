@@ -30,10 +30,16 @@ function showStartScene() {
   this.mapCtn.visible = false;
   this.pause.visible = false;
   let startCtn = new Container();
+  let logo = new Sprite(utils.TextureCache['./assets/logo.png']);
+  logo.anchor.set(0.5, 0.5);
+  logo.scale.set(0.8);
+  logo.x = config.ww / 2;
+  logo.y = config.wh / 2 - 200;
+  startCtn.addChild(logo);
   let anonyText = new Text('Anonymous', config.fallbackFont);
   anonyText.anchor.set(0.5, 0.5);
   anonyText.x = config.ww / 2;
-  anonyText.y = config.wh / 2 - 50;
+  anonyText.y = config.wh - 200;
   anonyText.interactive = true;
   anonyText.buttonMode = true;
   anonyText.visible = false;
@@ -41,7 +47,7 @@ function showStartScene() {
   let FBText = new Text('Facebook Login', config.fallbackFont);
   FBText.anchor.set(0.5, 0.5);
   FBText.x = config.ww / 2;
-  FBText.y = config.wh / 2;
+  FBText.y = config.wh - 150;
   FBText.interactive = true;
   FBText.buttonMode = true;
   FBText.visible = false;

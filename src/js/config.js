@@ -20,9 +20,7 @@ const imgUrl = [
   './assets/map.png',
   './assets/keyboard.png',
   './assets/ok.png',
-  './assets/LOGO.png',
-  './assets/Anonymous.png',
-  './assets/Facebook-Login.png',
+  './assets/logo.png',
 ];
 
 const jsonUrl = [
