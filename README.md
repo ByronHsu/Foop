@@ -3,6 +3,7 @@
 <a target="_blank" href="https://opensource.org/licenses/MIT" title="License: MIT"><img src="https://img.shields.io/badge/License-MIT-blue.svg"></a>
 <a target="_blank" href="http://makeapullrequest.com" title="PRs Welcome"><img src="https://img.shields.io/badge/PRs-welcome-brightgreen.svg"></a>
 </p>
+<a target='_blank' href='https://www.producthunt.com/posts/foop-2'><p align='center'>🚀DISCUSS ON PRODUCT HUNT</p></a>  
 <h2 align='center'>Introduction</h2>  
 
 <h3 align='center'>Foop is a for-loop-like debugging GAME.</h3>  
