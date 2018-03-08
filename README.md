@@ -1,13 +1,13 @@
 <p align="center"><img src="media/big.png"/></p>
+<p align=center>
+<a target="_blank" href="https://opensource.org/licenses/MIT" title="License: MIT"><img src="https://img.shields.io/badge/License-MIT-blue.svg"></a>
+<a target="_blank" href="http://makeapullrequest.com" title="PRs Welcome"><img src="https://img.shields.io/badge/PRs-welcome-brightgreen.svg"></a>
+</p>
 <h2 align='center'>Introduction</h2>  
 
 <h3 align='center'>Foop is a for-loop-like debugging GAME.</h3>  
 <p align='center'>You will be roughly experiencing debugger's struggle in this simple browser-based game.</p>  
 <p align='center'><a target='_blank' href='http://foop.tw'>PLAY NOW!</a></p>  
-<p align=center>
-<a target="_blank" href="https://opensource.org/licenses/MIT" title="License: MIT"><img src="https://img.shields.io/badge/License-MIT-blue.svg"></a>
-<a target="_blank" href="http://makeapullrequest.com" title="PRs Welcome"><img src="https://img.shields.io/badge/PRs-welcome-brightgreen.svg"></a>
-</p>
 
 <h2 align='center'>Content</h2>  
 
