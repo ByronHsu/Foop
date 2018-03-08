@@ -398,7 +398,7 @@ function animate() {
   }
 }
 
-if (config.wh > 1000) {
+if (config.wh > 1500) {
   alert(
     'Please ensure your browser height is below 1000px.\nUse zoom to set height and refresh again.'
   );
