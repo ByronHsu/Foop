@@ -47,9 +47,9 @@ const app = {
 };
 
 const loopConfig = {
-  bugCount: [1, 1, 2, 3, 4, 4, 4],
-  wallCount: [8, 8, 8, 8, 8, 8, 8],
-  wallWidth: [75, 100, 150, 150, 200, 200, 200],
+  bugCount: [1, 1, 2, 3, 4, 4, 4, 4, 4, 4, 4, 4],
+  wallCount: [8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8],
+  wallWidth: [75, 100, 150, 150, 200, 200, 200, 200, 200, 200, 200, 200],
   // super hard setting
   // bugCount: [2, 2, 2, 3, 4],
   // wallCount: [8, 8, 8, 8, 8],
