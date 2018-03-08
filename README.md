@@ -6,7 +6,9 @@
 <h2 align='center'>Introduction</h2>  
 
 <h3 align='center'>Foop is a for-loop-like debugging GAME.</h3>  
-<p align='center'>You will be roughly experiencing debugger's struggle in this simple browser-based game.</p>  
+<p align='center'>Stuck in a gigantic for loop, you have to catch bugs before the execution thread(laser) runs into them. The map shows your current position in this nested loop.</p> 
+<p align='center'>You will be roughly experiencing debugger's struggle in this simple browser-based game. </p> 
+
 <p align='center'><a target='_blank' href='http://foop.tw'>PLAY NOW!</a></p>  
 
 <h2 align='center'>Game Rule</h2>  
