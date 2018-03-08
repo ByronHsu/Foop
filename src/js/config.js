@@ -45,10 +45,10 @@ const app = {
   w: 600,
   h: window.innerHeight,
 };
-
+var wp = Math.floor(app.h / 100);
 const loopConfig = {
   bugCount: [1, 1, 2, 3, 4, 4, 4, 4, 4, 4, 4, 4],
-  wallCount: [8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8],
+  wallCount: [wp, wp, wp, wp, wp, wp, wp, wp, wp, wp, wp, wp],
   wallWidth: [75, 100, 150, 150, 200, 200, 200, 200, 200, 200, 200, 200],
   // super hard setting
   // bugCount: [2, 2, 2, 3, 4],

@@ -398,11 +398,13 @@ function animate() {
   }
 }
 
-// Make sure user plays in 100% Browser Zoom Level (Firefox, Chrome, Safari ok)
-// if (window.devicePixelRatio !== 2 || window.innerWidth !== window.outerWidth) alert('Please Use 100% Browser Zoom Level.');
-// else {
-pixiMgr.setup().then(() => {
-  pixiMgr.onStartScene();
-  requestAnimationFrame(animate);
-});
-// }
+if (config.wh > 1000) {
+  alert(
+    'Please ensure your browser height is below 1000px.\nUse zoom to set height and refresh again.'
+  );
+} else {
+  pixiMgr.setup().then(() => {
+    pixiMgr.onStartScene();
+    requestAnimationFrame(animate);
+  });
+}
