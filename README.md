@@ -5,15 +5,15 @@
 </p>
 
 ## 0. Content
-- [Introduction](#1-introductionn)
+- [Introduction](#1-introduction)
 - [Rule](#2-rule)
 - [Development](#3-development)
 - [Contributors](#4-contributors)
 
 ## 1. Introduction
-### Foop is a for-loop-like debugging GAME.  
-You will be roughly experiencing debugger's struggle in this simple browser-based game.  
-Use 100% browser zoom level & [play now!](http://foop.tw)  
+<h3 align='center'>Foop is a for-loop-like debugging GAME.</h3>  
+<p align='center'>You will be roughly experiencing debugger's struggle in this simple browser-based game.  
+Use 100% browser zoom level & [play now!](http://foop.tw)</p>  
 
 ## 2. Rule
 <img src="media/rule.png" width="600">
