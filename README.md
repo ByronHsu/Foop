@@ -9,19 +9,13 @@
 <p align='center'>You will be roughly experiencing debugger's struggle in this simple browser-based game.</p>  
 <p align='center'><a target='_blank' href='http://foop.tw'>PLAY NOW!</a></p>  
 
-<h2 align='center'>Content</h2>  
+<h2 align='center'>Game Rule</h2>  
 
-- [Rule](#rule)
-- [Development](#development)
-- [Contributors](#contributors)
-
-<h2 align='center'>Rule</h2>  
-
-<img src="media/rule.png" width="600">
+<p align='center'><img src="media/rule.png" width="600" /></p>  
 
 1. Press 'w','a','s','d' or '↑','←','↓','→' to move.
-2. Eat all bugs before you reach the exit.
-3. Be aware of the fatal laser.
+2. Eat all **bugs** before you reach the exit.
+3. Be aware of the fatal **laser**.
 <h2 align='center'>Development</h2>  
 
 0. Clone from remote.
