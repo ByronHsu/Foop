@@ -9,7 +9,7 @@
 <p align='center'>Stuck in a gigantic for loop, you have to catch bugs before the execution thread(laser) runs into them. The map shows your current position in this nested loop.</p> 
 <p align='center'>You will be roughly experiencing debugger's struggle in this simple browser-based game. </p> 
 
-<p align='center'><a target='_blank' href='http://foop.tw'>PLAY NOW!</a></p>  
+<a target='_blank' href='http://foop.tw'><p align='center'>PLAY NOW!</p></a>  
 
 <h2 align='center'>Game Rule</h2>  
 
