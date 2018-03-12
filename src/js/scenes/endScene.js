@@ -59,18 +59,9 @@ function showEndScene(player) {
   // don't save the record if user haven't login
   if (username !== 'Anonymous' && userid) {
     axios
-      .post('/api/check', postData)
-      .then(success => {
-        if (success)
-          axios
-            .post('/api/bestten', postData)
-            .then(records => showRank(records))
-            .then(
-              axios.post('/api/data', postData).catch(err => console.error(err))
-            )
-            .catch(err => console.error(err));
-        else console.error('check failed.');
-      })
+      .post('/api/bestten', postData)
+      .then(records => showRank(records))
+      .then(axios.post('/api/data', postData).catch(err => console.error(err)))
       .catch(err => console.error(err));
   } else {
     axios

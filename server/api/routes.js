@@ -19,7 +19,7 @@ module.exports = server => {
       .then(users => res.send(users))
       .catch(next);
   });
-  server.post('/api/check', (req, res, next) => {
+  server.post('/api/data', (req, res, next) => {
     let recordData = req.body;
     User.find({ id: recordData.id })
       .then(user => {
@@ -27,38 +27,44 @@ module.exports = server => {
           user[0].sessionID === req.sessionID &&
           user[0].name === recordData.name
         ) {
-          res.send(true);
-        } else {
-          res.send(false);
-        }
+          Record.create(recordData)
+            .then(record => res.send(record))
+            .catch(next);
+        } else console.log(`user doesn't exist, check failed.`);
       })
-      .catch(next);
-  });
-  server.post('/api/data', (req, res, next) => {
-    let recordData = req.body;
-    Record.create(recordData)
-      .then(record => res.send(record))
       .catch(next);
   });
   server.post('/api/bestten', (req, res, next) => {
     let recordData = req.body;
-    BestTen.create(recordData)
-      .then(() => {
-        BestTen.find({})
-          .sort({ score: -1 })
-          .then(sortedRecords => {
-            if (sortedRecords.length > 10) {
-              // remove all records out of 10th
-              for (let i = 0; i < sortedRecords.length - 10; i++) {
-                BestTen.remove({ _id: sortedRecords[10 + i]._id }, err => {
-                  if (err) return err;
-                });
-                sortedRecords.pop();
-              }
-            }
-            res.send(sortedRecords);
-          })
-          .catch(next);
+    User.find({ id: recordData.id })
+      .then(user => {
+        if (
+          user[0].sessionID === req.sessionID &&
+          user[0].name === recordData.name
+        ) {
+          BestTen.create(recordData)
+            .then(() => {
+              BestTen.find({})
+                .sort({ score: -1 })
+                .then(sortedRecords => {
+                  if (sortedRecords.length > 10) {
+                    // remove all records out of 10th
+                    for (let i = 0; i < sortedRecords.length - 10; i++) {
+                      BestTen.remove(
+                        { _id: sortedRecords[10 + i]._id },
+                        err => {
+                          if (err) return err;
+                        }
+                      );
+                      sortedRecords.pop();
+                    }
+                  }
+                  res.send(sortedRecords);
+                })
+                .catch(next);
+            })
+            .catch(next);
+        } else console.log(`user doesn't exist, check failed.`);
       })
       .catch(next);
   });
