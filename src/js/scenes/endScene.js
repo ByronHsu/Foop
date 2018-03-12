@@ -60,7 +60,10 @@ function showEndScene(player) {
   if (username !== 'Anonymous' && userid) {
     axios
       .post('/api/bestten', postData)
-      .then(records => showRank(records))
+      .then(records => {
+        showRank(records);
+        console.log(records);
+      })
       .then(axios.post('/api/data', postData).catch(err => console.error(err)))
       .catch(err => console.error(err));
   } else {
