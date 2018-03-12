@@ -47,7 +47,7 @@ module.exports = {
     ],
   },
   plugins: [
-    new BundleAnalyzerPlugin(),
+    // new BundleAnalyzerPlugin(),
     new DashboardPlugin(),
     new HtmlWebpackPlugin({
       // title: 'Foop! | dev',

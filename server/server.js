@@ -5,6 +5,11 @@ const server = express();
 const apiRouter = require('./api/routes');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
+const session = require('express-session');
+
+server.use(
+  session({ secret: 'foop_sign', resave: false, saveUninitialized: false })
+);
 
 if (process.env.NODE_ENV === 'dev') {
   const webpack = require('webpack');

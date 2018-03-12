@@ -1,6 +1,39 @@
 const { Record, BestTen } = require('./Record');
+const { User } = require('./User');
 
 module.exports = server => {
+  server.post('/api/user', (req, res, next) => {
+    let userData = req.body;
+    User.findOneAndUpdate({ id: userData.id }, { sessionID: req.sessionID })
+      .then(updatedUser => {
+        if (!updatedUser) {
+          User.create(Object.assign(userData, { sessionID: req.sessionID }))
+            .then(user => res.send(user))
+            .catch(next);
+        } else res.send(updatedUser);
+      })
+      .catch(next);
+  });
+  server.get('/api/user', (req, res, next) => {
+    User.find({})
+      .then(users => res.send(users))
+      .catch(next);
+  });
+  server.post('/api/check', (req, res, next) => {
+    let recordData = req.body;
+    User.find({ id: recordData.id })
+      .then(user => {
+        if (
+          user[0].sessionID === req.sessionID &&
+          user[0].name === recordData.name
+        ) {
+          res.send(true);
+        } else {
+          res.send(false);
+        }
+      })
+      .catch(next);
+  });
   server.post('/api/data', (req, res, next) => {
     let recordData = req.body;
     Record.create(recordData)

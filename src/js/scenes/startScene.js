@@ -1,4 +1,5 @@
 import { Container, Text, Graphics, utils, Sprite } from 'pixi.js';
+import axios from 'axios';
 import 'pixi-sound';
 import * as config from '../config';
 
@@ -69,6 +70,12 @@ function showStartScene() {
             FB.api('/me', res => { // eslint-disable-line
               localStorage.setItem('username', res.name);
               localStorage.setItem('userid', res.id);
+              axios
+                .post('/api/user', {
+                  name: res.name,
+                  id: res.id,
+                })
+                .catch(err => console.error(err));
             });
             this.app.stage.removeChild(startCtn);
             this.onResumeScene();
