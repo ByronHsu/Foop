@@ -17,6 +17,7 @@ import * as config from '../config';
 window.fbAsyncInit = function() {
   FB.init({ // eslint-disable-line
     appId: '560212231013497',
+    // appId: '1872508023034248', // for testing
     cookie: true, // enable cookies to allow the server to access
     // the session
     xfbml: true, // parse social plugins on this page

@@ -5,10 +5,16 @@ const server = express();
 const apiRouter = require('./api/routes');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
+const cookieParser = require('cookie-parser');
 const session = require('express-session');
 
 server.use(
-  session({ secret: 'foop_sign', resave: false, saveUninitialized: false })
+  session({
+    name: 'sessionID',
+    secret: 'foop_sign',
+    resave: false,
+    saveUninitialized: false,
+  })
 );
 
 if (process.env.NODE_ENV === 'dev') {
@@ -43,6 +49,8 @@ mongoose.Promise = global.Promise;
 mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost/foop');
 
 server.use(bodyParser.json());
+server.use(bodyParser.urlencoded({ extended: false }));
+server.use(cookieParser('foop_sign'));
 
 apiRouter(server);
 

@@ -4,6 +4,7 @@ const { User } = require('./User');
 module.exports = server => {
   server.post('/api/user', (req, res, next) => {
     let userData = req.body;
+    res.cookie('sessionID', req.sessionID, { signed: true });
     User.findOneAndUpdate({ id: userData.id }, { sessionID: req.sessionID })
       .then(updatedUser => {
         if (!updatedUser) {
@@ -24,7 +25,7 @@ module.exports = server => {
     User.find({ id: recordData.id })
       .then(user => {
         if (
-          user[0].sessionID === req.sessionID &&
+          user[0].sessionID === req.signedCookies.sessionID &&
           user[0].name === recordData.name
         ) {
           Record.create(recordData)
@@ -39,7 +40,7 @@ module.exports = server => {
     User.find({ id: recordData.id })
       .then(user => {
         if (
-          user[0].sessionID === req.sessionID &&
+          user[0].sessionID === req.signedCookies.sessionID &&
           user[0].name === recordData.name
         ) {
           BestTen.create(recordData)
