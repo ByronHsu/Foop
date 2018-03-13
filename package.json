@@ -10,7 +10,8 @@
     "build": "webpack --config webpack.config.prod.js",
     "predeploy": "npm run build",
     "deploy": "./deploy.sh",
-    "precommit": "lint-staged"
+    "precommit": "lint-staged",
+    "snyktest": "snyk test"
   },
   "author": "Byron Hsu",
   "license": "MIT",
@@ -59,7 +60,8 @@
     "webpack-dashboard": "^1.1.1",
     "webpack-dev-middleware": "^2.0.4",
     "webpack-hot-middleware": "^2.21.0",
-    "webpack-jarvis": "^0.2.2"
+    "webpack-jarvis": "^0.2.2",
+    "snyk": "^1.70.0"
   },
   "lint-staged": {
     "*.js": [
