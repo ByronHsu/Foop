@@ -90,11 +90,10 @@ module.exports = server => {
   server.get('/api/rank', (req, res, next) => {
     Record.find({})
       .sort({ score: -1 })
-      .limit(5)
       .then(records => {
         let rank = [];
         let idx = 0;
-        while (rank.length < 5) {
+        while (rank.length < 100) {
           for (let i = 0; i < rank.length; i++) {
             if (rank[i].id === records[idx].id) {
               idx += 1;
