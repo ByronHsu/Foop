@@ -87,6 +87,27 @@ module.exports = server => {
       .then(record => res.send(record))
       .catch(next);
   });
+  server.get('/api/rank', (req, res, next) => {
+    Record.find({})
+      .sort({ score: -1 })
+      .limit(5)
+      .then(records => {
+        let rank = [];
+        let idx = 0;
+        while (rank.length < 5) {
+          for (let i = 0; i < rank.length; i++) {
+            if (rank[i].id === records[idx].id) {
+              idx += 1;
+              i = 0;
+            }
+          }
+          rank.push(records[idx]);
+          idx += 1;
+        }
+        res.send(rank);
+      })
+      .catch(next);
+  });
   server.get('/api/cleanexceedten', (req, res) => {
     BestTen.find({})
       .sort({ score: -1 })
