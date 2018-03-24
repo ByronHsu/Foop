@@ -6,7 +6,7 @@
   "scripts": {
     "prebuild": "rimraf public",
     "start": "node server/server.js",
-    "dev": "NODE_ENV=dev webpack-dashboard -- node server/server.js",
+    "dev": "cross-env NODE_ENV=dev webpack-dashboard -- node server/server.js",
     "build": "webpack --config webpack.config.prod.js",
     "predeploy": "npm run build",
     "deploy": "./deploy.sh",
@@ -38,6 +38,7 @@
     "babel-preset-env": "^1.6.1",
     "babel-preset-es2017": "^6.24.1",
     "copy-webpack-plugin": "^4.3.1",
+    "cross-env": "^5.1.4",
     "css-loader": "^0.23.1",
     "dat.gui": "^0.7.0",
     "eslint": "^4.16.0",
@@ -52,6 +53,7 @@
     "prettier": "^1.10.2",
     "raw-loader": "^0.5.1",
     "sass-loader": "^6.0.6",
+    "snyk": "^1.70.0",
     "style-loader": "^0.13.1",
     "uglifyjs-webpack-plugin": "^1.1.6",
     "webpack": "^3.10.0",
@@ -60,8 +62,7 @@
     "webpack-dashboard": "^1.1.1",
     "webpack-dev-middleware": "^2.0.4",
     "webpack-hot-middleware": "^2.21.0",
-    "webpack-jarvis": "^0.2.2",
-    "snyk": "^1.70.0"
+    "webpack-jarvis": "^0.2.2"
   },
   "lint-staged": {
     "*.js": [
